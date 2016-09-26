@@ -1,0 +1,642 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 7 ]>    <html lang="zh-CN" class="ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="zh-CN" class="ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="zh-CN" class="ie9"> <![endif]-->
+<!--[if (gte IE 10)|!(IE)]><!--> <html lang="zh-CN"> <!--<![endif]-->
+
+<head>
+  <meta charset="UTF-8">
+
+  <title>liberize's blog - LewisBase-学习与思考</title>
+  
+  <meta name="description" content="一个程序员的技术博客，分享折腾的点点滴滴">
+  <meta name="author" content="LewisBase">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  <!-- Feed -->
+  <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/rss.xml">
+  <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/atom.xml">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/assets/themes/twitter/css/style.css?ver=20151125">
+  <link rel="stylesheet" href="/assets/themes/twitter/css/font-awesome.min.css?ver=20151122">
+  <!--[if IE 7 ]><link rel="stylesheet" href="/assets/themes/twitter/css/font-awesome-ie7.min.css?ver=20151122"><![endif]-->
+
+  <!-- Scripts -->
+  <script type="text/javascript" src="/assets/themes/twitter/js/jquery-1.11.1.min.js"></script>
+  <!--[if lt IE 9]><script src="/assets/themes/twitter/js/html5shiv.min.js"></script><![endif]-->
+</head>
+
+<body>
+
+  <div id="wrap">
+    <header id="top">
+      <!-- Home Link -->
+      <a id="logo" href="/" title="回到首页">
+        <img src="/assets/themes/twitter/img/logo.png" alt="LewisBase-学习与思考">
+      </a>
+      <!-- Navigation Bar -->
+      <nav id="navbar">
+        <ul>
+          <li>
+            <a href="/" title="首页">首页</a>
+          </li>
+          <li>
+            <a href="/categories.html" title="分类">分类</a>
+          </li>
+          <li>
+            <a href="/tags.html" title="标签">标签</a>
+          </li>
+          <li>
+            <a href="/messages.html" title="留言板">留言板</a>
+          </li>
+          <li id="about-link" >
+            <a href="/about.html" title="关于我">关于我</a>
+          </li>
+          <li id="rss-link">
+            <a href="/rss.xml" title="订阅 RSS"><i class="icon-large icon-fixed-width icon-rss"></i></a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <section id="main">
+
+      <!-- Sidebar -->
+      <aside id="sidebar">
+        <section id="search-box">
+          <form id="search-form">
+  <input id="query" type="text" placeholder="正则搜索"></input>
+  <button type="submit"><i class="icon-search"></i></button>
+</form>
+<script type="text/javascript">
+$(document).ready(function() {
+  $('#search-form').submit(function() {
+    $('#query').blur().attr('disabled', true);
+    $('#main-content').hide();
+    $('#loader').show();
+    $.ajax({url: '/atom.xml?r=' + (Math.random() * 999999), dataType: 'xml', success: function(data) {
+      var rq = new RegExp($('#query').val(), 'im');
+      var rl = /\/([^\/]+)\.html$/;
+      var html = '';
+      $(data).find('entry').each(function(index, entry) {
+        var title = $(entry).find('title').text();
+        var link = $(entry).find('link').attr('href');
+        var title_en = rl.exec(link)[1].replace('-', ' ');
+        var content = $(entry).find('content').text();
+        if (rq.test(title) || rq.test(title_en) || rq.test(content)) {
+          var parts = $(entry).find('updated').text().split(/[-T:+]/g);
+          var months = [ "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December" ];
+          date = parts[2] + ' ' + months[parts[1] - 1] + ' ' + parts[0];
+          html += '<article class="nested">';
+          html += '<header><h2><a href="' + link + '">' + title + '</a></h2></header>';
+          html += '<section><p>' + content + '</p></section>';
+          html += '<footer><p>更新日期：' + date + '</p></footer>';
+          html += '</article>';
+        }
+      });
+      $('#main-content').html(html);
+      $('#loader').hide();
+      $('#main-content').show();
+    }});
+    $('#query').blur().attr('disabled', false);
+    return false;
+  });
+});
+</script>
+
+        </section>
+        <section>
+          <a href="/" title="查看最近发表"><i class="icon-fixed-width icon-edit"></i> 最近发表</a>
+<ul>
+
+  <li><a href="/reading/%E6%83%85%E4%BA%BA-%E6%91%98%E5%BD%95.html" title="查看《《情人》摘录》">《情人》摘录</a></li>
+
+  <li><a href="/reading/%E6%83%85%E4%BA%BA-%E6%B8%A1%E8%BE%B9%E6%B7%B3%E4%B8%80%E7%AC%94%E4%B8%8B%E6%97%A5%E6%9C%AC%E5%A5%B3%E6%80%A7%E6%84%8F%E8%AF%86%E7%9A%84%E5%B4%9B%E8%B5%B7.html" title="查看《《情人》——渡边淳一笔下日本女性意识的崛起》">《情人》——渡边淳一笔下日本女性意识的崛起</a></li>
+
+  <li><a href="/simulation/%E5%8F%8C%E5%B1%82%E8%86%9C%E4%BD%93%E7%B3%BB%E7%9A%84%E5%88%86%E5%AD%90%E6%A8%A1%E6%8B%9F.html" title="查看《双层膜体系的分子模拟》">双层膜体系的分子模拟</a></li>
+
+  <li><a href="/reading/%E7%BE%8E%E5%A6%99%E6%96%B0%E4%B8%96%E7%95%8C-%E6%91%98%E5%BD%95.html" title="查看《《美妙新世界》摘录》">《美妙新世界》摘录</a></li>
+
+  <li><a href="/reading/%E5%B0%BC%E7%BD%97%E6%B2%B3%E4%B8%8A%E7%9A%84%E6%83%A8%E6%A1%88-%E4%B8%AD%E6%95%B4%E7%90%86%E6%80%9D%E7%BB%AA%E7%9A%84%E6%8A%80%E5%B7%A7.html" title="查看《《尼罗河上的惨案》中整理思绪的技巧》">《尼罗河上的惨案》中整理思绪的技巧</a></li>
+
+  <li><a href="/reading/%E8%AF%BB-%E9%87%91%E8%8D%89%E5%9C%B0-%E7%BB%8F%E5%85%B8%E6%96%87%E5%AD%A6%E4%B8%8E%E5%BF%AB%E9%A4%90%E6%96%87%E5%AD%A6.html" title="查看《读《金草地》——经典文学与快餐文学》">读《金草地》——经典文学与快餐文学</a></li>
+
+  <li><a href="/reading/%E8%AF%BB-%E6%80%80%E7%96%91%E7%9A%84%E5%8C%96%E5%AD%A6%E5%AE%B6.html" title="查看《读《怀疑的化学家》》">读《怀疑的化学家》</a></li>
+
+  <li><a href="/reading/%E6%80%8E%E6%A0%B7%E8%AF%BB%E4%B9%A6-%E6%91%98%E5%BD%95.html" title="查看《《怎样读书》摘录》">《怎样读书》摘录</a></li>
+
+  <li><a href="/essay/%E5%86%8D%E8%B0%88%E9%98%85%E8%AF%BB.html" title="查看《再谈阅读》">再谈阅读</a></li>
+
+  <li><a href="/essay/%E5%BD%B1%E8%A7%86%E5%89%A7%E4%B9%8B%E6%88%91%E8%A7%81.html" title="查看《影视剧之我见》">影视剧之我见</a></li>
+
+</ul>
+
+        </section>
+        <section>
+          <a href="/archive.html" title="查看所有存档"><i class="icon-fixed-width icon-file-text"></i> 文章存档</a>
+<span title="文章总数">17</span>
+<ul>
+
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+    <li><a href="/archive.html#September-2016">2016 年 09 月 (3)</a></li>
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+    <li><a href="/archive.html#August-2016">2016 年 08 月 (3)</a></li>
+    
+  
+
+  
+  
+  
+  
+    <li><a href="/archive.html#July-2016">2016 年 07 月 (1)</a></li>
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+    <li><a href="/archive.html#June-2016">2016 年 06 月 (4)</a></li>
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+    <li><a href="/archive.html#May-2016">2016 年 05 月 (5)</a></li>
+    
+  
+
+  
+  
+  
+  
+    <li><a href="/archive.html#March-2016">2016 年 03 月 (1)</a></li>
+    
+  
+
+</ul>
+
+        </section>
+        <section>
+          <a href="/categories.html" title="查看所有分类"><i class="icon-fixed-width icon-folder-open"></i> 文章分类</a>
+<span title="分类总数">4</span>
+<ul>
+
+  <li><a href="/categories.html#Web-ref">Web (2)</a></li>
+
+  <li><a href="/categories.html#Reading-ref">Reading (12)</a></li>
+
+  <li><a href="/categories.html#Essay-ref">Essay (2)</a></li>
+
+  <li><a href="/categories.html#Simulation-ref">Simulation (1)</a></li>
+
+</ul>
+
+        </section>
+        <section>
+          <a href="/tags.html" title="查看所有标签"><i class="icon-fixed-width icon-tags"></i> 标签云</a>
+<span title="标签总数">4</span>
+<div id="tag-cloud">
+
+
+
+
+
+
+  
+    
+    
+    
+    
+    
+    <a href="/tags.html#Writing-ref" style="font-size: 18pt; color: #000;">Writing</a>
+  
+    
+    
+    
+    
+    
+    <a href="/tags.html#Markdown-ref" style="font-size: 9pt; color: #999;">Markdown</a>
+  
+    
+    
+    
+    
+    
+    <a href="/tags.html#Excerpt-ref" style="font-size: 11.5pt; color: #777;">Excerpt</a>
+  
+    
+    
+    
+    
+    
+    <a href="/tags.html#Translating-ref" style="font-size: 9pt; color: #999;">Translating</a>
+  
+
+</div>
+
+        </section>
+        <div id="fixed-container">
+  <section>
+    <a href="#"><i class="icon-fixed-width icon-code"></i> 代码仓库</a>
+<ul>
+
+</ul>
+
+  </section>
+  <section>
+    <a href="#"><i class="icon-fixed-width icon-heart"></i> 与我联系</a>
+<div id="contacts-list">
+  <a href="mailto:tarotliu1993@gmail.com" target="_blank" title="Gmail">
+    <i class="icon-large icon-fixed-width icon-envelope"></i>
+  </a>
+  <a href="https://github.com/LewisBase" target="_blank" title="GitHub">
+    <i class="icon-large icon-fixed-width icon-github"></i>
+  </a>
+  <a href="http://weibo.com/LewisBase_lv.0" target="_blank" title="新浪微博">
+    <i class="icon-large icon-fixed-width icon-weibo"></i>
+  </a>
+</div>
+
+  </section>
+  <section>
+    <a href="#"><i class="icon-fixed-width icon-link"></i> 友情链接</a>
+<ul>
+  <li><a href="https://github.com/Shopify/liquid/wiki/Liquid-for-Designers" target="_blank">Liquid 模板引擎</a></li>
+  <li><a href="http://jekyllrb.com/" target="_blank">Jekyll 静态博客生成器</a></li>
+  <li><a href="http://http://liberize.me/" target="_blank">来自liberize的Jekyll模板</a></li>
+</ul>
+
+  </section>
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+  var position = $('#fixed-container').offset();
+  $(window).scroll(function() {
+    if($(window).scrollTop() > position.top) {
+      $('#fixed-container').css('position','fixed').css('top','0');
+    } else {
+      $('#fixed-container').css('position','static');
+    }
+  });
+});
+</script>
+
+      </aside>
+
+      <!-- Main Content -->
+      <div id="main-inner">
+        <div id="loader"><img src="/assets/themes/twitter/img/loading.gif" alt="请稍侯"></div>
+        <div id="main-content">
+          
+
+
+<!-- Recent Posts  -->
+<section>
+  
+  <article class="nested">
+
+    <header>
+      <h2><a href="/reading/%E8%92%99%E7%94%B0%E9%9A%8F%E7%AC%94-%E6%91%98%E5%BD%95.html" title="查看《《蒙田随笔》摘录》">《蒙田随笔》摘录</a></h2>
+    </header>
+
+    <section>
+      <p>
+        蒙田随笔
+
+《论懒散》
+
+  思想也是如此，如果不让思想集中在某一件事物上，不加指引无所约束，就会漫无目的地迷失在幻象的旷野中。
+
+
+《我们做的事要从意图去评判》
+
+  我们做的事要从意图去评判，我们无法超越自己的能力与手段去遵守诺言。在这方面，结果与做法完全不为我们所掌控时，我们所掌控的就只...
+      </p>
+    </section>
+
+    <footer>
+      <p>
+        发表日期：<a href="/archive.html#June-2016" title="查看此月所有文章">01 June 2016</a>，
+        作者：<a href="mailto:tarotliu1993@gmail.com" title="向作者发送邮件">LewisBase</a>，
+        类别：<a href="/categories.html#-ref" title="查看此类别下的所有文章"></a>
+      </p>
+    </footer>
+
+  </article>
+  
+  <article class="nested">
+
+    <header>
+      <h2><a href="/reading/%E7%8E%8B%E6%9C%9D%E7%9A%84%E5%AD%90%E6%B0%91.html" title="查看《王朝的子民》">王朝的子民</a></h2>
+    </header>
+
+    <section>
+      <p>
+        蒙田随笔
+
+《感情在我们身后延续》
+
+  诸多有关死者的法律中，我觉得最站得住脚的那条是君主身后功过留待他人评定。他们即使不是法律的主人，也是法律的伙伴。正义不能触动他们的人身，但触动他们的声誉或继任者的利益也是有道理的——这些事我们往往比生命本身还重视。遵守这一传统的国家可以获得很多出人意外...
+      </p>
+    </section>
+
+    <footer>
+      <p>
+        发表日期：<a href="/archive.html#May-2016" title="查看此月所有文章">27 May 2016</a>，
+        作者：<a href="mailto:tarotliu1993@gmail.com" title="向作者发送邮件">LewisBase</a>，
+        类别：<a href="/categories.html#-ref" title="查看此类别下的所有文章"></a>
+      </p>
+    </footer>
+
+  </article>
+  
+  <article class="nested">
+
+    <header>
+      <h2><a href="/reading/%E8%AF%BB-%E8%A7%A3%E5%BF%A7%E6%9D%82%E8%B4%A7%E5%BA%97.html" title="查看《读《解忧杂货店》》">读《解忧杂货店》</a></h2>
+    </header>
+
+    <section>
+      <p>
+        
+  如今回顾写作过程，我发现自己始终在思考一个问题：站在人生的岔路口，人究竟应该怎么做？我希望读者能在掩卷时喃喃自语：我从未读过这样的小说。          ——东野圭吾
+
+
+自师兄在医院中赠我这本书后，搁置了好些时日，恰逢乔又安利给我，这才翻开书卷读了起来。原本对东野圭吾有些许偏见的我，...
+      </p>
+    </section>
+
+    <footer>
+      <p>
+        发表日期：<a href="/archive.html#May-2016" title="查看此月所有文章">26 May 2016</a>，
+        作者：<a href="mailto:tarotliu1993@gmail.com" title="向作者发送邮件">LewisBase</a>，
+        类别：<a href="/categories.html#-ref" title="查看此类别下的所有文章"></a>
+      </p>
+    </footer>
+
+  </article>
+  
+  <article class="nested">
+
+    <header>
+      <h2><a href="/reading/%E8%AF%BB-%E5%B2%9B%E4%B8%8A%E4%B9%A6%E5%BA%97-%E4%B8%80.html" title="查看《读《岛上书店》（一）》">读《岛上书店》（一）</a></h2>
+    </header>
+
+    <section>
+      <p>
+        好像很少看畅销书，也许是因为一直在追求所谓的个性，不愿与大众同伍。
+
+这次却在手术前看完了《岛上书店》，探其根本，还是扉页上那句“每个人的生命中，都有最艰难的那一年，将人生变得美好而辽阔”吸引了我。可能是因为我也正值人生中的一个低谷，特别渴望能有一些激励性的文字以带来些许力量。只可惜无论是《解...
+      </p>
+    </section>
+
+    <footer>
+      <p>
+        发表日期：<a href="/archive.html#May-2016" title="查看此月所有文章">10 May 2016</a>，
+        作者：<a href="mailto:tarotliu1993@gmail.com" title="向作者发送邮件">LewisBase</a>，
+        类别：<a href="/categories.html#-ref" title="查看此类别下的所有文章"></a>
+      </p>
+    </footer>
+
+  </article>
+  
+  <article class="nested">
+
+    <header>
+      <h2><a href="/reading/%E4%BB%A5%E4%BD%95%E7%A7%8D%E5%A7%BF%E6%80%81%E5%8E%BB%E9%98%85%E8%AF%BB.html" title="查看《以何种姿态去阅读》">以何种姿态去阅读</a></h2>
+    </header>
+
+    <section>
+      <p>
+        猛然惊觉，落地二十余载，看过读过的书已不在少数，却鲜有能信手拈来的。更甚连书名都不能脱口而出，就不用再提主人翁的姓名籍贯了。有话说”你读过的书，经历过的事，等时间长了，那些细枝末节你都忘了，剩下来的，就成了你的素质。”用这话自我安慰了许久，今日忽觉得不该这么对书本不负责任了，该用各种姿态去阅读...
+      </p>
+    </section>
+
+    <footer>
+      <p>
+        发表日期：<a href="/archive.html#May-2016" title="查看此月所有文章">08 May 2016</a>，
+        作者：<a href="mailto:tarotliu1993@gmail.com" title="向作者发送邮件">LewisBase</a>，
+        类别：<a href="/categories.html#-ref" title="查看此类别下的所有文章"></a>
+      </p>
+    </footer>
+
+  </article>
+  
+  <article class="nested">
+
+    <header>
+      <h2><a href="/web/learnmarkdown.html" title="查看《Learn Markdown》">Learn Markdown</a></h2>
+    </header>
+
+    <section>
+      <p>
+        对Markdown语言轻度学习做一总结，但由于对HTML和Jekyll不甚熟悉，所以还不知道该如何去修改博文的模板，暂且先用借来的吧。
+从简易教程上学到的主要内容为：
+
+
+  
+    标题与段落：
+  段落用空行分开（只有空格和tab也是空行）
+  tab缩进表示区块
+  空行或行尾两个空格...
+      </p>
+    </section>
+
+    <footer>
+      <p>
+        发表日期：<a href="/archive.html#May-2016" title="查看此月所有文章">07 May 2016</a>，
+        作者：<a href="mailto:tarotliu1993@gmail.com" title="向作者发送邮件">LewisBase</a>，
+        类别：<a href="/categories.html#-ref" title="查看此类别下的所有文章"></a>
+      </p>
+    </footer>
+
+  </article>
+  
+  <article class="nested">
+
+    <header>
+      <h2><a href="/web/helloworld.html" title="查看《你好，世界》">你好，世界</a></h2>
+    </header>
+
+    <section>
+      <p>
+        读了这么多年的书，很少有写作的习惯，貌似写作最多的年段只有高三写同学录的时候，现在也不知道再看到当初写下的那些感慨万千的文字会不会因为自己的幼稚发笑。
+
+从开始学习分子模拟以来，Jerkwin的博客哲·科·文给了我莫大的帮助，在翻译了一些Gromacs教程文档挂在他的博客上后渐渐也萌生了创建自...
+      </p>
+    </section>
+
+    <footer>
+      <p>
+        发表日期：<a href="/archive.html#March-2016" title="查看此月所有文章">17 March 2016</a>，
+        作者：<a href="mailto:tarotliu1993@gmail.com" title="向作者发送邮件">LewisBase</a>，
+        类别：<a href="/categories.html#-ref" title="查看此类别下的所有文章"></a>
+      </p>
+    </footer>
+
+  </article>
+  
+
+  
+
+</section>
+
+<!-- Pagination Links -->
+<section class="pagination pagination-centered">
+  <ul>
+    <!-- First Page -->
+    
+    <li><a href="/index.html">&laquo;&laquo;</a></li>
+    
+
+    <!-- Previous Page -->
+    
+    <li>
+      
+      <a href="/index.html">&laquo;</a>
+      
+    </li>
+    
+
+    <!-- Current Page -->
+    <li class="active">
+      <span class="page_number ">第 2/2 页</span>
+    </li>
+
+    <!-- Next Page -->
+    
+    <li class="disabled"><a href="#">&raquo;</a></li>
+    
+
+    <!-- Last Page -->
+    
+    <li class="disabled"><a href="#">&raquo;&raquo;</a></li>
+    
+  </ul>
+</section>
+
+        </div>
+      </div>
+
+      <div id="back-top">
+  <a href="#top" title="回到顶部">
+    <i class="icon-2x icon-arrow-up"></i>
+  </a>
+</div>
+<script type="text/javascript">
+$("#back-top").hide();
+$(document).ready(function () {
+  $(window).scroll(function () {
+    if ($(this).scrollTop() > 100) {
+      $('#back-top').fadeIn();
+    } else {
+      $('#back-top').fadeOut();
+    }
+  });
+  $('#back-top a').click(function () {
+    $('body,html').animate({
+      scrollTop: 0
+    }, 500);
+    return false;
+  });
+});
+</script>
+
+
+    </section>
+
+    <footer id="bottom">
+      <p align="center">&copy; 2016 LewisBase
+        with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+        and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+      </p>
+    </footer>
+  </div>
+
+  <script type="text/javascript">
+    $('article.post a').attr('target', '_blank');
+    if (navigator.appVersion.indexOf("Mac") != -1) {
+      $('code, pre').css('font-family', 'Courier, monospace');
+    }
+  </script>
+  
+
+  
+</body>
+</html>
+

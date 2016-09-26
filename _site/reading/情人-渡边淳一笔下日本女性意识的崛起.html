@@ -1,0 +1,533 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 7 ]>    <html lang="zh-CN" class="ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="zh-CN" class="ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="zh-CN" class="ie9"> <![endif]-->
+<!--[if (gte IE 10)|!(IE)]><!--> <html lang="zh-CN"> <!--<![endif]-->
+
+<head>
+  <meta charset="UTF-8">
+
+  <title>《情人》——渡边淳一笔下日本女性意识的崛起 - LewisBase-学习与思考</title>
+  <meta name="keywords" content="Reading,Thinking">
+  <meta name="description" content="随笔">
+  <meta name="author" content="LewisBase">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  <!-- Feed -->
+  <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/rss.xml">
+  <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/atom.xml">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/assets/themes/twitter/css/style.css?ver=20151125">
+  <link rel="stylesheet" href="/assets/themes/twitter/css/font-awesome.min.css?ver=20151122">
+  <!--[if IE 7 ]><link rel="stylesheet" href="/assets/themes/twitter/css/font-awesome-ie7.min.css?ver=20151122"><![endif]-->
+
+  <!-- Scripts -->
+  <script type="text/javascript" src="/assets/themes/twitter/js/jquery-1.11.1.min.js"></script>
+  <!--[if lt IE 9]><script src="/assets/themes/twitter/js/html5shiv.min.js"></script><![endif]-->
+</head>
+
+<body>
+
+  <div id="wrap">
+    <header id="top">
+      <!-- Home Link -->
+      <a id="logo" href="/" title="回到首页">
+        <img src="/assets/themes/twitter/img/logo.png" alt="LewisBase-学习与思考">
+      </a>
+      <!-- Navigation Bar -->
+      <nav id="navbar">
+        <ul>
+          <li>
+            <a href="/" title="首页">首页</a>
+          </li>
+          <li>
+            <a href="/categories.html" title="分类">分类</a>
+          </li>
+          <li>
+            <a href="/tags.html" title="标签">标签</a>
+          </li>
+          <li>
+            <a href="/messages.html" title="留言板">留言板</a>
+          </li>
+          <li id="about-link" >
+            <a href="/about.html" title="关于我">关于我</a>
+          </li>
+          <li id="rss-link">
+            <a href="/rss.xml" title="订阅 RSS"><i class="icon-large icon-fixed-width icon-rss"></i></a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <section id="main">
+
+      <!-- Sidebar -->
+      <aside id="sidebar">
+        <section id="search-box">
+          <form id="search-form">
+  <input id="query" type="text" placeholder="正则搜索"></input>
+  <button type="submit"><i class="icon-search"></i></button>
+</form>
+<script type="text/javascript">
+$(document).ready(function() {
+  $('#search-form').submit(function() {
+    $('#query').blur().attr('disabled', true);
+    $('#main-content').hide();
+    $('#loader').show();
+    $.ajax({url: '/atom.xml?r=' + (Math.random() * 999999), dataType: 'xml', success: function(data) {
+      var rq = new RegExp($('#query').val(), 'im');
+      var rl = /\/([^\/]+)\.html$/;
+      var html = '';
+      $(data).find('entry').each(function(index, entry) {
+        var title = $(entry).find('title').text();
+        var link = $(entry).find('link').attr('href');
+        var title_en = rl.exec(link)[1].replace('-', ' ');
+        var content = $(entry).find('content').text();
+        if (rq.test(title) || rq.test(title_en) || rq.test(content)) {
+          var parts = $(entry).find('updated').text().split(/[-T:+]/g);
+          var months = [ "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December" ];
+          date = parts[2] + ' ' + months[parts[1] - 1] + ' ' + parts[0];
+          html += '<article class="nested">';
+          html += '<header><h2><a href="' + link + '">' + title + '</a></h2></header>';
+          html += '<section><p>' + content + '</p></section>';
+          html += '<footer><p>更新日期：' + date + '</p></footer>';
+          html += '</article>';
+        }
+      });
+      $('#main-content').html(html);
+      $('#loader').hide();
+      $('#main-content').show();
+    }});
+    $('#query').blur().attr('disabled', false);
+    return false;
+  });
+});
+</script>
+
+        </section>
+        <section class="active">
+          <a href="/" title="查看最近发表"><i class="icon-fixed-width icon-edit"></i> 最近发表</a>
+<ul>
+
+  <li><a href="/reading/%E6%83%85%E4%BA%BA-%E6%91%98%E5%BD%95.html" title="查看《《情人》摘录》">《情人》摘录</a></li>
+
+  <li><a href="/reading/%E6%83%85%E4%BA%BA-%E6%B8%A1%E8%BE%B9%E6%B7%B3%E4%B8%80%E7%AC%94%E4%B8%8B%E6%97%A5%E6%9C%AC%E5%A5%B3%E6%80%A7%E6%84%8F%E8%AF%86%E7%9A%84%E5%B4%9B%E8%B5%B7.html" title="查看《《情人》——渡边淳一笔下日本女性意识的崛起》">《情人》——渡边淳一笔下日本女性意识的崛起</a></li>
+
+  <li><a href="/simulation/%E5%8F%8C%E5%B1%82%E8%86%9C%E4%BD%93%E7%B3%BB%E7%9A%84%E5%88%86%E5%AD%90%E6%A8%A1%E6%8B%9F.html" title="查看《双层膜体系的分子模拟》">双层膜体系的分子模拟</a></li>
+
+  <li><a href="/reading/%E7%BE%8E%E5%A6%99%E6%96%B0%E4%B8%96%E7%95%8C-%E6%91%98%E5%BD%95.html" title="查看《《美妙新世界》摘录》">《美妙新世界》摘录</a></li>
+
+  <li><a href="/reading/%E5%B0%BC%E7%BD%97%E6%B2%B3%E4%B8%8A%E7%9A%84%E6%83%A8%E6%A1%88-%E4%B8%AD%E6%95%B4%E7%90%86%E6%80%9D%E7%BB%AA%E7%9A%84%E6%8A%80%E5%B7%A7.html" title="查看《《尼罗河上的惨案》中整理思绪的技巧》">《尼罗河上的惨案》中整理思绪的技巧</a></li>
+
+  <li><a href="/reading/%E8%AF%BB-%E9%87%91%E8%8D%89%E5%9C%B0-%E7%BB%8F%E5%85%B8%E6%96%87%E5%AD%A6%E4%B8%8E%E5%BF%AB%E9%A4%90%E6%96%87%E5%AD%A6.html" title="查看《读《金草地》——经典文学与快餐文学》">读《金草地》——经典文学与快餐文学</a></li>
+
+  <li><a href="/reading/%E8%AF%BB-%E6%80%80%E7%96%91%E7%9A%84%E5%8C%96%E5%AD%A6%E5%AE%B6.html" title="查看《读《怀疑的化学家》》">读《怀疑的化学家》</a></li>
+
+  <li><a href="/reading/%E6%80%8E%E6%A0%B7%E8%AF%BB%E4%B9%A6-%E6%91%98%E5%BD%95.html" title="查看《《怎样读书》摘录》">《怎样读书》摘录</a></li>
+
+  <li><a href="/essay/%E5%86%8D%E8%B0%88%E9%98%85%E8%AF%BB.html" title="查看《再谈阅读》">再谈阅读</a></li>
+
+  <li><a href="/essay/%E5%BD%B1%E8%A7%86%E5%89%A7%E4%B9%8B%E6%88%91%E8%A7%81.html" title="查看《影视剧之我见》">影视剧之我见</a></li>
+
+</ul>
+
+        </section>
+        <section>
+          <a href="/archive.html" title="查看所有存档"><i class="icon-fixed-width icon-file-text"></i> 文章存档</a>
+<span title="文章总数">17</span>
+<ul>
+
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+    <li><a href="/archive.html#September-2016">2016 年 09 月 (3)</a></li>
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+    <li><a href="/archive.html#August-2016">2016 年 08 月 (3)</a></li>
+    
+  
+
+  
+  
+  
+  
+    <li><a href="/archive.html#July-2016">2016 年 07 月 (1)</a></li>
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+    <li><a href="/archive.html#June-2016">2016 年 06 月 (4)</a></li>
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+    <li><a href="/archive.html#May-2016">2016 年 05 月 (5)</a></li>
+    
+  
+
+  
+  
+  
+  
+    <li><a href="/archive.html#March-2016">2016 年 03 月 (1)</a></li>
+    
+  
+
+</ul>
+
+        </section>
+        <section>
+          <a href="/categories.html" title="查看所有分类"><i class="icon-fixed-width icon-folder-open"></i> 文章分类</a>
+<span title="分类总数">4</span>
+<ul>
+
+  <li><a href="/categories.html#Web-ref">Web (2)</a></li>
+
+  <li><a href="/categories.html#Reading-ref">Reading (12)</a></li>
+
+  <li><a href="/categories.html#Essay-ref">Essay (2)</a></li>
+
+  <li><a href="/categories.html#Simulation-ref">Simulation (1)</a></li>
+
+</ul>
+
+        </section>
+        <section>
+          <a href="/tags.html" title="查看所有标签"><i class="icon-fixed-width icon-tags"></i> 标签云</a>
+<span title="标签总数">4</span>
+<div id="tag-cloud">
+
+
+
+
+
+
+  
+    
+    
+    
+    
+    
+    <a href="/tags.html#Writing-ref" style="font-size: 18pt; color: #000;">Writing</a>
+  
+    
+    
+    
+    
+    
+    <a href="/tags.html#Markdown-ref" style="font-size: 9pt; color: #999;">Markdown</a>
+  
+    
+    
+    
+    
+    
+    <a href="/tags.html#Excerpt-ref" style="font-size: 11.5pt; color: #777;">Excerpt</a>
+  
+    
+    
+    
+    
+    
+    <a href="/tags.html#Translating-ref" style="font-size: 9pt; color: #999;">Translating</a>
+  
+
+</div>
+
+        </section>
+        <div id="fixed-container">
+  <section>
+    <a href="#"><i class="icon-fixed-width icon-code"></i> 代码仓库</a>
+<ul>
+
+</ul>
+
+  </section>
+  <section>
+    <a href="#"><i class="icon-fixed-width icon-heart"></i> 与我联系</a>
+<div id="contacts-list">
+  <a href="mailto:tarotliu1993@gmail.com" target="_blank" title="Gmail">
+    <i class="icon-large icon-fixed-width icon-envelope"></i>
+  </a>
+  <a href="https://github.com/LewisBase" target="_blank" title="GitHub">
+    <i class="icon-large icon-fixed-width icon-github"></i>
+  </a>
+  <a href="http://weibo.com/LewisBase_lv.0" target="_blank" title="新浪微博">
+    <i class="icon-large icon-fixed-width icon-weibo"></i>
+  </a>
+</div>
+
+  </section>
+  <section>
+    <a href="#"><i class="icon-fixed-width icon-link"></i> 友情链接</a>
+<ul>
+  <li><a href="https://github.com/Shopify/liquid/wiki/Liquid-for-Designers" target="_blank">Liquid 模板引擎</a></li>
+  <li><a href="http://jekyllrb.com/" target="_blank">Jekyll 静态博客生成器</a></li>
+  <li><a href="http://http://liberize.me/" target="_blank">来自liberize的Jekyll模板</a></li>
+</ul>
+
+  </section>
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+  var position = $('#fixed-container').offset();
+  $(window).scroll(function() {
+    if($(window).scrollTop() > position.top) {
+      $('#fixed-container').css('position','fixed').css('top','0');
+    } else {
+      $('#fixed-container').css('position','static');
+    }
+  });
+});
+</script>
+
+      </aside>
+
+      <!-- Main Content -->
+      <div id="main-inner">
+        <div id="loader"><img src="/assets/themes/twitter/img/loading.gif" alt="请稍侯"></div>
+        <div id="main-content">
+          
+
+<section id="content">
+  <article class="post">
+
+    <header>
+      <h1>《情人》——渡边淳一笔下日本女性意识的崛起</h1>
+    </header>
+
+    <section>
+      <div class="post-extra">
+        <div class="pull-left">
+          <span>15 September 2016</span>
+        </div>
+        <div class="pull-right">
+          
+
+        </div>
+      </div>
+      <p>作家往往会因为对某一特殊方面的描写叙述极具造诣而声名大噪，但同时这种单方面的盛誉也很容易引导读者不自觉地去单一地关注特定的点，而忽略了作品中的其他部分。就像一提到渡边淳一，很多人跃然脑海的便是他在情色文学方面极高的成就。当我们从《失乐园》读到《情人》，我们会发现，除了故事里男女主人公大胆叛逆、至纯至烈的情爱盛宴，渡边淳一带给我们的还有整个现代日本社会里女性意识苏醒与崛起的辽阔画面。</p>
+
+<p>在整个东方文明里，大和民族创建了其独具特色的日本文明。它在汲取中国和印度的一些文化精髓的同时树立了属于自己的文化标杆，并在近现代率先接纳西方先进技术的输入，快速的崛起成为东亚的一支强大力量。即便在战后，日本的经济依然实现了从迅速恢复到快速增长，再次成为经济强国。这个文明在成长的过程中展现出了极强的学习能力，但同时这种多元化的输入也造就了其本身极具矛盾的特点。正如露丝·本尼迪克特在《菊与刀》里写到的一样：</p>
+
+<blockquote>
+  <p>日本人生性及其好斗而又非常温和；黩武而又爱美；居傲自尊而又柔弱善变；训服而又不愿受人摆布；忠贞而又易于叛变；勇敢而又懦怯；保守而又十分欢迎新的生活方式。他们十分介意别人对自己行为的观感，但当别人对其劣迹毫无所知时，又会被罪恶感所征服。他们的士兵受到彻底的训练，却又具有反抗性。</p>
+</blockquote>
+
+<p>那么。在这样的一种文化里，女性一直以来都是处于什么样的一种地位呢？这种女性地位在历史上又有没有过变化呢？借渡边淳一的作品，我们可以一窥现代日本社会里女性意识的觉醒。</p>
+
+<p>从历史上来看，日本女性的地位并不稳定，从漫长的母系社会到奈良时期十代八帝的统治，再至平安时期女性文学的辉煌，女性是收到尊崇的。[1]到了平安年代后期，武士在政治和经济领域内取得了统治地位，同时在中国儒家文化的影响下，日本文化中的男权主义最深处的丑恶在一些方面迅速蔓延，衍生出了艺伎文化、慰安妇文化等一系列剥夺女性人权的文化传统。虽然此时的日本女性相比于中国和印度女性来说依然享有更宽限的自由，在外不用遮面裹脚，在内也具有一定的掌管家庭经济的权力。但她们却开始丧失在政治、经济、文化各个方面的地位，逐渐地沦为男性的附庸。同时，由于日本文化中等级制度深入人心，上下等级之间不敢有丝毫的逾越，这些处于社会底层的女性开始渐渐地将这种意识深深融入脑海。从此，日本女性在社会要求与自身意识的双重压迫下痛苦挣扎，这种现象一直持续到近现代，至今依然在日本社会中留下深深的烙印。</p>
+
+<p>在结束了幕府统治的闭关锁国后，西方文明开始渗入这个岛上国度。中上层的女性开始接触新思想，逐步的开始对自己的社会地位进行思考，我们要说的故事也快要开始了……</p>
+
+<p>在《失乐园》里，渡边淳一花了大量的笔墨讲述了在日本相当著名的阿部定事件（其实整个故事架构都是从阿部定的故事改编的）。昭和十一年（1936），阿部定和吉臧这对情人为了追求终极快感，在交合中阿部定勒死了吉臧，而接下来阿部定为了彻底地占有她的情人便割下了其身体的一部分带在身边。而在《情人》中，我们有幸又看到了一个相似的故事（同时也是渡边淳一的作品《女优》中的主要内容），在大正时代（1912-1926，故事发生在1919年间），话剧明星松井须磨子爱上了有妻室的名导演岛林抱月。后来抱月得了恶性流感并引发肺炎，如果让他住院，松井须磨子怕被他老婆抢回去，所以就将抱月安排在自己的房间。最后，由于没有很好地治疗，抱月孤苦伶仃地死去了。如果当时住进医院，抱月也许不会死。但须磨子是绝不肯将抱月让给他老婆的。</p>
+
+<p>从这两个故事中，我们很惊喜地发现，作者并不是站在男性的立场上来讲述的。在这里女性不再是男性的附庸，而是成功地占有了男人。在这里她们不仅仅是在捍卫着不被世俗认可的爱情，更是彰显着她们作为女性所应拥有的独立人格。这两起事件昭示着近现代日本女性意识崛起的开始，日本女性开始再次出现在日本的社会舞台上。而伴随着涌入日本的西方新式思想和国内爆发出的强烈的反战情绪，这两起事件成为了当时日本大众心目中追求真爱与人性的代表。舆论开始逐渐的倒向女性这一方。法庭对阿部定的最终判决和人们对须磨子的缅怀强有力地证明了这一点。</p>
+
+<p>但是，这注定将是个缓慢而悠长的过程。由于日本文化的特殊性已经日本等级制度的根深蒂固。人们对规矩死板地遵守以及“各得其所，各安其份”的文化教条使得许多革命性的变化很难像其他国家那样在一声炸雷之后迅速形成星星燎原之势。日本女性在那之后很大程度上依然按部就班的生活在男性的阴影下。在经历二战战败和房地产泡沫带来的打击后，伴随着整个国民精神的颓靡，日本女性也进入了一段低谷时期。</p>
+
+<p>抛开史实，渡边淳一在《失乐园》与《情人》中分别塑造了两个在低谷中前行的女性：凛子和修子。这两个故事发生在日本中上层阶级刚开始用上手机的年代，大约也就是上世纪九十年代初，刚经历过房地产泡沫危机的日本逐渐开始缓过一口气来。而在整个经济危机中，许多家庭妇女为了补贴家用开始外出工作，逐渐的成为社会的一份子。凛子与修子就是诞生在这样的背景之下，她们开始接受良好的教育，有了自己的工作和事业。与外界的充分接触使她们不再满足于单单做男人的附庸或被管制在家庭之中，她们开始渴望自由，渴望着向这个世界展示自己身而为人的高贵与美丽。同时她们拥有着相当的勇气去挑战整个男权社会。于是乎我们看到了一个勇敢对抗丈夫的冷暴力与虐待，在冷眼的社会中追求真正属于自己的情与爱的凛子；以及绝对尊重自己内心的自由，不被男权世界里的伪善道德所绑架的修子。她们因自己自由而独立的性格而变得鲜活起来，她们已经不仅仅是一个文学符号，而是广大日本女性内心之中真正的渴望与向往。</p>
+
+<p>稍加可惜的是，经渡边淳一所描写的这四位女性都生在日本的中上阶级（阿部定随只是一位女招待，但她也是出身于富裕家庭，并且早年做高级妓女的经历也让她有机会接触到上层人物）。这些富足人家的子女很少会为生活所困，并且在接受教育与接触外来文化方面有着得天独厚的优势。这在下层社会中还是很难实现的，仅借助这两部小说我们很难窥探到整个日本社会中女性生活的全貌，但希望这些女性向往自由，探寻独立，追求爱情的精神依然延续。这也是我们这些依然残留着男权主义的国家里的女性所应该学习的，实现男女平等，不能仅仅等着男性去做，也要自己拿出勇气和追求来。</p>
+
+      
+      <footer>
+        <p>
+          本作品由 <a href="mailto:tarotliu1993@gmail.com">LewisBase</a> 创作，采用
+          <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="查看协议详细信息" target="_blank">CC BY-NC-SA 3.0 许可协议</a>
+          进行许可。
+        </p>
+      </footer>
+      
+    </section>
+
+  </article>
+</section>
+
+<section>
+
+  <div class="tag-box-wrapper">
+    
+    <ul class="tag-box inline">
+      <li><i class="icon-large icon-folder-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/categories.html#Reading-ref">
+    		Reading <span>12</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+    
+
+    
+    <ul class="tag-box inline">
+      <li><i class="icon-large icon-tags"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/tags.html#Writing-ref">Writing <span>12</span></a></li>
+    
+  
+
+
+
+    </ul>
+    
+  </div>
+
+  <div class="pagination">
+    <ul>
+      
+      <li class="prev"><a href="/simulation/%E5%8F%8C%E5%B1%82%E8%86%9C%E4%BD%93%E7%B3%BB%E7%9A%84%E5%88%86%E5%AD%90%E6%A8%A1%E6%8B%9F.html" title="双层膜体系的分子模拟">&larr; 上一篇</a></li>
+      
+      <li><a href="/archive.html">文章列表</a></li>
+      
+      <li class="next"><a href="/reading/%E6%83%85%E4%BA%BA-%E6%91%98%E5%BD%95.html" title="《情人》摘录">下一篇 &rarr;</a></li>
+      
+    </ul>
+  </div>
+
+</section>
+
+<section id="comments">
+  
+
+</section>
+
+
+        </div>
+      </div>
+
+      <div id="back-top">
+  <a href="#top" title="回到顶部">
+    <i class="icon-2x icon-arrow-up"></i>
+  </a>
+</div>
+<script type="text/javascript">
+$("#back-top").hide();
+$(document).ready(function () {
+  $(window).scroll(function () {
+    if ($(this).scrollTop() > 100) {
+      $('#back-top').fadeIn();
+    } else {
+      $('#back-top').fadeOut();
+    }
+  });
+  $('#back-top a').click(function () {
+    $('body,html').animate({
+      scrollTop: 0
+    }, 500);
+    return false;
+  });
+});
+</script>
+
+
+    </section>
+
+    <footer id="bottom">
+      <p align="center">&copy; 2016 LewisBase
+        with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+        and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+      </p>
+    </footer>
+  </div>
+
+  <script type="text/javascript">
+    $('article.post a').attr('target', '_blank');
+    if (navigator.appVersion.indexOf("Mac") != -1) {
+      $('code, pre').css('font-family', 'Courier, monospace');
+    }
+  </script>
+  
+
+  
+</body>
+</html>
+

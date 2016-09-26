@@ -1,0 +1,710 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 7 ]>    <html lang="zh-CN" class="ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="zh-CN" class="ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="zh-CN" class="ie9"> <![endif]-->
+<!--[if (gte IE 10)|!(IE)]><!--> <html lang="zh-CN"> <!--<![endif]-->
+
+<head>
+  <meta charset="UTF-8">
+
+  <title>双层膜体系的分子模拟 - LewisBase-学习与思考</title>
+  <meta name="keywords" content="Simulation,Membrane">
+  <meta name="description" content="总结及翻译">
+  <meta name="author" content="LewisBase">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  <!-- Feed -->
+  <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/rss.xml">
+  <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/atom.xml">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/assets/themes/twitter/css/style.css?ver=20151125">
+  <link rel="stylesheet" href="/assets/themes/twitter/css/font-awesome.min.css?ver=20151122">
+  <!--[if IE 7 ]><link rel="stylesheet" href="/assets/themes/twitter/css/font-awesome-ie7.min.css?ver=20151122"><![endif]-->
+
+  <!-- Scripts -->
+  <script type="text/javascript" src="/assets/themes/twitter/js/jquery-1.11.1.min.js"></script>
+  <!--[if lt IE 9]><script src="/assets/themes/twitter/js/html5shiv.min.js"></script><![endif]-->
+</head>
+
+<body>
+
+  <div id="wrap">
+    <header id="top">
+      <!-- Home Link -->
+      <a id="logo" href="/" title="回到首页">
+        <img src="/assets/themes/twitter/img/logo.png" alt="LewisBase-学习与思考">
+      </a>
+      <!-- Navigation Bar -->
+      <nav id="navbar">
+        <ul>
+          <li>
+            <a href="/" title="首页">首页</a>
+          </li>
+          <li>
+            <a href="/categories.html" title="分类">分类</a>
+          </li>
+          <li>
+            <a href="/tags.html" title="标签">标签</a>
+          </li>
+          <li>
+            <a href="/messages.html" title="留言板">留言板</a>
+          </li>
+          <li id="about-link" >
+            <a href="/about.html" title="关于我">关于我</a>
+          </li>
+          <li id="rss-link">
+            <a href="/rss.xml" title="订阅 RSS"><i class="icon-large icon-fixed-width icon-rss"></i></a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <section id="main">
+
+      <!-- Sidebar -->
+      <aside id="sidebar">
+        <section id="search-box">
+          <form id="search-form">
+  <input id="query" type="text" placeholder="正则搜索"></input>
+  <button type="submit"><i class="icon-search"></i></button>
+</form>
+<script type="text/javascript">
+$(document).ready(function() {
+  $('#search-form').submit(function() {
+    $('#query').blur().attr('disabled', true);
+    $('#main-content').hide();
+    $('#loader').show();
+    $.ajax({url: '/atom.xml?r=' + (Math.random() * 999999), dataType: 'xml', success: function(data) {
+      var rq = new RegExp($('#query').val(), 'im');
+      var rl = /\/([^\/]+)\.html$/;
+      var html = '';
+      $(data).find('entry').each(function(index, entry) {
+        var title = $(entry).find('title').text();
+        var link = $(entry).find('link').attr('href');
+        var title_en = rl.exec(link)[1].replace('-', ' ');
+        var content = $(entry).find('content').text();
+        if (rq.test(title) || rq.test(title_en) || rq.test(content)) {
+          var parts = $(entry).find('updated').text().split(/[-T:+]/g);
+          var months = [ "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December" ];
+          date = parts[2] + ' ' + months[parts[1] - 1] + ' ' + parts[0];
+          html += '<article class="nested">';
+          html += '<header><h2><a href="' + link + '">' + title + '</a></h2></header>';
+          html += '<section><p>' + content + '</p></section>';
+          html += '<footer><p>更新日期：' + date + '</p></footer>';
+          html += '</article>';
+        }
+      });
+      $('#main-content').html(html);
+      $('#loader').hide();
+      $('#main-content').show();
+    }});
+    $('#query').blur().attr('disabled', false);
+    return false;
+  });
+});
+</script>
+
+        </section>
+        <section class="active">
+          <a href="/" title="查看最近发表"><i class="icon-fixed-width icon-edit"></i> 最近发表</a>
+<ul>
+
+  <li><a href="/reading/%E6%83%85%E4%BA%BA-%E6%91%98%E5%BD%95.html" title="查看《《情人》摘录》">《情人》摘录</a></li>
+
+  <li><a href="/reading/%E6%83%85%E4%BA%BA-%E6%B8%A1%E8%BE%B9%E6%B7%B3%E4%B8%80%E7%AC%94%E4%B8%8B%E6%97%A5%E6%9C%AC%E5%A5%B3%E6%80%A7%E6%84%8F%E8%AF%86%E7%9A%84%E5%B4%9B%E8%B5%B7.html" title="查看《《情人》——渡边淳一笔下日本女性意识的崛起》">《情人》——渡边淳一笔下日本女性意识的崛起</a></li>
+
+  <li><a href="/simulation/%E5%8F%8C%E5%B1%82%E8%86%9C%E4%BD%93%E7%B3%BB%E7%9A%84%E5%88%86%E5%AD%90%E6%A8%A1%E6%8B%9F.html" title="查看《双层膜体系的分子模拟》">双层膜体系的分子模拟</a></li>
+
+  <li><a href="/reading/%E7%BE%8E%E5%A6%99%E6%96%B0%E4%B8%96%E7%95%8C-%E6%91%98%E5%BD%95.html" title="查看《《美妙新世界》摘录》">《美妙新世界》摘录</a></li>
+
+  <li><a href="/reading/%E5%B0%BC%E7%BD%97%E6%B2%B3%E4%B8%8A%E7%9A%84%E6%83%A8%E6%A1%88-%E4%B8%AD%E6%95%B4%E7%90%86%E6%80%9D%E7%BB%AA%E7%9A%84%E6%8A%80%E5%B7%A7.html" title="查看《《尼罗河上的惨案》中整理思绪的技巧》">《尼罗河上的惨案》中整理思绪的技巧</a></li>
+
+  <li><a href="/reading/%E8%AF%BB-%E9%87%91%E8%8D%89%E5%9C%B0-%E7%BB%8F%E5%85%B8%E6%96%87%E5%AD%A6%E4%B8%8E%E5%BF%AB%E9%A4%90%E6%96%87%E5%AD%A6.html" title="查看《读《金草地》——经典文学与快餐文学》">读《金草地》——经典文学与快餐文学</a></li>
+
+  <li><a href="/reading/%E8%AF%BB-%E6%80%80%E7%96%91%E7%9A%84%E5%8C%96%E5%AD%A6%E5%AE%B6.html" title="查看《读《怀疑的化学家》》">读《怀疑的化学家》</a></li>
+
+  <li><a href="/reading/%E6%80%8E%E6%A0%B7%E8%AF%BB%E4%B9%A6-%E6%91%98%E5%BD%95.html" title="查看《《怎样读书》摘录》">《怎样读书》摘录</a></li>
+
+  <li><a href="/essay/%E5%86%8D%E8%B0%88%E9%98%85%E8%AF%BB.html" title="查看《再谈阅读》">再谈阅读</a></li>
+
+  <li><a href="/essay/%E5%BD%B1%E8%A7%86%E5%89%A7%E4%B9%8B%E6%88%91%E8%A7%81.html" title="查看《影视剧之我见》">影视剧之我见</a></li>
+
+</ul>
+
+        </section>
+        <section>
+          <a href="/archive.html" title="查看所有存档"><i class="icon-fixed-width icon-file-text"></i> 文章存档</a>
+<span title="文章总数">17</span>
+<ul>
+
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+    <li><a href="/archive.html#September-2016">2016 年 09 月 (3)</a></li>
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+    <li><a href="/archive.html#August-2016">2016 年 08 月 (3)</a></li>
+    
+  
+
+  
+  
+  
+  
+    <li><a href="/archive.html#July-2016">2016 年 07 月 (1)</a></li>
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+    <li><a href="/archive.html#June-2016">2016 年 06 月 (4)</a></li>
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  
+    <li><a href="/archive.html#May-2016">2016 年 05 月 (5)</a></li>
+    
+  
+
+  
+  
+  
+  
+    <li><a href="/archive.html#March-2016">2016 年 03 月 (1)</a></li>
+    
+  
+
+</ul>
+
+        </section>
+        <section>
+          <a href="/categories.html" title="查看所有分类"><i class="icon-fixed-width icon-folder-open"></i> 文章分类</a>
+<span title="分类总数">4</span>
+<ul>
+
+  <li><a href="/categories.html#Web-ref">Web (2)</a></li>
+
+  <li><a href="/categories.html#Reading-ref">Reading (12)</a></li>
+
+  <li><a href="/categories.html#Essay-ref">Essay (2)</a></li>
+
+  <li><a href="/categories.html#Simulation-ref">Simulation (1)</a></li>
+
+</ul>
+
+        </section>
+        <section>
+          <a href="/tags.html" title="查看所有标签"><i class="icon-fixed-width icon-tags"></i> 标签云</a>
+<span title="标签总数">4</span>
+<div id="tag-cloud">
+
+
+
+
+
+
+  
+    
+    
+    
+    
+    
+    <a href="/tags.html#Writing-ref" style="font-size: 18pt; color: #000;">Writing</a>
+  
+    
+    
+    
+    
+    
+    <a href="/tags.html#Markdown-ref" style="font-size: 9pt; color: #999;">Markdown</a>
+  
+    
+    
+    
+    
+    
+    <a href="/tags.html#Excerpt-ref" style="font-size: 11.5pt; color: #777;">Excerpt</a>
+  
+    
+    
+    
+    
+    
+    <a href="/tags.html#Translating-ref" style="font-size: 9pt; color: #999;">Translating</a>
+  
+
+</div>
+
+        </section>
+        <div id="fixed-container">
+  <section>
+    <a href="#"><i class="icon-fixed-width icon-code"></i> 代码仓库</a>
+<ul>
+
+</ul>
+
+  </section>
+  <section>
+    <a href="#"><i class="icon-fixed-width icon-heart"></i> 与我联系</a>
+<div id="contacts-list">
+  <a href="mailto:tarotliu1993@gmail.com" target="_blank" title="Gmail">
+    <i class="icon-large icon-fixed-width icon-envelope"></i>
+  </a>
+  <a href="https://github.com/LewisBase" target="_blank" title="GitHub">
+    <i class="icon-large icon-fixed-width icon-github"></i>
+  </a>
+  <a href="http://weibo.com/LewisBase_lv.0" target="_blank" title="新浪微博">
+    <i class="icon-large icon-fixed-width icon-weibo"></i>
+  </a>
+</div>
+
+  </section>
+  <section>
+    <a href="#"><i class="icon-fixed-width icon-link"></i> 友情链接</a>
+<ul>
+  <li><a href="https://github.com/Shopify/liquid/wiki/Liquid-for-Designers" target="_blank">Liquid 模板引擎</a></li>
+  <li><a href="http://jekyllrb.com/" target="_blank">Jekyll 静态博客生成器</a></li>
+  <li><a href="http://http://liberize.me/" target="_blank">来自liberize的Jekyll模板</a></li>
+</ul>
+
+  </section>
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+  var position = $('#fixed-container').offset();
+  $(window).scroll(function() {
+    if($(window).scrollTop() > position.top) {
+      $('#fixed-container').css('position','fixed').css('top','0');
+    } else {
+      $('#fixed-container').css('position','static');
+    }
+  });
+});
+</script>
+
+      </aside>
+
+      <!-- Main Content -->
+      <div id="main-inner">
+        <div id="loader"><img src="/assets/themes/twitter/img/loading.gif" alt="请稍侯"></div>
+        <div id="main-content">
+          
+
+<section id="content">
+  <article class="post">
+
+    <header>
+      <h1>双层膜体系的分子模拟</h1>
+    </header>
+
+    <section>
+      <div class="post-extra">
+        <div class="pull-left">
+          <span>12 September 2016</span>
+        </div>
+        <div class="pull-right">
+          
+
+        </div>
+      </div>
+      <h2 id="section">双层膜体系模型的构建</h2>
+
+<p>对于双层膜这种较复杂的体系，使用GROMACS中自带的简单工具构建较为繁琐。因此选取Packmol用来构建双层膜部分，同时利用GROMACS中的gmx solvate命令来向体系中加入溶剂，这样组合使用能大大节省构建时间。</p>
+
+<p>我的体系的双层膜部分的Packmol输入文件如下，没有很复杂，基本与Packmol官方教程一致。但是应注意resnumbers选项的添加，否则生成的结构文件中分子序号将会不连续。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>#  
+# construction of SDS-C16-CHOL-SOL system  
+#  
+
+tolerance 2.0  
+filetype pdb  
+output C16DS-CHOL128.pdb  
+
+structure SDS-C16min.pdb  
+    number 64  
+	resnumbers 2  
+    inside box 0. 0. 0. 60. 60. 20.  
+    atoms 1 45  
+    over plane 0. 0. 1. 16.  
+    end atoms  
+	atoms 17  
+	below plane 0. 0. 1. 3  
+	end atoms  
+	atoms 64  
+	below plane 0. 0. 1. 1.  
+	end atoms  
+end structure  
+
+structure SDS-C16min.pdb  
+    number 64  
+	resnumbers 2  
+    inside box 0. 0. -20. 60. 60. 0.  
+    atoms 1 45  
+    below plane 0. 0. 1. -16.  
+    end atoms  
+	atoms 17  
+	over plane 0. 0. 1. -3  
+	end atoms  
+	atoms 64  
+	over plane 0. 0. 1. -1.  
+	end atoms  
+end structure  
+</code></pre>
+</div>
+
+<p>快速之余，这种方法也会带来一点小问题，就是在溶剂化的过程中会有一些溶剂分子进入到双层膜部分，通常采用手动删除或用脚本删除，GROMACS官网里有分享一个自动删除不合理位置溶剂（水）分子的脚本，现将具体操作教程翻译一下，并附上我个人使用时遇到的一些问题及解决方法：</p>
+
+<blockquote>
+  <h2 id="section-1">膜模拟</h2>
+</blockquote>
+
+<blockquote>
+  <h3 id="section-2">运行膜模拟</h3>
+</blockquote>
+
+<blockquote>
+  <p>GROMACS用户往往会在运行双脂质层模拟时遇到各种问题，尤其是体系中还有蛋白质的时候。推荐模拟双脂质层的用户参考教程<a href="http://www.bevanlab.biochem.vt.edu/Pages/Personal/justin/gmx-tutorials/membrane_protein/index.html">KALP-15 in DPPC</a></p>
+</blockquote>
+
+<blockquote>
+  <p>完成一次对膜蛋白体系的模拟需要执行一下步骤：</p>
+
+  <ol>
+    <li>为你选用的蛋白质和膜分子选取合适的力场参数;</li>
+    <li>将蛋白质插入到膜结构中;（例如，在预备好的双分子层上使用g_membed命令或做一个粗粒化自组装模拟然后再转回全原子）</li>
+    <li>向体系中加入溶剂并加入离子确保整个体系最终呈电中性;</li>
+    <li>运行能量最小化;</li>
+    <li>让膜与蛋白质相适应，在限制蛋白质所有重原子的情况下运行约5～10ns的MD;</li>
+    <li>去掉限制进行平衡;</li>
+    <li>运行MD;</li>
+  </ol>
+</blockquote>
+
+<blockquote>
+  <h3 id="genbox">使用genbox命令加入水</h3>
+
+  <p>当使用genbox（5.0以后版本中为gmx solvate）向双层膜体系中添加水时，水分子往往会进入到双层膜中，一般来说解决办法有一下几种：</p>
+
+  <ul>
+    <li>将vdwradii.dat文件从$GMXLIB拷贝到当前目录下，调大脂质层分子的范德华半径（建议调节碳原子的半径于0.35～0.5nm）以阻止genbox命令将水分子加入这些空隙;</li>
+    <li>运行一段短暂的MD，让脂质层分子的憎水作用把水分子排开;</li>
+    <li>手动的去删除这些位置上的水分子;</li>
+    <li>借助本教程中的脚本来修改;</li>
+  </ul>
+</blockquote>
+
+<blockquote>
+  <h3 id="z">增大水相的z轴坐标</h3>
+</blockquote>
+
+<blockquote>
+  <p>假设整个双层膜体系沿z轴展开，这个由Chirs Neale提供的脚本可以排除不需要的水分子，具体操作如下（如果需要，可以在第41行修改以适配脚本用于x、y方向展开的体系）：</p>
+
+  <ol>
+    <li>对初始双层膜构型initial.gro运行genbox命令，得到solvated.gro;</li>
+    <li><code class="highlighter-rouge">cp solvate.gro new_waters.gro</code>;</li>
+    <li>删除new_waters.gro中所有不为新添加进来的水的内容;（若初始构型中有水分子，则这些水分子也要删去）</li>
+    <li>修改脚本keepbyz.sh中的upperz和lowerz参数为需要的值，并将sol参数改为溶剂名称;（upperz和lowerz分别为双层膜的上下边界的z轴坐标，sol对应溶剂的名称，默认为SOL）</li>
+    <li><code class="highlighter-rouge">./keepbyz.sh new_waters.gro &gt; keep_these_waters.gro</code>;（先执行<code class="highlighter-rouge">chmod +x keepbyz.sh</code>确保脚本可以执行）</li>
+    <li><code class="highlighter-rouge">tail -1 initial.gro &gt; last_line.gro</code>;</li>
+    <li><code class="highlighter-rouge">head -$(expr $(cat initial.gro | wc -l | awk '{print $1}') - 1 ) initial.gro &gt; not_last_line.gro</code>;</li>
+    <li><code class="highlighter-rouge">cat not_last_line.gro new_waters.gro last_line.gro &gt; new_system.gro</code>;</li>
+    <li><code class="highlighter-rouge">editconf -f new_system.gro -o new_system_sequential_numbers.gro</code>;（5.0以后版本中为gmx editconf)</li>
+  </ol>
+
+  <p>脚本内容如下：</p>
+</blockquote>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+<span class="c"># give x.gro as first command line arguement</span>
+<span class="nv">upperz</span><span class="o">=</span>6.417
+<span class="nv">lowerz</span><span class="o">=</span>0.820
+<span class="nv">sol</span><span class="o">=</span>SOL
+<span class="nv">count</span><span class="o">=</span>0
+cat <span class="nv">$1</span> | grep <span class="s2">"</span><span class="nv">$sol</span><span class="s2">"</span> | <span class="k">while </span><span class="nb">read </span>line; <span class="k">do
+  for </span>first <span class="k">in</span> <span class="nv">$line</span>; <span class="k">do
+    </span><span class="nb">break
+  </span><span class="k">done
+  if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$count</span><span class="s2">"</span> <span class="o">=</span> 3 <span class="o">]</span>; <span class="k">then
+    </span><span class="nv">count</span><span class="o">=</span>0
+  <span class="k">fi
+  </span><span class="nv">count</span><span class="o">=</span><span class="k">$(</span>expr <span class="nv">$count</span> + 1<span class="k">)</span>
+  <span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$count</span><span class="s2">"</span> !<span class="o">=</span> 1 <span class="o">]</span>; <span class="k">then
+    continue
+  fi
+  </span><span class="nv">l</span><span class="o">=</span><span class="k">${#</span><span class="nv">line</span><span class="k">}</span>
+  <span class="nv">m</span><span class="o">=</span><span class="k">$(</span>expr <span class="nv">$l</span> - 24<span class="k">)</span>  // would use -48 <span class="k">if </span>velocities are also <span class="k">in</span> .gro and -24 otherwise
+  <span class="nv">i</span><span class="o">=</span>1
+  <span class="k">for </span>word <span class="k">in</span> <span class="k">${</span><span class="nv">line</span>:<span class="nv">$m</span><span class="k">}</span>; <span class="k">do
+    if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$i</span><span class="s2">"</span> <span class="o">=</span> 1 <span class="o">]</span>; <span class="k">then
+      </span><span class="nv">popex</span><span class="o">=</span><span class="nv">$word</span>
+    <span class="k">else
+      if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$i</span><span class="s2">"</span> <span class="o">=</span> 2 <span class="o">]</span>; <span class="k">then
+        </span><span class="nv">popey</span><span class="o">=</span><span class="nv">$word</span>
+      <span class="k">else
+        if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$i</span><span class="s2">"</span> <span class="o">=</span> 3 <span class="o">]</span>; <span class="k">then
+          </span><span class="nv">popez</span><span class="o">=</span><span class="nv">$word</span>
+          <span class="nb">break
+        </span><span class="k">fi
+      fi
+    fi
+    </span><span class="nv">i</span><span class="o">=</span><span class="k">$(</span>expr <span class="nv">$i</span> + 1<span class="k">)</span>
+  <span class="k">done
+  </span><span class="nv">nolx</span><span class="o">=</span><span class="sb">`</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$popez</span><span class="s2"> &gt; </span><span class="nv">$upperz</span><span class="s2">"</span> | bc<span class="sb">`</span>
+  <span class="nv">nohx</span><span class="o">=</span><span class="sb">`</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$popez</span><span class="s2"> &lt; </span><span class="nv">$lowerz</span><span class="s2">"</span> | bc<span class="sb">`</span>
+  <span class="nv">myno</span><span class="o">=</span><span class="k">$(</span>expr <span class="nv">$nolx</span> + <span class="nv">$nohx</span><span class="k">)</span>
+  <span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$myno</span><span class="s2">"</span> !<span class="o">=</span> 0 <span class="o">]</span>; <span class="k">then
+    </span><span class="nv">z</span><span class="o">=</span><span class="k">${#</span><span class="nv">first</span><span class="k">}</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$z</span><span class="s2">"</span> !<span class="o">=</span> 8 <span class="o">]</span>; <span class="k">then
+      </span><span class="nv">sfirst</span><span class="o">=</span><span class="s2">"[[:space:]]</span><span class="nv">$first</span><span class="s2">"</span>
+    <span class="k">else
+      </span><span class="nv">sfirst</span><span class="o">=</span><span class="nv">$first</span>
+    <span class="k">fi</span>
+    <span class="sb">`</span><span class="nb">echo </span>grep <span class="nv">$sfirst</span> <span class="nv">$1</span><span class="sb">`</span>
+  <span class="k">fi
+done</span>
+</code></pre>
+</div>
+
+<blockquote>
+  <p>脚本中默认使用3原子的水分子作为溶剂，若使用TIP4P,则应将：</p>
+</blockquote>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>if [ "$count" = 3 ]; then
+    count=0
+fi
+</code></pre>
+</div>
+
+<blockquote>
+  <p>修改为：</p>
+</blockquote>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>if [ "$count" = 4 ]; then
+    count=0
+ fi
+</code></pre>
+</div>
+
+<blockquote>
+  <p>同理，TIP5P应修改为5。</p>
+</blockquote>
+
+<p>为提高效率,该脚本的作者还提供了一个同样功能的C程序，详见<a href="http://www.gromacs.org/Documentation/How-tos/Membrane_Simulations">原文链接</a></p>
+
+<p>这里列出我遇到的问题来供大家参考：</p>
+
+<ol>
+  <li>按照我的理解上述教程的第八步应该为:<code class="highlighter-rouge">cat not_last_line.gro keep_these_waters.gro last_line.gro &gt; new_system.gro</code>，因为<code class="highlighter-rouge">keep_these_waters.gro</code>才是删除了错误位置的水分子后的构型;</li>
+  <li>在执行第九步时会出现”bad box error”，这是因为第七步产生的gro文件中第二行的原子数与总体系的总原子数不相等，这里可以手动更改一下;</li>
+  <li>提醒一下新手，脚本中第十九行//后的内容为注释，告诉你如果gro文件中包含速度信息，这一数值应改为48。bash中注释不以//打头，在执行前可以删去;</li>
+  <li>在vim中删除多行可以用指令ndd，n为行数;</li>
+  <li>修改完分子数后记得修改拓扑文件，确保两者中分子数一致;</li>
+</ol>
+
+<p>上文中的脚本已改进！更高效的教程请参考李老师博客<a href="http://jerkwin.github.io/2016/09/19/GROMACS%E5%A6%82%E4%BD%95%E5%81%9A%E4%B9%8B%E8%86%9C%E6%A8%A1%E6%8B%9F/">GROMACS之如何做膜模拟</a>!</p>
+
+
+      
+      <footer>
+        <p>
+          本作品由 <a href="mailto:tarotliu1993@gmail.com">LewisBase</a> 创作，采用
+          <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="查看协议详细信息" target="_blank">CC BY-NC-SA 3.0 许可协议</a>
+          进行许可。
+        </p>
+      </footer>
+      
+    </section>
+
+  </article>
+</section>
+
+<section>
+
+  <div class="tag-box-wrapper">
+    
+    <ul class="tag-box inline">
+      <li><i class="icon-large icon-folder-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/categories.html#Simulation-ref">
+    		Simulation <span>1</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+    
+
+    
+    <ul class="tag-box inline">
+      <li><i class="icon-large icon-tags"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/tags.html#Writing-ref">Writing <span>12</span></a></li>
+     
+    	<li><a href="/tags.html#Translating-ref">Translating <span>1</span></a></li>
+    
+  
+
+
+
+    </ul>
+    
+  </div>
+
+  <div class="pagination">
+    <ul>
+      
+      <li class="prev"><a href="/reading/%E7%BE%8E%E5%A6%99%E6%96%B0%E4%B8%96%E7%95%8C-%E6%91%98%E5%BD%95.html" title="《美妙新世界》摘录">&larr; 上一篇</a></li>
+      
+      <li><a href="/archive.html">文章列表</a></li>
+      
+      <li class="next"><a href="/reading/%E6%83%85%E4%BA%BA-%E6%B8%A1%E8%BE%B9%E6%B7%B3%E4%B8%80%E7%AC%94%E4%B8%8B%E6%97%A5%E6%9C%AC%E5%A5%B3%E6%80%A7%E6%84%8F%E8%AF%86%E7%9A%84%E5%B4%9B%E8%B5%B7.html" title="《情人》——渡边淳一笔下日本女性意识的崛起">下一篇 &rarr;</a></li>
+      
+    </ul>
+  </div>
+
+</section>
+
+<section id="comments">
+  
+
+</section>
+
+
+        </div>
+      </div>
+
+      <div id="back-top">
+  <a href="#top" title="回到顶部">
+    <i class="icon-2x icon-arrow-up"></i>
+  </a>
+</div>
+<script type="text/javascript">
+$("#back-top").hide();
+$(document).ready(function () {
+  $(window).scroll(function () {
+    if ($(this).scrollTop() > 100) {
+      $('#back-top').fadeIn();
+    } else {
+      $('#back-top').fadeOut();
+    }
+  });
+  $('#back-top a').click(function () {
+    $('body,html').animate({
+      scrollTop: 0
+    }, 500);
+    return false;
+  });
+});
+</script>
+
+
+    </section>
+
+    <footer id="bottom">
+      <p align="center">&copy; 2016 LewisBase
+        with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+        and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+      </p>
+    </footer>
+  </div>
+
+  <script type="text/javascript">
+    $('article.post a').attr('target', '_blank');
+    if (navigator.appVersion.indexOf("Mac") != -1) {
+      $('code, pre').css('font-family', 'Courier, monospace');
+    }
+  </script>
+  
+
+  
+</body>
+</html>
+
