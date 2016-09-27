@@ -547,7 +547,7 @@ fi
 
 <ol>
 <li>按照我的理解上述教程的第八步应该为:<code>cat not_last_line.gro keep_these_waters.gro last_line.gro &gt; new_system.gro</code>，因为<code>keep_these_waters.gro</code>才是删除了错误位置的水分子后的构型;<br></li>
-<li>在执行第九步时会出现&quot;bad box error&quot;，这是因为第七步产生的gro文件中第二行的原子数与总体系的总原子数不相等，这里可以手动更改一下;<br></li>
+<li>在执行第九步时会出现<q>bad box error</q>，这是因为第七步产生的gro文件中第二行的原子数与总体系的总原子数不相等，这里可以手动更改一下;<br></li>
 <li>提醒一下新手，脚本中第十九行//后的内容为注释，告诉你如果gro文件中包含速度信息，这一数值应改为48。bash中注释不以//打头，在执行前可以删去;<br></li>
 <li>在vim中删除多行可以用指令ndd，n为行数;<br></li>
 <li>修改完分子数后记得修改拓扑文件，确保两者中分子数一致;<br></li>

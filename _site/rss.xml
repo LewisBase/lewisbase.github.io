@@ -5,8 +5,8 @@
   <description>LewisBase'blog - Learn more, read more</description>
   <atom:link href="lewisbase/rss.xml" rel="self" type="application/rss+xml"/>
   <link>lewisbase</link>
-  <lastBuildDate>Tue, 27 Sep 2016 09:29:37 +0800</lastBuildDate>
-  <pubDate>Tue, 27 Sep 2016 09:29:37 +0800</pubDate>
+  <lastBuildDate>Tue, 27 Sep 2016 09:56:17 +0800</lastBuildDate>
+  <pubDate>Tue, 27 Sep 2016 09:56:17 +0800</pubDate>
   <ttl>1800</ttl>
 
 
@@ -309,7 +309,7 @@ fi
 
 &lt;ol&gt;
 &lt;li&gt;按照我的理解上述教程的第八步应该为:&lt;code&gt;cat not_last_line.gro keep_these_waters.gro last_line.gro &amp;gt; new_system.gro&lt;/code&gt;，因为&lt;code&gt;keep_these_waters.gro&lt;/code&gt;才是删除了错误位置的水分子后的构型;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;在执行第九步时会出现&amp;quot;bad box error&amp;quot;，这是因为第七步产生的gro文件中第二行的原子数与总体系的总原子数不相等，这里可以手动更改一下;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;在执行第九步时会出现&lt;q&gt;bad box error&lt;/q&gt;，这是因为第七步产生的gro文件中第二行的原子数与总体系的总原子数不相等，这里可以手动更改一下;&lt;br&gt;&lt;/li&gt;
 &lt;li&gt;提醒一下新手，脚本中第十九行//后的内容为注释，告诉你如果gro文件中包含速度信息，这一数值应改为48。bash中注释不以//打头，在执行前可以删去;&lt;br&gt;&lt;/li&gt;
 &lt;li&gt;在vim中删除多行可以用指令ndd，n为行数;&lt;br&gt;&lt;/li&gt;
 &lt;li&gt;修改完分子数后记得修改拓扑文件，确保两者中分子数一致;&lt;br&gt;&lt;/li&gt;
@@ -416,8 +416,7 @@ fi
 
   <item>
     <title>读《金草地》——经典文学与快餐文学</title>
-    <description>&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/2160769-c68c8b99741905ca.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;金草地&quot;&gt;
-一直以来都自诩为一个爱书的人，近些日子才发现自己的爱书很大程度上只是爱买书，收藏书。认真读过，思考过的书少之又少，真是惭愧。所以最近一直在清理消化自己积攒下来的许多旧书，妄能抚平心中羞愧。&lt;/p&gt;
+    <description>&lt;p&gt;一直以来都自诩为一个爱书的人，近些日子才发现自己的爱书很大程度上只是爱买书，收藏书。认真读过，思考过的书少之又少，真是惭愧。所以最近一直在清理消化自己积攒下来的许多旧书，妄能抚平心中羞愧。&lt;/p&gt;
 
 &lt;p&gt;《金草地》这本书，还是多年前受赠于小舅，当时只知道张承志这位作者文笔极好，但并未深入了解，就连序言都不曾仔细阅读。也就不知道这本作品原是之前的长篇小说《金牧场》删减而来，读的一头雾水，不知所云。这次在火车上再次仔细读了一遍，才明白作者真正想要讲述的意图。&lt;/p&gt;
 
@@ -438,9 +437,7 @@ fi
 
   <item>
     <title>读《怀疑的化学家》</title>
-    <description>&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/2160769-042922a6735f599d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;怀疑的化学家&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;这本书买来有些年头了，但其中言语略显晦涩，之前几次捧起来没读几页就放下了。乘着这阵子清闲，决意把这本书消化消化。&lt;/p&gt;
+    <description>&lt;p&gt;这本书买来有些年头了，但其中言语略显晦涩，之前几次捧起来没读几页就放下了。乘着这阵子清闲，决意把这本书消化消化。&lt;/p&gt;
 
 &lt;p&gt;买书的时候还是个青涩的少年，怀着对化学的满腔热情从书架上如获至宝的拿下看都没看就跑去结了账。时至今日，专业学习化学这门学科已经五六年了，兴趣减了不少，但还不至完全消散。希望这次能从先贤的著作中获取些许启发。&lt;/p&gt;
 
@@ -738,7 +735,7 @@ fi
 
 &lt;p&gt;这次却在手术前看完了《岛上书店》，探其根本，还是扉页上那句“每个人的生命中，都有最艰难的那一年，将人生变得美好而辽阔”吸引了我。可能是因为我也正值人生中的一个低谷，特别渴望能有一些激励性的文字以带来些许力量。只可惜无论是《解忧杂货店》还是《岛上书店》(近期看的两本书居然都发生在小镇的小店里，真是奇妙)都没能带来我所希冀的能量。一来是自己的苦楚很多时候只能有自己才来深切的体会到，在别人的视野里始终是隔着一层壁垒。就像我也无法体会A. J.的丧妻之痛一样；再者人生路漫漫，一路坎坷还是得靠自己的力量去爬摸滚打，强大始终还是源自自己的内心。&lt;/p&gt;
 
-&lt;p&gt;依我愚见，《岛上书店》并没有十分抢眼的表现，在人物塑造方面似乎略显不足，除了主角A. J.外并没有什么性格鲜明的角色，甚至对玛雅这一至关重要的角色的描写也相对寡淡。不过本书的译名却极为精妙，一语道中贯穿全书的连锁——书。所有的事件都巧妙的与书挂钩在了一起。不得不佩服译者深厚的功底和对此书通透地理解。这么看来，《岛上书店》这个译名，比平淡的英文原名&amp;quot; The Storied Life of A. J. Fikry&amp;quot; 美丽了太多。&lt;/p&gt;
+&lt;p&gt;依我愚见，《岛上书店》并没有十分抢眼的表现，在人物塑造方面似乎略显不足，除了主角A. J.外并没有什么性格鲜明的角色，甚至对玛雅这一至关重要的角色的描写也相对寡淡。不过本书的译名却极为精妙，一语道中贯穿全书的连锁——书。所有的事件都巧妙的与书挂钩在了一起。不得不佩服译者深厚的功底和对此书通透地理解。这么看来，《岛上书店》这个译名，比平淡的英文原名&lt;q&gt;The Storied Life of A. J. Fikry&lt;/q&gt; 美丽了太多。&lt;/p&gt;
 
 &lt;p&gt;总的来说，《岛上书店》故事情节平顺简单，没有过多的波澜起伏，对扉页上所说的“人生中最艰难的一年”也并未过多的倾墨。但整个故事仍有着种“小城故事多”般的温暖气息(虽然相比于《解忧杂货店》还略略欠缺了点)。整本书还是值得一读的，其中也不乏一些精妙的见解，值得日后重温时一一摘录。当然，就个人意见来说，书中每章以A. J.的书评写成的引子最为精妙，语言朴实无华却有感情饱满，同时见解独到。对于我要励志记录自己的读书笔记来说，实在是上好的教材。&lt;/p&gt;
 </description>
@@ -749,7 +746,7 @@ fi
 
   <item>
     <title>以何种姿态去阅读</title>
-    <description>&lt;p&gt;猛然惊觉，落地二十余载，看过读过的书已不在少数，却鲜有能信手拈来的。更甚连书名都不能脱口而出，就不用再提主人翁的姓名籍贯了。有话说&amp;quot;你读过的书，经历过的事，等时间长了，那些细枝末节你都忘了，剩下来的，就成了你的素质。&amp;quot;用这话自我安慰了许久，今日忽觉得不该这么对书本不负责任了，该用各种姿态去阅读，是该好好思量思量了。&lt;/p&gt;
+    <description>&lt;p&gt;猛然惊觉，落地二十余载，看过读过的书已不在少数，却鲜有能信手拈来的。更甚连书名都不能脱口而出，就不用再提主人翁的姓名籍贯了。有话说&lt;q&gt;你读过的书，经历过的事，等时间长了，那些细枝末节你都忘了，剩下来的，就成了你的素质。&lt;/q&gt;用这话自我安慰了许久，今日忽觉得不该这么对书本不负责任了，该用各种姿态去阅读，是该好好思量思量了。&lt;/p&gt;
 
 &lt;p&gt;碰巧亚马逊公众号上也出来了类似的文章，虽是出于营销，但理不歪，摘来两句先做引子：&lt;/p&gt;
 
@@ -803,9 +800,9 @@ tab缩进表示区块&lt;br&gt;
 有行内和参考两种形式：&lt;/p&gt;
 
 &lt;ol&gt;
-&lt;li&gt;行内[名称](链接 &amp;quot;标题&amp;quot;)&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;行内[名称](链接 &lt;q&gt;标题&lt;/q&gt;)&lt;br&gt;&lt;/li&gt;
 &lt;li&gt;参考[名称][引用]&lt;br&gt;
-[引用]: 链接 &amp;quot;标题&amp;quot;&lt;/li&gt;
+[引用]: 链接 &lt;q&gt;标题&lt;/q&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;p&gt;让人痛恨却又不知道那什么来替代的&lt;a href=&quot;http://google.com/&quot; title=&quot;科学上网&quot;&gt;百度&lt;/a&gt;  &lt;/p&gt;&lt;/li&gt;
