@@ -1,8 +1,10 @@
 ---
 layout: post
-title: 你好，世界
-categories: Web
-tags: Writing
+title: "你好，世界"
+keywords: ["Blog"]
+description: "First essay"
+categories: "Web"
+tags: ["Writing"]
 ---
 
 读了这么多年的书，很少有写作的习惯，貌似写作最多的年段只有高三写同学录的时候，现在也不知道再看到当初写下的那些感慨万千的文字会不会因为自己的幼稚发笑。
