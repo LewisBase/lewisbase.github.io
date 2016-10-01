@@ -68,4 +68,4 @@ tags: ["Writing", "Translating"]
 1. 在进行二面角约束时，不正确的约束很容易导致LINCS warning，具体可查看[这里](https://www.researchgate.net/post/How_do_you_avoid_getting_the_LINCS_warning_on_MD_run_while_applying_dihedral_restraints);
 2. 也有人建议将压力耦合的时间常数`tau_p`加以调整，最小为1,具体可查看[这里](http://gromacs.org_gmx-users.maillist.sys.kth.narkive.com/CjH0C8d8/lincs-warning-how-to-correct-lincs-warnings);
 3. 没有使用周期化边界条件或者所建的盒子太小可能会导致分子位置重叠从而引发LINCS warning，具体可以查看[这里](http://www.mail-archive.com/gmx-users@gromacs.org/msg21946.html);
-4. 过多的限制也会导致LINCS warning，像在EM过程中没有使用`constraint`而在后续步骤中直接使用`constraint = all-bond`,这时EM中产生的没有限制的构型很容易与后续的限制相冲突，具体课查看[这里](http://www.mail-archive.com/gmx-users@gromacs.org/msg56475.html);
+4. 过多的限制也会导致LINCS warning，像在EM过程中没有使用`constraint`而在后续步骤中直接使用`constraint = all-bond`,这时EM中产生的没有限制的构型很容易与后续的限制相冲突，具体可查看[这里](http://www.mail-archive.com/gmx-users@gromacs.org/msg56475.html);
