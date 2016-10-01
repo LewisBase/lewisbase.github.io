@@ -5,10 +5,117 @@
   <description>LewisBase'blog - Learn more, read more</description>
   <atom:link href="lewisbase/rss.xml" rel="self" type="application/rss+xml"/>
   <link>lewisbase</link>
-  <lastBuildDate>Tue, 27 Sep 2016 10:18:53 +0800</lastBuildDate>
-  <pubDate>Tue, 27 Sep 2016 10:18:53 +0800</pubDate>
+  <lastBuildDate>Sat, 01 Oct 2016 16:15:32 +0800</lastBuildDate>
+  <pubDate>Sat, 01 Oct 2016 16:15:32 +0800</pubDate>
   <ttl>1800</ttl>
 
+
+  <item>
+    <title>分子模拟中的LINCS/SHAKE警告及应对</title>
+    <description>&lt;p&gt;我们使用GROMACS进行分子动力学模拟时常常会遇到LINCS warning这样的警告，过多的警告会导致体系崩溃，程序运行异常。出现LINCS warning往往以为着初始体系构型不够合理，体系在模拟过程中出现了异常键。对于这种情况的应对方法，GROMACS官网上其实已有了详细的介绍，在这里翻译一下，供大家参考。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.gromacs.org/Documentation/Terminology/Blowing_Up&quot; title=&quot;Blowing Up&quot;&gt;原文地址&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;“Blowing Up” 是一个用于表述模拟失败的相当专业的术语。简要的说，它描述了一个由于产生了极大的作用力并最终导致积分运算失败的典型错误。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;稍微展开一下背景，我们必须清楚分子动力学的基本原理是在非常短的时间间隔对牛顿运动方程进行积分，并借助这个时间间隔从粒子前一时间步的速度、位置、受力来确定下一时间步的速度和位置。如果在一个时间步中作用力变得很大，这将导致粒子在到达下一时间步时会在速度/位置上产生极大的变化。这将激发一连串致命的错误：一个原子在某一时间步中受到了很大的作用力，而在下一步中它可能失控并击穿整个体系，最终停在超出它应处于的范围或与其他原子重合的位置。这又使下一时间步中也产生了极大的作用力，失控的动量将延续下去。最终，这将导致模拟程序在某些方面崩溃，因为它没法处理这种情况。在进行了约束的模拟中，这个问题最初的征兆通常就是出现一些LINCS或者SHAKE警告或错误——这并不是因为这些约束导致了错误，而是因为它们最先受到影响而崩溃。类似的，在模拟中使用区域分解时，你可能会看到类似“粒子处于其电荷组区域分解区外超一个区长度”的信息，这也是你的体系潜在问题的征兆，而不是DD算法的问题。还有有关成平面化或1-4相互作用在列表支持的范围外的一些警告也是同样的。由于这些计算不同计算机系统间不具有数值再现性，一台计算机中出现的问题可能在另外的计算机中却会获得稳定的体系。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;导致这种问题的可能性有：&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;能量最小化不彻底；&lt;/li&gt;
+    &lt;li&gt;初始构型不合理，可能有空间冲突；&lt;/li&gt;
+    &lt;li&gt;采用了过大的时间不长（尤其是在使用约束的时候）；&lt;/li&gt;
+    &lt;li&gt;在计算粒子插入自由能时没有使用软核；&lt;/li&gt;
+    &lt;li&gt;使用了不正确的压力耦合算法（例如：在还没有平衡的时候，Berendsen能够很好地松弛体积，但接下来就需要选择更高精度的压力耦合算法了）；&lt;/li&gt;
+    &lt;li&gt;使用了不正确的温度耦合算法，或许用在了不正确的组上；&lt;/li&gt;
+    &lt;li&gt;对粒子坐标进行的位置限制与当下体系中的坐标差别太大；&lt;/li&gt;
+    &lt;li&gt;体系内某处有一水分子与其他水分子独立开来了；&lt;/li&gt;
+    &lt;li&gt;遇到了mdrun中的bug；&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Blowing up是由于特定的时间步长下作用力过大导致的，最基本的解决方法有一下两种：&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;确保作用力不会过大；&lt;/li&gt;
+    &lt;li&gt;使用更小的时间步长；&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;如果问题出现在模拟的开始阶段，更好的体系准备工作将有助于第一条。接下来我们谈谈有关体系准备工作的问题：&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;##诊断一个不稳定的体系&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;对一个blowing up的体系进行错误排查是一项极具挑战性的工作，尤其是对那些分子模拟的萌新们来说。当遇到这种情况是，以下几点建议通常会有所帮助：&lt;/p&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;如果程序崩溃发生的相当早（几步之内），设置&lt;code class=&quot;highlighter-rouge&quot;&gt;nstxout&lt;/code&gt;（或&lt;code class=&quot;highlighter-rouge&quot;&gt;nstxtcout&lt;/code&gt;)为1，收集所有可能的帧。观察结果轨迹去排查是哪个原子/残基/分子首先变得不稳定；&lt;/li&gt;
+    &lt;li&gt;将体系逐渐简化来寻找原因：
+      &lt;ul&gt;
+        &lt;li&gt;如果你模拟的是一个溶剂构成的盒子，试着再加入前先将单个溶剂分子进行能量最小化以及模拟，去观察体系的不稳定性是否是由分子拓扑的内在问题引起的，或者在初始构型中分子位置是否有冲突；&lt;/li&gt;
+        &lt;li&gt;如果你模拟的是蛋白质-配体体系，试着将蛋白质单独放置在所需溶剂中进行模拟。如果蛋白质是稳定的，将配体分子放在真空中单独模拟，观察它的拓扑是否提供了稳定的构型，能量等；&lt;/li&gt;
+        &lt;li&gt;删除设定的算法(LINCS/SHAKE)，尤其是没有达到彻底的平衡的时候；&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;使用&lt;code class=&quot;highlighter-rouge&quot;&gt;g_energy&lt;/code&gt;(5.0版本后为&lt;code class=&quot;highlighter-rouge&quot;&gt;gmx energy&lt;/code&gt;)来监测体系中各个成分的能量变化，如果出现分子内的能量变化出现尖峰，那可能意味着使用了不正确的键参数；&lt;/li&gt;
+    &lt;li&gt;确保你没有忽略任何在运行mdrun之前步骤中的错误信息（运行&lt;code class=&quot;highlighter-rouge&quot;&gt;pbs2gmx&lt;/code&gt;时遗失原子、运行&lt;code class=&quot;highlighter-rouge&quot;&gt;grompp&lt;/code&gt;时原子名称不匹配，等等)或者使用了变通条件来保证你的拓扑文件被完整并正确的编译（如在&lt;code class=&quot;highlighter-rouge&quot;&gt;grompp&lt;/code&gt;中使用了&lt;code class=&quot;highlighter-rouge&quot;&gt;-maxwarn&lt;/code&gt;选项忽略警告）；&lt;/li&gt;
+    &lt;li&gt;确保你在&lt;code class=&quot;highlighter-rouge&quot;&gt;.mdp&lt;/code&gt;文件中应对你的体系和所选力场设置了正确的选项，尤其是对截断距离&lt;code class=&quot;highlighter-rouge&quot;&gt;cutoffs&lt;/code&gt;，近邻搜索间隔&lt;code class=&quot;highlighter-rouge&quot;&gt;nstlist&lt;/code&gt;以及温度耦合。就算初始构型是合理的，不正确的设置也会导致物理模型的崩溃；&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;如果使用隐式溶剂，在平衡阶段使用比成品MD更小的时间步长能够帮助能量平衡的更稳定。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;有一些常见的情形下这种不稳定现象出现的频率很高，通常是向一体系中引入新种类物质（配体或其他分子）的时候。想要找到问题的根源，就得将体系拆开来逐步分析（如蛋白质-配体体系）：&lt;/p&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;蛋白质自身（在水中）是否能够充分能量最小化？这是对蛋白质分子坐标完整性和体系准备工作的一个测试。如果它失败了，说明可能在运行&lt;code class=&quot;highlighter-rouge&quot;&gt;pdb2gmx&lt;/code&gt;中出错了，或者使用&lt;code class=&quot;highlighter-rouge&quot;&gt;genion&lt;/code&gt;添加离子时，离子的位置离蛋白质太近了（毕竟它是随机加的）；&lt;/li&gt;
+    &lt;li&gt;配体分子在真空中是否能够能量最小化？如果不能，检查你对配体的分子的参数设置以及任何加入力场文件中的新参数；&lt;/li&gt;
+    &lt;li&gt;（如果第二步最小化成功）配体分子在水是否能够能量最小化或直接运行一段短时间的模拟？&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;还有一些问题可能来自于生物分子的拓扑：&lt;/p&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;在运行&lt;code class=&quot;highlighter-rouge&quot;&gt;pdb2gmx&lt;/code&gt;时是否使用了&lt;code class=&quot;highlighter-rouge&quot;&gt;-missing&lt;/code&gt;？如果是，请删除该选项。重新构建缺少的坐标而不是忽略它们；&lt;/li&gt;
+    &lt;li&gt;是否试图改变键长并不顾长/短键的警告？如果是，请不要这么做。这将导致原子缺失或形成一些糟糕的几何结构；&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;总得来说，LINCS/SHAKE warning的出现还是因为体系没有平衡。往往我们在进行了能量最小化后还是偶尔会遇到这个问题，而且一般出现在NPT平衡阶段（NVT因为没有加压所以出现warning的概率较小），在确认拓扑没有问题的前提下，可以先进行一段时间步长较小的平衡，来松弛体系，往后再进行较大时间步长的平衡。当然，也可以使用不同的压力耦合算法来实现快速的松弛体系的效果。&lt;/p&gt;
+
+&lt;p&gt;在gmx邮件列表里面遇到这个LINCS warning的人非常多，同样列出些大家分别遇到的问题，以便参考：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;在进行二面角约束时，不正确的约束很容易导致LINCS warning，具体可查看&lt;a href=&quot;https://www.researchgate.net/post/How_do_you_avoid_getting_the_LINCS_warning_on_MD_run_while_applying_dihedral_restraints&quot;&gt;这里&lt;/a&gt;;&lt;/li&gt;
+  &lt;li&gt;也有人建议将压力耦合的时间常数&lt;code class=&quot;highlighter-rouge&quot;&gt;tau_p&lt;/code&gt;加以调整，最小为1,具体可查看&lt;a href=&quot;http://gromacs.org_gmx-users.maillist.sys.kth.narkive.com/CjH0C8d8/lincs-warning-how-to-correct-lincs-warnings&quot;&gt;这里&lt;/a&gt;;&lt;/li&gt;
+  &lt;li&gt;没有使用周期化边界条件或者所建的盒子太小可能会导致分子位置重叠从而引发LINCS warning，具体可以查看&lt;a href=&quot;http://www.mail-archive.com/gmx-users@gromacs.org/msg21946.html&quot;&gt;这里&lt;/a&gt;;&lt;/li&gt;
+  &lt;li&gt;过多的限制也会导致LINCS warning，像在EM过程中没有使用&lt;code class=&quot;highlighter-rouge&quot;&gt;constraint&lt;/code&gt;而在后续步骤中直接使用&lt;code class=&quot;highlighter-rouge&quot;&gt;constraint = all-bond&lt;/code&gt;,这时EM中产生的没有限制的构型很容易与后续的限制相冲突，具体课查看&lt;a href=&quot;http://www.mail-archive.com/gmx-users@gromacs.org/msg56475.html&quot;&gt;这里&lt;/a&gt;;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    <link>lewisbase/simulation/%E5%88%86%E5%AD%90%E6%A8%A1%E6%8B%9F%E4%B8%AD%E7%9A%84LINCS-SHAKE%E8%AD%A6%E5%91%8A%E5%8F%8A%E5%BA%94%E5%AF%B9.html</link>
+    <guid>lewisbase/simulation/分子模拟中的LINCS-SHAKE警告及应对</guid>
+    <pubDate>Wed, 28 Sep 2016 00:00:00 +0800</pubDate>
+  </item>
 
   <item>
     <title>《情人》摘录</title>
@@ -76,15 +183,17 @@
   &lt;p&gt;修子于是又问了医院的地址，电话号码，最后又恭敬地鞠了个躬，挂了电话。&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;\n&lt;br /&gt;
-&amp;gt;
-远野也许不会叫妻子去，但丈夫住院，妻子陪伴左侧，这是天经地义的事。修子眼前浮现出远野妻子陪伴在病房里的情景。
-&amp;gt;
-大地与天空，群山与平原，金秋的季节里一切都显得泾渭分明，一望无际的看过去，没有一样东西是模糊的。所谓清澄一定是指眼下的情景。&lt;/p&gt;
+&lt;blockquote&gt;
 
-&lt;p&gt;\n
-&amp;gt;
-小径坡度平缓，穿过枫叶丛林，溪水也宽敞了些，小径也变成了一条道路。也许是靠着山的缘故，枫叶已经开始谢落了，盖在枯枝上面的枫叶将溪水也映得红红的了。还有那道路上、小溪周围的石头上、羊齿草丛中、杉苔上，到处都覆盖着片片的枫叶。&lt;/p&gt;
+  &lt;p&gt;远野也许不会叫妻子去，但丈夫住院，妻子陪伴左侧，这是天经地义的事。修子眼前浮现出远野妻子陪伴在病房里的情景。&lt;/p&gt;
+
+  &lt;p&gt;大地与天空，群山与平原，金秋的季节里一切都显得泾渭分明，一望无际的看过去，没有一样东西是模糊的。所谓清澄一定是指眼下的情景。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+
+  &lt;p&gt;小径坡度平缓，穿过枫叶丛林，溪水也宽敞了些，小径也变成了一条道路。也许是靠着山的缘故，枫叶已经开始谢落了，盖在枯枝上面的枫叶将溪水也映得红红的了。还有那道路上、小溪周围的石头上、羊齿草丛中、杉苔上，到处都覆盖着片片的枫叶。&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;h3 id=&quot;section-7&quot;&gt;斜阳&lt;/h3&gt;
 
@@ -98,8 +207,7 @@
   &lt;p&gt;星期天的傍晚，车站上显得分厂嘈杂。与平日不同，乘车的大多是父母带着孩子，或者是成双成对的年轻姑娘和小伙。修子站在车厢中间，手抓着车杆的吊圈，感到有些疲惫。&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;\n&lt;br /&gt;
-这段故事与《失乐园》中大篇幅讲述的阿部定的故事很类似，在作者的笔下，女性不再是男性的拥趸，不再被男性所占有。而且反过来占有了男性。
+&lt;p&gt;这段故事与《失乐园》中大篇幅讲述的阿部定的故事很类似，在作者的笔下，女性不再是男性的拥趸，不再被男性所占有。而且反过来占有了男性。
 &amp;gt;
 大正时代，话剧明星松井须磨子爱上了有妻室的名导演岛林抱月，并与他同居了。后来抱月得了恶性流感并引发肺炎，如果让他住院，松井须磨子怕被他老婆抢回去，所以就将艺术剧场附近自己的房间当成了抱月的病房。最后，由于没有很好地治疗，须磨子又忙于演出、排练，丢下抱月一人，所以抱月孤苦伶仃地死去了。如果当时住进医院，抱月也许不会死。但须磨子是绝不肯将抱月让给他老婆的。&lt;/p&gt;
 
@@ -107,7 +215,29 @@
 
 &lt;blockquote&gt;
 
-  &lt;p&gt;刚才远野说“好容易与妻子分手……”咬文嚼字&lt;/p&gt;
+  &lt;p&gt;刚才远野说“好容易与妻子分手……”咬文嚼字地想想，这其中就包含着“全是为你”这样的意思。很明显远野想说的是”我为你到了这个地步“这句话。着明显透露着对修子赐予的一种恩情。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+
+  &lt;p&gt;修子想起了法语中的”曼特莱斯“这词语，顿时感到一种女人可以自立与毅然的爽快感。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+
+  &lt;p&gt;情人的地位确实不稳定，但同时却代表着美丽的存在。&lt;/p&gt;
+
+  &lt;p&gt;忘记日常生活中的琐碎杂事，相互体贴，相互慰藉。难得的见面，使双方都将自己的美德都体现出来。生日呀，两个人初恋的日子呀，每一个有意义的日子，两个人都一起过，那样的时刻便是最珍贵，最幸福的。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+
+  &lt;p&gt;深深地爱着远野，对他的感情绝不负于他妻子，希望自己在他眼里成为一个让人刮目相，有争议的女人。这种朝上的，独特的人生观，使得修子越来越美，越来越朝气蓬勃。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+
+  &lt;p&gt;不少女人是只愿意当情人，不愿做妻子的。这种情人的爱情不是一生一世，而是一时一刻的。这样才更适合自己，更自由自在，更能展示自己的魅力。为此不少忌讳那种结婚名分的女人为数不少。&lt;/p&gt;
 &lt;/blockquote&gt;
 </description>
     <link>lewisbase/reading/%E6%83%85%E4%BA%BA-%E6%91%98%E5%BD%95.html</link>
@@ -133,11 +263,11 @@
 
 &lt;p&gt;在《失乐园》里，渡边淳一花了大量的笔墨讲述了在日本相当著名的阿部定事件（其实整个故事架构都是从阿部定的故事改编的）。昭和十一年（1936），阿部定和吉臧这对情人为了追求终极快感，在交合中阿部定勒死了吉臧，而接下来阿部定为了彻底地占有她的情人便割下了其身体的一部分带在身边。而在《情人》中，我们有幸又看到了一个相似的故事（同时也是渡边淳一的作品《女优》中的主要内容），在大正时代（1912-1926，故事发生在1919年间），话剧明星松井须磨子爱上了有妻室的名导演岛林抱月。后来抱月得了恶性流感并引发肺炎，如果让他住院，松井须磨子怕被他老婆抢回去，所以就将抱月安排在自己的房间。最后，由于没有很好地治疗，抱月孤苦伶仃地死去了。如果当时住进医院，抱月也许不会死。但须磨子是绝不肯将抱月让给他老婆的。&lt;/p&gt;
 
-&lt;p&gt;从这两个故事中，我们很惊喜地发现，作者并不是站在男性的立场上来讲述的。在这里女性不再是男性的附庸，而是成功地占有了男人。在这里她们不仅仅是在捍卫着不被世俗认可的爱情，更是彰显着她们作为女性所应拥有的独立人格。这两起事件昭示着近现代日本女性意识崛起的开始，日本女性开始再次出现在日本的社会舞台上。而伴随着涌入日本的西方新式思想和国内爆发出的强烈的反战情绪，这两起事件成为了当时日本大众心目中追求真爱与人性的代表。舆论开始逐渐的倒向女性这一方。法庭对阿部定的最终判决和人们对须磨子的缅怀强有力地证明了这一点。&lt;/p&gt;
+&lt;p&gt;从这两个故事中，我们很惊喜地发现，作者并不是站在男性的立场上来讲述的。在这里女性不再是男性的拥趸，而是成功地占有了男人。在这里她们不仅仅是在捍卫着不被世俗认可的爱情，更是彰显着她们作为女性所应拥有的独立人格。这两起事件昭示着近现代日本女性意识崛起的开始，日本女性开始再次出现在日本的社会舞台上。而伴随着涌入日本的西方新式思想和国内爆发出的强烈的反战情绪，这两起事件成为了当时日本大众心目中追求真爱与人性的代表。舆论开始逐渐的倒向女性这一方。法庭对阿部定的最终判决和人们对须磨子的缅怀强有力地证明了这一点。&lt;/p&gt;
 
 &lt;p&gt;但是，这注定将是个缓慢而悠长的过程。由于日本文化的特殊性已经日本等级制度的根深蒂固。人们对规矩死板地遵守以及“各得其所，各安其份”的文化教条使得许多革命性的变化很难像其他国家那样在一声炸雷之后迅速形成星星燎原之势。日本女性在那之后很大程度上依然按部就班的生活在男性的阴影下。在经历二战战败和房地产泡沫带来的打击后，伴随着整个国民精神的颓靡，日本女性也进入了一段低谷时期。&lt;/p&gt;
 
-&lt;p&gt;抛开史实，渡边淳一在《失乐园》与《情人》中分别塑造了两个在低谷中前行的女性：凛子和修子。这两个故事发生在日本中上层阶级刚开始用上手机的年代，大约也就是上世纪九十年代初，刚经历过房地产泡沫危机的日本逐渐开始缓过一口气来。而在整个经济危机中，许多家庭妇女为了补贴家用开始外出工作，逐渐的成为社会的一份子。凛子与修子就是诞生在这样的背景之下，她们开始接受良好的教育，有了自己的工作和事业。与外界的充分接触使她们不再满足于单单做男人的附庸或被管制在家庭之中，她们开始渴望自由，渴望着向这个世界展示自己身而为人的高贵与美丽。同时她们拥有着相当的勇气去挑战整个男权社会。于是乎我们看到了一个勇敢对抗丈夫的冷暴力与虐待，在冷眼的社会中追求真正属于自己的情与爱的凛子；以及绝对尊重自己内心的自由，不被男权世界里的伪善道德所绑架的修子。她们因自己自由而独立的性格而变得鲜活起来，她们已经不仅仅是一个文学符号，而是广大日本女性内心之中真正的渴望与向往。&lt;/p&gt;
+&lt;p&gt;抛开史实，渡边淳一在《失乐园》与《情人》中分别塑造了两个在低谷中前行的女性：凛子和修子。这两个故事发生在日本中上层阶级刚开始用上手机的年代，大约也就是上世纪九十年代初，刚经历过房地产泡沫危机的日本逐渐开始缓过一口气来。而在整个经济危机中，许多家庭妇女为了补贴家用开始外出工作，逐渐的成为社会的一份子。凛子与修子就是诞生在这样的背景之下，她们开始接受良好的教育，有了自己的工作和事业。与外界的充分接触使她们不再满足于单单做男人的附庸或被管制在家庭之中，她们开始渴望自由，渴望着向这个世界展示自己身而为人的高贵与美丽。同时她们拥有着相当的勇气去挑战整个男权社会。于是乎我们看到了一个勇敢对抗丈夫的冷暴力与虐待，在冷眼的社会中追求真正属于自己的情与爱的凛子；以及绝对尊重自己内心的自由，不被男权世界里的伪善道德所绑架的修子。她们因自己自立而毅然的性格而变得鲜活起来，她们已经不仅仅是一个文学符号，而是广大日本女性内心之中真正的渴望与向往。&lt;/p&gt;
 
 &lt;p&gt;稍加可惜的是，经渡边淳一所描写的这四位女性都生在日本的中上阶级（阿部定随只是一位女招待，但她也是出身于富裕家庭，并且早年做高级妓女的经历也让她有机会接触到上层人物）。这些富足人家的子女很少会为生活所困，并且在接受教育与接触外来文化方面有着得天独厚的优势。这在下层社会中还是很难实现的，仅借助这两部小说我们很难窥探到整个日本社会中女性生活的全貌，但希望这些女性向往自由，探寻独立，追求爱情的精神依然延续。这也是我们这些依然残留着男权主义的国家里的女性所应该学习的，实现男女平等，不能仅仅等着男性去做，也要自己拿出勇气和追求来。&lt;/p&gt;
 </description>
