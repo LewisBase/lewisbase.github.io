@@ -271,6 +271,12 @@ article footer {
 .post-extra .pull-left span {
   line-height: 25px;
 }
+blockquote{
+    color:#666666;
+    margin:0;
+    padding-left: 3em;
+    border-left: 0.5em #EEE solid;
+}
 
 /*  Buttons  */
 .button-link, button {
