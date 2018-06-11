@@ -1,9 +1,9 @@
 ---
 layout: post
 title: 在Win10与Ubuntu双系统中删除Ubuntu
-keywords: ["Computer System"]
+keywords: ["Computer_System"]
 description: "Win10 & Linux"
-categories: "Computer System"
+categories: "Computer_System"
 tags: ["Win10","Linux"]
 ---
 
