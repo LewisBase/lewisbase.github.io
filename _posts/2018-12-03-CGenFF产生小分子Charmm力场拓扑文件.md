@@ -9,12 +9,12 @@ tags: ["Writing", "Translation"]
 
 CGenFF程序可以直接生成Charmm力场的分子拓扑文件，但使用较为复杂，特此记录一下。
 
-[CGenFF 网站](https://cgenff.umaryland.edu/)
+[CGenFF 网站](https://cgenff.umaryland.edu/)  
 [CGenFF FAQ](https://cgenff.umaryland.edu/commonFiles/faq.php#morene)
 
 ## 使用流程
 
-###制作CGenFF专属`.str`文件
+### 制作CGenFF专属`.str`文件
 
 制作`.mol2`格式的坐标文件，氢原子也包含在内。不推荐使用MS软件，其产生的`.mol2`文件在程序中会出现警告。GView产生的`.mol2`文件需删除两个空行，必要的话可以进行`sed -i 's/Ar/ar' *.mol2`修改大小写。其他软件详见FAQ。
 
@@ -29,7 +29,7 @@ CGenFF程序可以直接生成Charmm力场的分子拓扑文件，但使用较�
 
 `.str`文件中会有一个`penalty`值，该值小于10表明结果较好，在10到50之间则说明需要进行一定的验证，大于50则需要更广泛的验证。
 
-###转换为Gromacs格式
+### 转换为Gromacs格式
 
 格式转换需要用到[cgenff_charmm2gmx.py](http://mackerell.umaryland.edu/download.php?filename=CHARMM_ff_params_files/cgenff_charmm2gmx.py)，同时预先下载好Gromacs的[Charmm力场文件](http://mackerell.umaryland.edu/charmm_ff.shtml#gromacs)。
 
