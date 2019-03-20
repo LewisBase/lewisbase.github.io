@@ -1,10 +1,13 @@
 ---
 layout: post
 title: CGenFF产生小分子Charmm力场拓扑文件
-keywords: ["Simulation", "Warnning"]
-description: "日常使用总结"
-categories: "Simulation"
-tags: ["Writing", "Translation"]
+subtitle:
+date: 2018-12-03
+author: lewisbase
+header-img:
+tags: 
+    - Writing
+    - Translation
 ---
 
 CGenFF程序可以直接生成Charmm力场的分子拓扑文件，但使用较为复杂，特此记录一下。

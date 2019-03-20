@@ -1,10 +1,12 @@
 ---
 layout: post
 title: Learn Markdown
-keywords: ["markdown"]
-description: "Learn Markdown"
-categories: "Web"
-tags: ["Markdown"]
+subtitle:
+date: 2016-05-07
+author: lewisbase
+header-img:
+tags: 
+    - Markdown
 ---
 对Markdown语言轻度学习做一总结，但由于对HTML和Jekyll不甚熟悉，所以还不知道该如何去修改博文的模板，暂且先用借来的吧。  
 从简易教程上学到的主要内容为：  

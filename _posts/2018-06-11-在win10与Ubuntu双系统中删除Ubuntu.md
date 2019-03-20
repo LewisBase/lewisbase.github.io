@@ -1,10 +1,13 @@
 ---
 layout: post
 title: 在Win10与Ubuntu双系统中删除Ubuntu
-keywords: ["Computer_System"]
-description: "Win10 & Linux"
-categories: "Computer_System"
-tags: ["Win10","Linux"]
+subtitle:
+date: 2018-06-11
+author: lewisbase
+header-img:
+tags: 
+    - Win10
+    - Linux
 ---
 
 安装了双系统的电脑中，如果是使用Ubuntu系统自带的grub程序作为启动引导，就不能直接格式化Ubuntu所在的盘，否则硬盘上的MBR内容被擦出，无法成功开机引导。
