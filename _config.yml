@@ -6,7 +6,7 @@ email: liuhengjiang@outlook.com
 description: "学习 记录 阅读"
 keyword: "分子模拟 编程学习 阅读笔记"
 url: "http://lewisbase.github.io"              # your host, for absolute URL
-baseurl: "/LewisBase"         # for example, '/blog' if your blog hosted on 'host/blog'
+baseurl: ""         # for example, '/blog' if your blog hosted on 'host/blog'
 
 
 
