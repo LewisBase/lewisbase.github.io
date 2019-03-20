@@ -8,6 +8,7 @@ header-img:
 tags: 
     - Writing
     - Translation
+    - Molecular Simulation
 ---
 
 CGenFF程序可以直接生成Charmm力场的分子拓扑文件，但使用较为复杂，特此记录一下。

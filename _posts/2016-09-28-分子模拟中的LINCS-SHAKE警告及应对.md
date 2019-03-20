@@ -8,6 +8,7 @@ header-img:
 tags: 
     - Writing
     - Translation
+    - Molecular Simulation
 ---
 
 我们使用GROMACS进行分子动力学模拟时常常会遇到LINCS warning这样的警告，过多的警告会导致体系崩溃，程序运行异常。出现LINCS warning往往以为着初始体系构型不够合理，体系在模拟过程中出现了异常键。对于这种情况的应对方法，GROMACS官网上其实已有了详细的介绍，在这里翻译一下，供大家参考。

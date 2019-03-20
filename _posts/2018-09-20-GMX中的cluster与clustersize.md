@@ -8,6 +8,7 @@ header-img:
 tags: 
     - Writing
     - Translation
+    - Molecular Simulation
 ---
 
 Cluster Analysis在分子动力学模拟中是一个很常见的概念，但是Cluster这个词的意义很模糊。最开始接触到这个概念的时候以为这是一种分析体系中形成的聚集体数目的方法，后来逐渐发现Cluster Analysis最本初的意思是对动力学模拟产生的构象轨迹进行归类和统计。当然，在配合其他工具的前提下，也能够用来统计聚集体数目。
