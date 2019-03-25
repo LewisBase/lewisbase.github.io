@@ -4,12 +4,12 @@ title: GitHubPages博文中图片不显示问题的解决
 subtitle:
 date: 2019-03-25
 author: lewisbase
-header-img: /img/home-bg-o.png
+header-img: "/img/home-bg-o.jpg"
 tags: 
     - Markdown
 ---
 
-之前的博文中一直没有插图，主要使因为我不会添加图片……
+之前的博文中一直没有插图，主要是因为我不会添加图片……
 
 不清楚图片的引用路径到底应该是什么。最近给博客更换了新模板，顺便学习了一下添加图片的方法。
 
