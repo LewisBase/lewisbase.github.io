@@ -103,8 +103,8 @@ Scipy中的`integrate`模块提供了几种数值积分算法，导入方式为�
 
 ### 参考资料
 
-[用Python作科学计算](http://bigsec.net/b52/scipydoc/index.html)
-[Scipy.Integrate](https://docs.scipy.org/doc/scipy/reference/tutorial/integrate.html)
-[Scipy.Integrate.quad](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.quad.html#scipy.integrate.quad)
-[Scipy.Integrate.dblquad](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.dblquad.html#scipy.integrate.dblquad)
-[Scipy.Integrate.tplquad](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.tplquad.html#scipy.integrate.tplquad)
+[用Python作科学计算](http://bigsec.net/b52/scipydoc/index.html)  
+[Scipy.Integrate](https://docs.scipy.org/doc/scipy/reference/tutorial/integrate.html)  
+[Scipy.Integrate.quad](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.quad.html#scipy.integrate.quad)  
+[Scipy.Integrate.dblquad](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.dblquad.html#scipy.integrate.dblquad)  
+[Scipy.Integrate.tplquad](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.tplquad.html#scipy.integrate.tplquad)  
