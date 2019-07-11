@@ -8,7 +8,7 @@ header-img:
 tags: 
     - Python
     - Numpy
-    - Malpoltlib
+    - Matplotlib
 ---
 之前一直想尝试着用Matplotlib绘制计算结果中的二维密度分布图，这样即省去了许多数据处理的麻烦，也方便直接在Linux系统中观察计算的结果。但对Numpy和Maltplotlib的熟练程度还不够，对于计算程序产生的非矩阵式的数据结构不知道该怎么处理。今天花了一早上仔细研究了一下，终于将这块硬骨头啃下来了。
 
