@@ -13,7 +13,7 @@ tags:
 
 原文地址：[Python args and kwargs: Demystified](https://realpython.com/python-kwargs-and-args/) 
 
-这个教程在细节上非常相近，很适合初学者阅读。
+这个教程在细节上非常详尽，很适合初学者阅读。
 
 > Python程序的函数定义中经常出现两个奇怪的参数：*args与**kwargs。这篇教程将对两者的用法进行详细的揭秘，教导你如何更灵活地使用*args与*kwargs创建自己的函数。
 > 
