@@ -11,6 +11,12 @@ tags:
     - Molecular Simulation
 ---
 
+CGenFF网站现已提供python3版本的charmm2gmx脚本，下载链接如下：
+
+[cgenff_charmm2gmx_py3.py](http://mackerell.umaryland.edu/download.php?filename=CHARMM_ff_params_files/cgenff_charmm2gmx_py3.py)
+
+——2019.10.16. 更新——
+
 CGenFF程序可以直接生成Charmm力场的分子拓扑文件，但使用较为复杂，特此记录一下。
 
 [CGenFF 网站](https://cgenff.umaryland.edu/)  
