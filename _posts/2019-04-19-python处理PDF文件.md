@@ -8,7 +8,7 @@ header-img:
 tags: 
     - Python
     - pyPDF
-	- Translation
+    - Translation
 ---
 
 最近看到一篇介绍Python中pyPDF模块的文章，详细介绍了使用pyPDF模块获取PDF文件信息，合并拆分PDF文件等功能。很方便，在此搬运分享以下：
