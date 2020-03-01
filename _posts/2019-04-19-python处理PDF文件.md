@@ -8,6 +8,7 @@ header-img:
 tags: 
     - Python
     - pyPDF
+	- Translation
 ---
 
 最近看到一篇介绍Python中pyPDF模块的文章，详细介绍了使用pyPDF模块获取PDF文件信息，合并拆分PDF文件等功能。很方便，在此搬运分享以下：
@@ -73,7 +74,7 @@ tags:
     if __name__ == '__main__':
         path='visa_letter.pdf'
         extract_information(path)
-        
+
 主要通过`getDocumentInfo()`与`getNumPages()`两个函数来实现读取信息的功能。如果想进一步读取PDF中的文本信息，可以参照[PDFMiner.six](https://github.com/pdfminer/pdfminer.six)（Python3支持）
 
 `if __name__ == '__main__'`则放在自己创建的模块底部，指明当该模块作为main函数调用时的执行情况。
@@ -101,7 +102,7 @@ tags:
         
         with open(outputname,'wb') as fh:
             pdf_writer.write(fh)
-            
+
 旋转页码通过`getPage()`和`rotateClockwise() rotateCounterClockwise()`实现，`getPage()`获取要旋转页的索引，`rotateClockwise() rotateCounterClockwise()`控制旋转方向。
 
 `addPage()`将要输出的页添加到流（不清楚该如何严谨表述，依稀记得C++里是这么称呼的）中，最后的新文件通过`write()`创建。
@@ -153,7 +154,7 @@ PyPDF2有时也会遇到同样的错误，但此处使用PyPDF2不会有该错�
     
     if __name__ == '__main__':
         main()
-        
+
 防止直接调用，具体调用方法则为：
 
     import PDFeditor

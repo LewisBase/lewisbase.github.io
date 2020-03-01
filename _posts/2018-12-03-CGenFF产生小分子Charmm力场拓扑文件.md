@@ -6,7 +6,6 @@ date: 2018-12-03
 author: lewisbase
 header-img:
 tags: 
-    - Writing
     - Translation
     - Molecular Simulation
 ---
@@ -46,7 +45,7 @@ CGenFF程序可以直接生成Charmm力场的分子拓扑文件，但使用较�
 运行改程序的命令为：
 
 	python cegnff_charmm2gmx.py RESNAME drug.mol2 drug.str charmm36.ff
-	
+
 python应该使用2.*版本
 
 `RESNAME`为残基名称，在`.str`文件中见"XXX     0.000!"字段中的XXX
@@ -71,7 +70,7 @@ python应该使用2.*版本
 	@<TRIPOS>BOND
 	成键信息
 	...
-	
+
 ### 常见错误
 
 Q：转换格式时出现错误："Error in atomgroup.py: read_mol2_coor_only: no. of atoms in mol2 (%d) and top (%d) are unequal"

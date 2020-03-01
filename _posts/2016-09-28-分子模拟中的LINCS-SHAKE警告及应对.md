@@ -6,7 +6,6 @@ date: 2016-09-28
 author: lewisbase
 header-img:
 tags: 
-    - Writing
     - Translation
     - Molecular Simulation
 ---

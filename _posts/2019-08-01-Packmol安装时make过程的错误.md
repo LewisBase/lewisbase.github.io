@@ -6,7 +6,6 @@ date: 2019-07-23
 author: lewisbase
 header-img:
 tags: 
-    - Writing
     - Molecular Simulation
 ---
 
@@ -24,12 +23,12 @@ Packmol是分子模拟中最常用的搭建初始构型的软件。轻便、快�
 额...似乎是随机数种子的问题，上网搜索了一下，在StackOverflow上找到一个[回答](https://stackoverflow.com/questions/29987816/gfortran-compilation-error-size-of-put-argument-of-random-seed-intrinsic-at)。原来在Fortran中`put`的值要大于等于`size`，答主还提供了一段检测系统`size`的程序：
 
     program seed_test
-
+    
         implicit none
         integer n
-
+    
         n = 0
-
+    
         call random_seed(size=n)
         write(*,*) 'n = ', n
     end program seed_test

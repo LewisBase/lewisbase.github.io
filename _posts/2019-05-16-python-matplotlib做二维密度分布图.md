@@ -8,7 +8,7 @@ header-img:
 tags: 
     - Python
     - Numpy
-    - Matplotlib
+    - Matplotlib	
 ---
 之前一直想尝试着用Matplotlib绘制计算结果中的二维密度分布图，这样即省去了许多数据处理的麻烦，也方便直接在Linux系统中观察计算的结果。但对Numpy和Maltplotlib的熟练程度还不够，对于计算程序产生的非矩阵式的数据结构不知道该怎么处理。今天花了一早上仔细研究了一下，终于将这块硬骨头啃下来了。
 
@@ -45,15 +45,15 @@ tags:
     # Draw a two-dimensional density map from densxz.dat file
     # Author: lewisbase
     # Date: 2019.05.16
-
+    
     import sys
     import numpy as np 
     import matplotlib.pyplot as plt 
     from matplotlib.colors import BoundaryNorm
     from matplotlib.ticker import MaxNLocator
-
+    
     ####################################################################################################
-
+    
     if len(sys.argv) < 2:
         print('No Action specified.')
         sys.exit()
@@ -87,12 +87,12 @@ tags:
     else:
         print('Too many parameters!')
         sys.exit()
-
+    
     ######################################################################################################
-
+    
     with open(filename,'r') as f:
         text = f.readline().split()
-
+    
     if len(text) < 3:
         raise Exception('The input densxz.dat file is corrupted!')
     elif len(text) >= 3:
@@ -104,11 +104,11 @@ tags:
     xo /= 10
     zo /= 10
     do *= 1661.129
-
+    
     xn = np.unique(xo)
     zn = np.unique(zo)
     xm,zm = np.meshgrid(xn,zn)
-
+    
     Dm = []
     for j in zn:
         dm = []
@@ -116,15 +116,15 @@ tags:
             do_index=np.intersect1d(np.argwhere(xo == i),np.argwhere(zo == j))
             dm.append(float(do[do_index]))
         Dm.append(dm)
-
+    
     #######################################################################################################
-
+    
     plt.figure(figsize=(12,12),dpi=100,frameon=True)
     # set the grids density
     levels = MaxNLocator(nbins=100).tick_values(np.min(Dm),np.max(Dm))
     cm = plt.cm.get_cmap('jet')
     #nm = BoundaryNorm(levels,ncolors=cm.N,clip=True)
-
+    
     #plt.pcolormesh(xm,zm,Dm,cmap=cm,norm=nm)
     # contourf method is much smoother than pcolormesh!
     plt.contourf(xm,zm,Dm,levels=levels,cmap=cm)
@@ -134,7 +134,7 @@ tags:
         cbar.set_ticks([0,2,4,6,8,10])
         # set the font size of colorbar
         cbar.ax.tick_params(labelsize=32) 
-
+    
     plt.xlabel('X (nm)',fontsize=40)
     plt.ylabel('Z (nm)',fontsize=40)
     plt.xticks(fontsize=32)
