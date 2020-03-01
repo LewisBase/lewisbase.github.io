@@ -9,8 +9,8 @@ tags:
     - Python
     - Numpy
     - Matplotlib
-	- Pandas
-	- Molecular Simulation
+    - Pandas
+    - Molecular Simulation
 ---
 
 
@@ -29,13 +29,13 @@ gmx_mmpbsa使用前需安装GRMOMACS与APBS，脚本会自动调用这两个程�
     # from Jerkwin's gmx_mmpbsa script
     # Author: Lewisbase
     # Date: 2020.02.29
-    
+
     import numpy as np 
     import pandas as pd 
     import matplotlib.pyplot as plt 
     from matplotlib import font_manager as fm
     from matplotlib import cm
-    
+
     def readindata(filename):
         with open(filename) as f:
             text = f.readlines()
@@ -51,7 +51,7 @@ gmx_mmpbsa使用前需安装GRMOMACS与APBS，脚本会自动调用这两个程�
         columns = text[0].split()[1:]
         dataframe = pd.DataFrame(data=data,index=index,columns=columns)
         return dataframe
-    
+
     def plot_binding_bar(dataframe):
         '''Plot the bar figure from total MMPBSA data'''
         names = [('Binding Free Energy\nBinding = MM + PB + SA',
@@ -64,7 +64,7 @@ gmx_mmpbsa使用前需安装GRMOMACS与APBS，脚本会自动调用这两个程�
                  ['SA','SAcom','SApro','SAlig'])]
         fig,axs = plt.subplots(2,2,figsize=(8,8),dpi=72)
         axs = np.ravel(axs)
-    
+
         for ax,(title,name) in zip(axs,names):
             ax.bar(name,dataframe[name].mean(),width=0.5,
                    yerr=dataframe[name].std(),color='rgby')
@@ -81,14 +81,14 @@ gmx_mmpbsa使用前需安装GRMOMACS与APBS，脚本会自动调用这两个程�
         plt.subplots_adjust(top=0.9)
         plt.savefig('MMPBSA_Results.png')
         plt.show()
-    
-    
-    
+
+
+
     def plot_plot_pie(datas):
         '''Plot the composition curve and pie figure'''
         fig,axs = plt.subplots(2,2,figsize=(8,8),dpi=72)
         axs = np.ravel(axs)
-    
+
         names = [('Composition of MMPBSA',[0,1,4]),
                  ('Composition of MM',[1,2,3]),
                  ('Composition of PBSA',[4,5,6])]
@@ -107,7 +107,7 @@ gmx_mmpbsa使用前需安装GRMOMACS与APBS，脚本会自动调用这两个程�
             ax.set_ylabel('Free Energy Contribution (kJ/mol)')
             ax.legend(loc='best')
             ax.set_title(title)
-        
+
         explode = np.zeros([datas[0].shape[1]])
         maxposition = np.where(datas[0].mean() == datas[0].mean().abs().max())
         maxposition = np.append(maxposition,np.where(datas[0].mean() == 
@@ -126,15 +126,15 @@ gmx_mmpbsa使用前需安装GRMOMACS与APBS，脚本会自动调用这两个程�
         # font size include: xx-small,x-small,small,medium,large,x-large.xx-large or numbers
         plt.setp(autotexts,fontproperties=proptease)
         plt.setp(texts,fontproperties=proptease)
-        
+
         plt.suptitle('MMPBSA Energy Composition')
         plt.tight_layout()
         plt.subplots_adjust(top=0.9)
         plt.savefig('MMPBSA_Energy_Composition.png')
         plt.show()
-    
-    
-    
+
+
+
     if __name__ == '__main__':
         pass
         prefix = input('Input the prefix of the calculate results: \n')
