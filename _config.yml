@@ -1,100 +1,92 @@
 # Site settings
-title: LewisBase's Blog
-SEOTitle: LewisBase | 学习与思考
-header-img: img/home-bg.jpg
-email: liuhengjiang@outlook.com
-description: "学习 记录 阅读"
-keyword: "分子模拟 编程学习 阅读笔记"
-url: "http://lewisbase.github.io"              # your host, for absolute URL
-baseurl: "/lewisbase.github.io"         # for example, '/blog' if your blog hosted on 'host/blog'
+title: The Minimum Viable Model
+description: 'Artificial Intelligence trends and concepts made easy.' # this means to ignore newlines until "baseurl:"
+permalink: ':title:output_ext'
+baseurl: "/" # the subpath of your site, e.g. /blog
+url: "https://the-mvm.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+logo: "/assets/img/branding/MVM-logo-full.svg"
+logo-icon: "/assets/img/branding/MVM-symbol.svg"
+logo-icon-SEO: "/assets/img/branding/MVM-symbol-black.png" # must be a non SVG file
 
+# Night/Dark mode
+# Default mode is "auto", "auto" is for auto nightshift
+# (19:00 - 07:00), "manual" is for manual toggle, and
+# "on/off" is for default on/off.
+#
+# Whatever the user's choice is, it will supersede the
+# default setting of the site and be kept during the
+# visit (session). Only the dark mode setting is "manual",
+# it will be always kept on every visit (i.e. no matter
+# the browser is closed or not)
+night_mode: "auto"
 
+logo-dark: "/assets/img/branding/MVM-logo-full-dark.svg"
+highlight_theme: syntax-base16.monokai.dark # select a dark theme for the code highlighter if needed
 
-# SNS settings
-RSS: false
-weibo_username:     LewisBase_lv0
-zhihu_username:     lewisbase
-github_username:    LewisBase
-#twitter_username:  huxpro
-facebook_username:  liuhengjiang
+# Author settings
+author: Armando Maynez # add your name
+author-pic: Myself_Neon_grey.jpg
+about-author: Engineer, industry executive, research enthusiast. Avid learner with diverse interests in coding, machine learning, artificial intelligence and reinforcement learning. 17+ years of experience working in multinational corporations.
 
+# Contact links
+email: armando.maynez@gmail.com # Add your Email address
+phone: # Add your Phone number
+website: https://amaynez.github.io # Add your website
+linkedin: amaynez # Add your Linkedin handle
+github: amaynez # Add your Github handle
+twitter: '@MvmThe' # Add your Twitter handle
+bandcamp: armandomaynez # Add your Bandcamp username
+stackoverflow: stackoverflow # Add your stackoverflow account
 
+# Newsletter
+mailchimp: "https://github.us1.list-manage.com/subscribe/post?u=8ece198b3eb260e6838461a60&amp;id=397d90b5f4"
+
+# Tracker
+analytics: G-R8SZS2YBZK
+fbadmin: ar.maybach
+
+# Paginate
+paginate: 6
+paginate_path: 'page:num'
+words_per_minute: 200
+
+extensions:
+  mermaid_enable: true
+
+# Comments
+comments: utteranc  #[disqus, utteranc]
+comments_opts:
+  comments_curtain: yes # leave empty to show the disqus embed directly
+  repo: # The GitHub repo URL.  https://utteranc.es/
+  issue_term: # The GitHub issue label
+  label: # The GitHub comments label
+  theme: # The GitHub comment's there. e.g. github-dark
+  # Disqus
+  discus_identifier: # Add your discus identifier
 
 # Build settings
-# from 2016, 'pygments' is unsupported on GitHub Pages. Use 'rouge' for highlighting instead.
-highlighter: rouge
-permalink: pretty
-paginate: 10
-exclude: ["less","node_modules","Gruntfile.js","package.json","README.md"]
-anchorjs: ture                          # if you want to customize anchor. check out line:181 of `post.html`
-
-
-
-# Gems
-# from PR#40, to support local preview for Jekyll 3.0
-gems: [jekyll-paginate]
-
-
-
-# Markdown settings
-# replace redcarpet to kramdown,
-# although redcarpet can auto highlight code, the lack of header-id make the catalog impossible, so I switch to kramdown
-# document: http://jekyllrb.com/docs/configuration/#kramdown
 markdown: kramdown
-kramdown:
-  input: GFM                            # use Github Flavored Markdown !important
+mathjax: true
+highlighter: rouge
+compress_html:
+  clippings: all
+  comments: all
+  startings: [html, head, body]
 
+# Outputting
+timezone: # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
+category_archive:
+  type: liquid
+  path: /categories/
 
-# Disqus settings
-#disqus_username: _your_disqus_short_name_
+sass:
+  style: compressed
 
-# Duoshuo settings
-#duoshuo_username: huxblog
-# Share component is depend on Comment so we can NOT use share only.
-#duoshuo_share: true                     # set to false if you want to use Comment without Sharing
+plugins:
+  - jekyll-paginate
+  - jekyll-feed
+  - jekyll-sitemap
 
-
-
-
-# Analytics settings
-# Baidu Analytics
-#ba_track_id: 4cc1f2d8f3067386cc5cdb626a202900
-# Google Analytics
-#ga_track_id: 'UA-49627206-1'            # Format: UA-xxxxxx-xx
-#ga_domain: huangxuan.me
-
-
-
-# Sidebar settings
-sidebar: true                           # whether or not using Sidebar.
-sidebar-about-description: "分子模拟搬砖工，兴趣广泛，样样不精"
-sidebar-avatar: /img/lewisbase.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
-
-
-
-# Featured Tags
-featured-tags: true                     # whether or not using Feature-Tags
-featured-condition-size: 1              # A tag will be featured if the size of it is more than this condition value
-
-
-
-# Friends
-friends: [
-    {
-        title: "Hux Blog",
-        href: "http://huangxuan.me"
-    },{
-        title: "Jerkwin",
-        href: "http://jerkwin.github.io"
-    },{
-        title: "思想家公社的门口：量子化学·分子模拟·二次元",
-        href: "http://sobereva.com"
-    },{
-        title: "计算化学公社",
-        href: "http://bbs.keinsci.com/forum.php"
-    },{
-        title: "IST Group",
-        href: "http://ist.ecust.edu.cn"
-    }
-]
+include: [_pages]
+exclude: ["node_modules", "gulpfile.js", "package.json", "yarn.lock", "package-lock.json", "assets/css/sass/"]
