@@ -35,12 +35,12 @@ plugins:
 - jemoji
 
 # 3. Gem settings
-paginate: 2 # jekyll-paginate > items per page
+paginate: 1 # jekyll-paginate > items per page
 paginate_path: blog/page:num # jekyll-paginate > blog page
 # jekyll-mentions: https://twitter.com # jekyll-mentions > service used when @replying
 # twitter:
 #   username: DavidDarnes # jekyll-seo-tag > Owners twitter username
-author: Lewisbase# jekyll-seo-tag > default author
+author: Lewisbase # jekyll-seo-tag > default author
 social: # jekyll-seo-tag > social overrides
   name: Lewisbase # jekyll-seo-tag > real name
   links:  # jekyll-seo-tag > social aliases (sameAs)
@@ -58,7 +58,7 @@ sass:
   style: compressed # Style compression
 permalink: pretty  # Permalink style (/YYYY/MM/DD/page-name/)
 excerpt_separator: <!-- more --> # Marks end of excerpt in posts
-timezone: Europe/London # Timezone for blog posts and alike
+timezone: Asia/Shanghai # Timezone for blog posts and alike
 
 # 5. Collections
 collections:
@@ -123,8 +123,8 @@ favicons: # Favicons are also used in the manifest file. Syntax is 'size: path'
 navigation_header:
 - title: Home
   url: /
-- title: Elements
-  url: /elements/
+# - title: Elements
+#   url: /elements/
 - title: Blog
   url: /blog/
 - title: Categories

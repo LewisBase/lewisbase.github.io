@@ -5,7 +5,7 @@ subtitle:
 date: 2016-03-17
 author: lewisbase
 header-img:
-tags:
+categories:
     - Essays
 ---
 
