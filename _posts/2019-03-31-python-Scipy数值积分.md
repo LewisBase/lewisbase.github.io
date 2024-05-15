@@ -5,7 +5,7 @@ subtitle:
 date: 2019-03-31
 author: lewisbase
 header-img:
-tags: 
+categories: 
     - Python
     - Scipy
 ---

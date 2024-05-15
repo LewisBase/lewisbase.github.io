@@ -5,7 +5,7 @@ subtitle:
 date: 2018-09-20
 author: lewisbase
 header-img:
-tags: 
+categories: 
     - Translation
     - Molecular Simulation
 ---

@@ -5,7 +5,7 @@ subtitle:
 date: 2018-06-11
 author: lewisbase
 header-img:
-tags: 
+categories: 
     - Win10
     - Linux
 ---

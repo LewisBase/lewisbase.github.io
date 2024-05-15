@@ -5,7 +5,7 @@ subtitle:
 date: 2019-03-25
 author: lewisbase
 header-img: "/img/home-bg-o.jpg"
-tags: 
+categories: 
     - Markdown
 ---
 

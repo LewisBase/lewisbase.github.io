@@ -5,7 +5,7 @@ subtitle: 简译与总结
 date: 2019-04-19
 author: lewisbase
 header-img:
-tags: 
+categories: 
     - Python
     - pyPDF
     - Translation

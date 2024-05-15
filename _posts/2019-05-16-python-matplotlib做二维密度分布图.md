@@ -5,7 +5,7 @@ subtitle:
 date: 2019-05-16
 author: lewisbase
 header-img:
-tags: 
+categories: 
     - Python
     - Numpy
     - Matplotlib	
