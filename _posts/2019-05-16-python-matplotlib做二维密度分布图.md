@@ -145,7 +145,7 @@ categories:
 
 最终得到的图像结果如下：
 
-![Densmap](https://raw.githubusercontent.com/LewisBase/lewisbase.github.io/master/img/_images/2019-05-16-1.png)
+![Densmap](https://raw.githubusercontent.com/LewisBase/lewisbase.github.io/master/assets/_images/2019-05-16-1.png)
 
 
 ### 参考资料

@@ -67,8 +67,8 @@ collections:
     output: true
     description: "学习与思考" # The post list page content
     feature_text: |
-      Welcome to the blog
-    feature_image: "/img/home-bg-o.jpg"
+      莫听穿林打叶声，何妨吟啸且徐行。竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。
+    feature_image: "/assets/background.png"
 
 # 6. Jekyll collections settings
 defaults:
@@ -141,7 +141,7 @@ navigation_footer:
 social_links: # Appears in sidebar. Set the urls then uncomment and comment out as desired
   # Twitter: https://twitter.com/DavidDarnes
   # LinkedIn: https://www.linkedin.com/in/daviddarnes
-  GitHub: https://github.com/daviddarnes
+  GitHub: https://github.com/lewisbase
   # link: https://darn.es
   # RSS: /feed.xml
 

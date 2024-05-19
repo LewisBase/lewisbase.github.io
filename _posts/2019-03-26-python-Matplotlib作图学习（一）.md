@@ -75,4 +75,4 @@ Python中新建变量不需要声明类型，直接进行赋值初始化便可�
 
 最终图片显示效果如下：
 
-![Lines](https://raw.githubusercontent.com/LewisBase/lewisbase.github.io/master/img/_images/2019-03-26-1.png)
+![Lines](https://raw.githubusercontent.com/LewisBase/lewisbase.github.io/master/assets/_images/2019-03-26-1.png)

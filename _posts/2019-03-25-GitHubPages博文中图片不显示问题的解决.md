@@ -33,4 +33,4 @@ categories:
 
 万岁~
 
-![404赛高！](https://raw.githubusercontent.com/LewisBase/lewisbase.github.io/master/img/_images/2019-03-25-1.png)
+![404赛高！](https://raw.githubusercontent.com/LewisBase/lewisbase.github.io/master/assets/_images/2019-03-25-1.png)
