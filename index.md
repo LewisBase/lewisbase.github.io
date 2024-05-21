@@ -1,9 +1,9 @@
 ---
-title: About Lewisbase
+title: Hello World!
 feature_text: |
-  ## Lewisbase
-  Algorithm Engineer, Postdoctoral Fellow
-feature_image: "https://picsum.photos/1300/400?image=989"
+  ## LewisBase|学习与思考
+  君子终日乾乾，夕惕若厉，无咎
+feature_image: "/assets/background_1.png"
 excerpt: ""
 ---
 

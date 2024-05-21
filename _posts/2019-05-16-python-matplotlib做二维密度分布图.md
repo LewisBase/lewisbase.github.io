@@ -12,7 +12,7 @@ categories:
 ---
 之前一直想尝试着用Matplotlib绘制计算结果中的二维密度分布图，这样即省去了许多数据处理的麻烦，也方便直接在Linux系统中观察计算的结果。但对Numpy和Maltplotlib的熟练程度还不够，对于计算程序产生的非矩阵式的数据结构不知道该怎么处理。今天花了一早上仔细研究了一下，终于将这块硬骨头啃下来了。
 
-做colormap图的关键在于矩阵的创建，作为坐标的x与y在形状上为呈转置关系的两个矩阵（即x的行数与y的列数相等，反之亦然），在内容上则应为x以行的形式重复，y以列的形式重复。想要产生这样的两个矩阵，可以通过Numpy中的函数`np.meshgrid(x,y)`来实现。用于表示值变化的z则为一个二维数组，即对于每一对x，y都应存在一个值z[x][y]。在一般的做法中，z值可以通过以x，y为自变量的函数产生。
+做colormap图的关键在于矩阵的创建，作为坐标的x与y在形状上为呈转置关系的两个矩阵（即x的行数与y的列数相等，反之亦然），在内容上则应为x以行的形式重复，y以列的形式重复。想要产生这样的两个矩阵，可以通过Numpy中的函数`np.meshgrid(x,y)`来实现。用于表示值变化的z则为一个二维数组，即对于每一对x，y都应存在一个值z\[x\]\[y\]。在一般的做法中，z值可以通过以x，y为自变量的函数产生。
 
 我这里遇到的问题是已有的数据是三个一维数组。相当与将上述的x，y，z矩阵一一对应地平铺开来。这样的数据在Origin中作图十分方便，但在Matplotlib中就得预先处理一下。这个过程实则是将平铺开的数组再压缩回去。
 
@@ -40,7 +40,6 @@ categories:
 * `plt.colorbar()`用来生成colorbar，colorbar的名称，刻度，字体大小可以分别通过`.set_label()`, `.set_ticks()`, `.ax.tick_params()`进行设置
 
 这次在脚本中也加入了argv变量的设置，实现了直接读入文件名进行处理。脚本的具体内容如下：
-
 
     # Draw a two-dimensional density map from densxz.dat file
     # Author: lewisbase
@@ -146,7 +145,6 @@ categories:
 最终得到的图像结果如下：
 
 ![Densmap](https://raw.githubusercontent.com/LewisBase/lewisbase.github.io/master/assets/_images/2019-05-16-1.png)
-
 
 ### 参考资料
 
