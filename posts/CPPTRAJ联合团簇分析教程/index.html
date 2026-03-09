@@ -1,0 +1,1691 @@
+<!doctype html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- `site.alt_lang` can specify a language different from the UI -->
+<html lang="en" >
+  <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7f7f7">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1b1b1e">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta
+    name="viewport"
+    content="width=device-width, user-scalable=no initial-scale=1, shrink-to-fit=no, viewport-fit=cover"
+  ><!-- Setup Open Graph image -->
+
+  
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="CPPTRAJ聚类/团簇分析教程" />
+<meta name="author" content="lewisbase" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="by Daniel R. Rose 原文地址 从分子动力学模拟中确定结构布居(structure populations)的一种方法是聚类/团簇分析。聚类/团簇是指将部分具有相似性的数据点从其他数据中区分出来的一个集合。在分子模拟的背景下，这意味着将相似的构象分组在一起。其间的相似性由一个距离标准来度量——距离越小，结构越相似。 一种常用的距离度量便是基于坐标的RMSD。 值得注意的是，并没有一种所谓“正确”的方法来进行聚类/团簇分析。有许多不同的算法和距离度量可用，并且不同的组合对于某些系统有更好的适应性。聚类/团簇分析往往需要不断地试错才能获得满意的结果。本教程只是聚类/团簇分析的一个示例。 如需更深入地讨论MD轨迹的聚类/团簇分析，可以阅读Shao等人的论文Shao et al.。 在此示例中，我们将使用CPPTRAJ进行聚类/团簇分析和组合聚类/团簇分析（作为查明是否收敛的方法）。CPPTRAJ支持多种聚类/团簇算法，距离度量，聚类/团簇度量和输出选项。该实施例将使用多维副本交换动力学（MREMD，24×Temperture，8×aMD）产生的四核苷酸rGACC的轨迹。尽管轨迹最初是使用显式的TIP3P水模型生成的，但为了减小轨迹的大小，这里我们将去除溶剂分子。 该数据和分析由Roe等人发表。 Roe et al., J. Phys. Chem. B, 2014, 118(13), pp 2543-3552. 文件 rGACC.nowat.parm7: 拓扑文件, rGACC + 3 Na+ ions. rGACC.MREMD1.nowat.nc.40: rGACC M-REMD 轨迹 @ 300 K, run1. rGACC.MREMD2.nowat.nc.40: rGACC M-REMD 轨迹 @ 300 K, run2. cpptraj.cluster.in: 单轨迹聚类/团簇分析的CPPTRAJ输入文件 cpptraj.combined.cluster.in: 组合聚类/团簇分析的CPPTRAJ输入文件 请注意，虽然提供了输入文件，但仍建议鼓励用户使用命令行输入命令以便更好地熟悉CPPTRAJ工作流程和命令选项。 使用CPPTRAJ进行聚类/团簇分析 第一步：载入拓扑与轨迹文件 我们首先从单轨迹的聚类/团簇分析开始，在终端中输入cpptraj，并输入以下命令载入拓扑与轨迹文件： 1 2 Parm rGACC.nowat.parm7 Trajin rGACC.MREMD1.nowat.nc.40 由于这些轨迹中包含离子，而我们只对rGACC本身感兴趣，因此我们可以使用strip命令删除它们（确保它们不会出现在任何输出结构中）。我们还将使用outprefix关键字，以便将去除离子后相应的拓扑文件命名为’noions.rGACC.nowat.parm7’。请注意，这是可选步骤，并不是后续聚类/团簇分析中所必需的。 1 strip :Na+ outprefix noions 第二步：Clustering命令选项 接下来我们来说明一下Clustering命令，该命令下有许多选项，主要分为四大类：聚类/团簇算法，距离度量，输出以及坐标输出。 1 2 3 4 5 6 7 8 9 10 11 12 cluster C0 \ dbscan minpoints 25 epsilon 0.9 sievetoframe \ rms :1@N2,O6,C1&#39;,P,:2@H2,N6,C1&#39;,P,:3@O2,H5,C1&#39;,P,:4@O2,H5,C1&#39;,P \ sieve 10 random \ out cnumvtime.dat \ sil Sil \ summary summary.dat \ info info.dat \ cpopvtime cpopvtime.agr normframe \ repout rep repfmt pdb \ singlerepout singlerep.nc singlerepfmt netcdf \ avgout Avg avgfmt restart 我们来简要说明一下各选项的一些细节： C0: 聚类/团簇输出数据集合的名称。 聚类/团簇选项 dbscan: 使用DBSCAN（基于密度）的团簇算法 minpoints: 形成聚类/团簇的最小点数 epsilon: 形成聚类/团簇的截断距离 sievetoframe: 通过与所有聚类/团簇帧（不仅仅是质心）进行比较来恢复筛选的帧。 距离度量选项 rms: 使用原子的RMSD作为距离度量 sieve 10: 通常情况下，生成成对距离矩阵（每帧到每隔一帧的距离）是聚类/团簇计算中非常耗时耗力的部分。“筛分”是一种通过使用“总/10”帧进行初始聚类来减化步骤的方法。然后将筛分的帧添加到那些簇中作为附加步骤。请注意，在大多数情况下，您还需要使用random关键字使用随机筛选（而不是有序）;为保证可重复性，本教程中并没有使用这个关键词。 输出选项 out &lt;file&gt;: 将聚类/团簇数量随时间的变化写入file文件。注意，由于DBSCAN算法具有“噪声”概念，因此任何噪声帧都将分配给簇-1（无团簇）。 summary &lt;file&gt;: 将全部聚类/团簇计算摘要写入file info &lt;file&gt;: 将详细的聚类/团簇结果（包括DBI，pSF等）写入file cpopvtime &lt;file&gt; normframe: 将聚类/团簇布居随时间的变化逐帧写入file 坐标输出选项 repout &lt;prefix&gt; repfmt pdb: 将聚类/团簇代表以pdb的格式写入prefix.cX.fmt，其中X为聚类/团簇编号，fmt为默认格式拓展名 singlerepout &lt;file&gt; singlerepfmt netcdf: 以NetCDF格式将所有聚类/团簇代表写入file avgout &lt;prefix&gt; avgfmt restart: 以Amber重启文件格式将每个聚类/团簇中所有帧的平均值写入prefix.cX.fmt 当你的输入文件被程序读入后，输入run命令开始对轨迹进行处理与分析。即便是对最先进的CPU来说这个过程也将持续几分钟，所以请保持耐心。当聚类/团簇分析结束后可以输入quit来退出CPPTRAJ。现在你便得到了所有的输出结果。检查summary.dat文件便可发现共有16个聚类/团簇。有关输出选项更详细的介绍参见Amber手册。 通常我们最感兴趣的输出是cpopvtime.arg（xmgrace格式）文件中聚类/团簇布居随时间的变化。可以看到，在轨迹的开始阶段聚类/团簇布居随时间快速变化，随这轨迹的变化，聚类/团簇布居逐渐趋于稳定，最终达到约为70000帧。这表明聚类/团簇布居达到了平衡，结果可能适用于热力学等方面的分析。不过，确定这一点的更好方法是将当下结果与独立运行的其他结果进行比较。 使用CPPTRAJ进行组合聚类/团簇分析 “收敛”是分子模拟中的重要概念，这是一种衡量最低势能面是否被有效采样的方法。从单个点（构象）开始的模拟在一段时间后可能会陷于某个局部能量极小点，在单次模拟中，我们很难确定这种情况是否发生。然而，如果存在另一从不同初始条件或构象的模拟。并且两者最终得到了相同的构象。一旦存在这样的情况，我们便认为模拟已经“收敛”。当两个或多个模拟已经收敛且结构布居不再发生显著变化时，我们便可以从中计算具有一定确定性的热力学量。 聚类/团簇分析可以被用来比较多个独立运行的模拟结果的结构布居，并作为确定是否收敛的判据。但在不同轨迹之间进行聚类/团簇比较是项较有挑战性的工作。不同的轨迹中可能存在完全不同的布居而且有些特殊构象也可能只存在与某一轨迹中。为了便于比较不同轨迹之间的聚类/团簇，CPPTARJ程序提供了可以在两个（或者更多）组合轨迹上进行，并随后基于原始轨迹对结果进行划分的“组合聚类/团簇分析”功能。 第一步：载入拓扑与轨迹文件 由于我们在聚类/团簇分析之前需要将两个轨迹组合在一起，因此我们需要知道每个轨迹中分别有多少帧以便使cluster命令明确何处去划分聚类/团簇分析的结果。这可以通过一下命令实现： 1 cpptraj -p rGACC.nowat.parm7 -y rGACC.MREMD1.nowat.nc.40 -tl 这里-p选项载入拓扑文件，-y选项载入轨迹文件，-tl选项用以输出帧数。此处的输出显示为： 1 Frames: 83843 所以我们应该在组合后轨迹的第83843帧处将其划分开。 在命令行中再次输入cpptraj启动CPPTRAJ。显示交互信息后，按照之前同样的方式载入拓扑与轨迹文件（并去除离子）： 1 2 3 4 parm rGACC.nowat.parm7 trajin rGACC.MREMD1.nowat.nc.40 trajin rGACC.MREMD2.nowat.nc.40 strip :Na+ outprefix noions 第二步：组合聚类/团簇分析中的Clustering命令 现在开始输入clustering命令选项，大部分与之前的相同，注意这里我们加入了进行组合分析的关键词。 1 2 3 4 5 6 7 cluster C1 \ dbscan minpoints 25 epsilon 0.9 sievetoframe \ rms :1@N2,O6,C1&#39;,P,:2@H2,N6,C1&#39;,P,:3@O2,H5,C1&#39;,P,:4@O2,H5,C1&#39;,P \ sieve 20 \ out combined.cnumvtime.dat \ info combined.info.dat \ summarysplit split.dat splitframe 83843 这里有两个新的关键词： summarysplit &lt;file&gt;:将分割的聚类/团簇信息写入文件file splitframe 83843:将聚类/团簇信息于83843帧处分割（即第一段轨迹结束的地方） 一旦你的文件全部读入完毕，输入run以开始对轨迹的处理与分析。保持耐心，这将比之前的分析花费更多点的时间。分析结束后，输入quit即可退出CPPTRAJ。 组合聚类/团簇分析的主要输出信息在split.dat文件中，文件首两行说明了组合轨迹是如何被分割地以及每部分的总帧数。 1 2 # 1st &lt;= 83843 &lt; 2nd # 1st= 83843 2nd= 108887 接下来几列分别为： #Cluster:聚类/团簇数 Total:聚类/团簇中的总帧数 Frac:聚类/团簇的帧数占总帧数的比例 C#:Grace程序可兼容的聚类/团簇的颜色代码，从1开始，14及以上的聚类/团簇都被指定为颜色15 Color:Grace程序可兼容的颜色名称（使用Grace默认方案） NumIn1st NumIn2nd:分别落入第一轨迹和第二轨迹的聚类/团簇的帧数 Frac1 Frac2:分别落入第一轨迹和第二轨迹的聚类/团簇的比例 First1 First2:最先在第一轨迹或第二轨迹中形成聚类/团簇的帧 第一和第二轨迹之间的聚类/团簇布居非常一致（布居分数的最大绝对差值约为0.015），表明两个轨迹相对较好地收敛。" />
+<meta property="og:description" content="by Daniel R. Rose 原文地址 从分子动力学模拟中确定结构布居(structure populations)的一种方法是聚类/团簇分析。聚类/团簇是指将部分具有相似性的数据点从其他数据中区分出来的一个集合。在分子模拟的背景下，这意味着将相似的构象分组在一起。其间的相似性由一个距离标准来度量——距离越小，结构越相似。 一种常用的距离度量便是基于坐标的RMSD。 值得注意的是，并没有一种所谓“正确”的方法来进行聚类/团簇分析。有许多不同的算法和距离度量可用，并且不同的组合对于某些系统有更好的适应性。聚类/团簇分析往往需要不断地试错才能获得满意的结果。本教程只是聚类/团簇分析的一个示例。 如需更深入地讨论MD轨迹的聚类/团簇分析，可以阅读Shao等人的论文Shao et al.。 在此示例中，我们将使用CPPTRAJ进行聚类/团簇分析和组合聚类/团簇分析（作为查明是否收敛的方法）。CPPTRAJ支持多种聚类/团簇算法，距离度量，聚类/团簇度量和输出选项。该实施例将使用多维副本交换动力学（MREMD，24×Temperture，8×aMD）产生的四核苷酸rGACC的轨迹。尽管轨迹最初是使用显式的TIP3P水模型生成的，但为了减小轨迹的大小，这里我们将去除溶剂分子。 该数据和分析由Roe等人发表。 Roe et al., J. Phys. Chem. B, 2014, 118(13), pp 2543-3552. 文件 rGACC.nowat.parm7: 拓扑文件, rGACC + 3 Na+ ions. rGACC.MREMD1.nowat.nc.40: rGACC M-REMD 轨迹 @ 300 K, run1. rGACC.MREMD2.nowat.nc.40: rGACC M-REMD 轨迹 @ 300 K, run2. cpptraj.cluster.in: 单轨迹聚类/团簇分析的CPPTRAJ输入文件 cpptraj.combined.cluster.in: 组合聚类/团簇分析的CPPTRAJ输入文件 请注意，虽然提供了输入文件，但仍建议鼓励用户使用命令行输入命令以便更好地熟悉CPPTRAJ工作流程和命令选项。 使用CPPTRAJ进行聚类/团簇分析 第一步：载入拓扑与轨迹文件 我们首先从单轨迹的聚类/团簇分析开始，在终端中输入cpptraj，并输入以下命令载入拓扑与轨迹文件： 1 2 Parm rGACC.nowat.parm7 Trajin rGACC.MREMD1.nowat.nc.40 由于这些轨迹中包含离子，而我们只对rGACC本身感兴趣，因此我们可以使用strip命令删除它们（确保它们不会出现在任何输出结构中）。我们还将使用outprefix关键字，以便将去除离子后相应的拓扑文件命名为’noions.rGACC.nowat.parm7’。请注意，这是可选步骤，并不是后续聚类/团簇分析中所必需的。 1 strip :Na+ outprefix noions 第二步：Clustering命令选项 接下来我们来说明一下Clustering命令，该命令下有许多选项，主要分为四大类：聚类/团簇算法，距离度量，输出以及坐标输出。 1 2 3 4 5 6 7 8 9 10 11 12 cluster C0 \ dbscan minpoints 25 epsilon 0.9 sievetoframe \ rms :1@N2,O6,C1&#39;,P,:2@H2,N6,C1&#39;,P,:3@O2,H5,C1&#39;,P,:4@O2,H5,C1&#39;,P \ sieve 10 random \ out cnumvtime.dat \ sil Sil \ summary summary.dat \ info info.dat \ cpopvtime cpopvtime.agr normframe \ repout rep repfmt pdb \ singlerepout singlerep.nc singlerepfmt netcdf \ avgout Avg avgfmt restart 我们来简要说明一下各选项的一些细节： C0: 聚类/团簇输出数据集合的名称。 聚类/团簇选项 dbscan: 使用DBSCAN（基于密度）的团簇算法 minpoints: 形成聚类/团簇的最小点数 epsilon: 形成聚类/团簇的截断距离 sievetoframe: 通过与所有聚类/团簇帧（不仅仅是质心）进行比较来恢复筛选的帧。 距离度量选项 rms: 使用原子的RMSD作为距离度量 sieve 10: 通常情况下，生成成对距离矩阵（每帧到每隔一帧的距离）是聚类/团簇计算中非常耗时耗力的部分。“筛分”是一种通过使用“总/10”帧进行初始聚类来减化步骤的方法。然后将筛分的帧添加到那些簇中作为附加步骤。请注意，在大多数情况下，您还需要使用random关键字使用随机筛选（而不是有序）;为保证可重复性，本教程中并没有使用这个关键词。 输出选项 out &lt;file&gt;: 将聚类/团簇数量随时间的变化写入file文件。注意，由于DBSCAN算法具有“噪声”概念，因此任何噪声帧都将分配给簇-1（无团簇）。 summary &lt;file&gt;: 将全部聚类/团簇计算摘要写入file info &lt;file&gt;: 将详细的聚类/团簇结果（包括DBI，pSF等）写入file cpopvtime &lt;file&gt; normframe: 将聚类/团簇布居随时间的变化逐帧写入file 坐标输出选项 repout &lt;prefix&gt; repfmt pdb: 将聚类/团簇代表以pdb的格式写入prefix.cX.fmt，其中X为聚类/团簇编号，fmt为默认格式拓展名 singlerepout &lt;file&gt; singlerepfmt netcdf: 以NetCDF格式将所有聚类/团簇代表写入file avgout &lt;prefix&gt; avgfmt restart: 以Amber重启文件格式将每个聚类/团簇中所有帧的平均值写入prefix.cX.fmt 当你的输入文件被程序读入后，输入run命令开始对轨迹进行处理与分析。即便是对最先进的CPU来说这个过程也将持续几分钟，所以请保持耐心。当聚类/团簇分析结束后可以输入quit来退出CPPTRAJ。现在你便得到了所有的输出结果。检查summary.dat文件便可发现共有16个聚类/团簇。有关输出选项更详细的介绍参见Amber手册。 通常我们最感兴趣的输出是cpopvtime.arg（xmgrace格式）文件中聚类/团簇布居随时间的变化。可以看到，在轨迹的开始阶段聚类/团簇布居随时间快速变化，随这轨迹的变化，聚类/团簇布居逐渐趋于稳定，最终达到约为70000帧。这表明聚类/团簇布居达到了平衡，结果可能适用于热力学等方面的分析。不过，确定这一点的更好方法是将当下结果与独立运行的其他结果进行比较。 使用CPPTRAJ进行组合聚类/团簇分析 “收敛”是分子模拟中的重要概念，这是一种衡量最低势能面是否被有效采样的方法。从单个点（构象）开始的模拟在一段时间后可能会陷于某个局部能量极小点，在单次模拟中，我们很难确定这种情况是否发生。然而，如果存在另一从不同初始条件或构象的模拟。并且两者最终得到了相同的构象。一旦存在这样的情况，我们便认为模拟已经“收敛”。当两个或多个模拟已经收敛且结构布居不再发生显著变化时，我们便可以从中计算具有一定确定性的热力学量。 聚类/团簇分析可以被用来比较多个独立运行的模拟结果的结构布居，并作为确定是否收敛的判据。但在不同轨迹之间进行聚类/团簇比较是项较有挑战性的工作。不同的轨迹中可能存在完全不同的布居而且有些特殊构象也可能只存在与某一轨迹中。为了便于比较不同轨迹之间的聚类/团簇，CPPTARJ程序提供了可以在两个（或者更多）组合轨迹上进行，并随后基于原始轨迹对结果进行划分的“组合聚类/团簇分析”功能。 第一步：载入拓扑与轨迹文件 由于我们在聚类/团簇分析之前需要将两个轨迹组合在一起，因此我们需要知道每个轨迹中分别有多少帧以便使cluster命令明确何处去划分聚类/团簇分析的结果。这可以通过一下命令实现： 1 cpptraj -p rGACC.nowat.parm7 -y rGACC.MREMD1.nowat.nc.40 -tl 这里-p选项载入拓扑文件，-y选项载入轨迹文件，-tl选项用以输出帧数。此处的输出显示为： 1 Frames: 83843 所以我们应该在组合后轨迹的第83843帧处将其划分开。 在命令行中再次输入cpptraj启动CPPTRAJ。显示交互信息后，按照之前同样的方式载入拓扑与轨迹文件（并去除离子）： 1 2 3 4 parm rGACC.nowat.parm7 trajin rGACC.MREMD1.nowat.nc.40 trajin rGACC.MREMD2.nowat.nc.40 strip :Na+ outprefix noions 第二步：组合聚类/团簇分析中的Clustering命令 现在开始输入clustering命令选项，大部分与之前的相同，注意这里我们加入了进行组合分析的关键词。 1 2 3 4 5 6 7 cluster C1 \ dbscan minpoints 25 epsilon 0.9 sievetoframe \ rms :1@N2,O6,C1&#39;,P,:2@H2,N6,C1&#39;,P,:3@O2,H5,C1&#39;,P,:4@O2,H5,C1&#39;,P \ sieve 20 \ out combined.cnumvtime.dat \ info combined.info.dat \ summarysplit split.dat splitframe 83843 这里有两个新的关键词： summarysplit &lt;file&gt;:将分割的聚类/团簇信息写入文件file splitframe 83843:将聚类/团簇信息于83843帧处分割（即第一段轨迹结束的地方） 一旦你的文件全部读入完毕，输入run以开始对轨迹的处理与分析。保持耐心，这将比之前的分析花费更多点的时间。分析结束后，输入quit即可退出CPPTRAJ。 组合聚类/团簇分析的主要输出信息在split.dat文件中，文件首两行说明了组合轨迹是如何被分割地以及每部分的总帧数。 1 2 # 1st &lt;= 83843 &lt; 2nd # 1st= 83843 2nd= 108887 接下来几列分别为： #Cluster:聚类/团簇数 Total:聚类/团簇中的总帧数 Frac:聚类/团簇的帧数占总帧数的比例 C#:Grace程序可兼容的聚类/团簇的颜色代码，从1开始，14及以上的聚类/团簇都被指定为颜色15 Color:Grace程序可兼容的颜色名称（使用Grace默认方案） NumIn1st NumIn2nd:分别落入第一轨迹和第二轨迹的聚类/团簇的帧数 Frac1 Frac2:分别落入第一轨迹和第二轨迹的聚类/团簇的比例 First1 First2:最先在第一轨迹或第二轨迹中形成聚类/团簇的帧 第一和第二轨迹之间的聚类/团簇布居非常一致（布居分数的最大绝对差值约为0.015），表明两个轨迹相对较好地收敛。" />
+<link rel="canonical" href="https://lewisbase.github.io/posts/CPPTRAJ%E8%81%94%E5%90%88%E5%9B%A2%E7%B0%87%E5%88%86%E6%9E%90%E6%95%99%E7%A8%8B/" />
+<meta property="og:url" content="https://lewisbase.github.io/posts/CPPTRAJ%E8%81%94%E5%90%88%E5%9B%A2%E7%B0%87%E5%88%86%E6%9E%90%E6%95%99%E7%A8%8B/" />
+<meta property="og:site_name" content="LewisBase" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-09-18T00:00:00+08:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="CPPTRAJ聚类/团簇分析教程" />
+<meta name="twitter:site" content="@" />
+<meta name="twitter:creator" content="@lewisbase" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"lewisbase"},"dateModified":"2018-09-18T00:00:00+08:00","datePublished":"2018-09-18T00:00:00+08:00","description":"by Daniel R. Rose 原文地址 从分子动力学模拟中确定结构布居(structure populations)的一种方法是聚类/团簇分析。聚类/团簇是指将部分具有相似性的数据点从其他数据中区分出来的一个集合。在分子模拟的背景下，这意味着将相似的构象分组在一起。其间的相似性由一个距离标准来度量——距离越小，结构越相似。 一种常用的距离度量便是基于坐标的RMSD。 值得注意的是，并没有一种所谓“正确”的方法来进行聚类/团簇分析。有许多不同的算法和距离度量可用，并且不同的组合对于某些系统有更好的适应性。聚类/团簇分析往往需要不断地试错才能获得满意的结果。本教程只是聚类/团簇分析的一个示例。 如需更深入地讨论MD轨迹的聚类/团簇分析，可以阅读Shao等人的论文Shao et al.。 在此示例中，我们将使用CPPTRAJ进行聚类/团簇分析和组合聚类/团簇分析（作为查明是否收敛的方法）。CPPTRAJ支持多种聚类/团簇算法，距离度量，聚类/团簇度量和输出选项。该实施例将使用多维副本交换动力学（MREMD，24×Temperture，8×aMD）产生的四核苷酸rGACC的轨迹。尽管轨迹最初是使用显式的TIP3P水模型生成的，但为了减小轨迹的大小，这里我们将去除溶剂分子。 该数据和分析由Roe等人发表。 Roe et al., J. Phys. Chem. B, 2014, 118(13), pp 2543-3552. 文件 rGACC.nowat.parm7: 拓扑文件, rGACC + 3 Na+ ions. rGACC.MREMD1.nowat.nc.40: rGACC M-REMD 轨迹 @ 300 K, run1. rGACC.MREMD2.nowat.nc.40: rGACC M-REMD 轨迹 @ 300 K, run2. cpptraj.cluster.in: 单轨迹聚类/团簇分析的CPPTRAJ输入文件 cpptraj.combined.cluster.in: 组合聚类/团簇分析的CPPTRAJ输入文件 请注意，虽然提供了输入文件，但仍建议鼓励用户使用命令行输入命令以便更好地熟悉CPPTRAJ工作流程和命令选项。 使用CPPTRAJ进行聚类/团簇分析 第一步：载入拓扑与轨迹文件 我们首先从单轨迹的聚类/团簇分析开始，在终端中输入cpptraj，并输入以下命令载入拓扑与轨迹文件： 1 2 Parm rGACC.nowat.parm7 Trajin rGACC.MREMD1.nowat.nc.40 由于这些轨迹中包含离子，而我们只对rGACC本身感兴趣，因此我们可以使用strip命令删除它们（确保它们不会出现在任何输出结构中）。我们还将使用outprefix关键字，以便将去除离子后相应的拓扑文件命名为’noions.rGACC.nowat.parm7’。请注意，这是可选步骤，并不是后续聚类/团簇分析中所必需的。 1 strip :Na+ outprefix noions 第二步：Clustering命令选项 接下来我们来说明一下Clustering命令，该命令下有许多选项，主要分为四大类：聚类/团簇算法，距离度量，输出以及坐标输出。 1 2 3 4 5 6 7 8 9 10 11 12 cluster C0 \\ dbscan minpoints 25 epsilon 0.9 sievetoframe \\ rms :1@N2,O6,C1&#39;,P,:2@H2,N6,C1&#39;,P,:3@O2,H5,C1&#39;,P,:4@O2,H5,C1&#39;,P \\ sieve 10 random \\ out cnumvtime.dat \\ sil Sil \\ summary summary.dat \\ info info.dat \\ cpopvtime cpopvtime.agr normframe \\ repout rep repfmt pdb \\ singlerepout singlerep.nc singlerepfmt netcdf \\ avgout Avg avgfmt restart 我们来简要说明一下各选项的一些细节： C0: 聚类/团簇输出数据集合的名称。 聚类/团簇选项 dbscan: 使用DBSCAN（基于密度）的团簇算法 minpoints: 形成聚类/团簇的最小点数 epsilon: 形成聚类/团簇的截断距离 sievetoframe: 通过与所有聚类/团簇帧（不仅仅是质心）进行比较来恢复筛选的帧。 距离度量选项 rms: 使用原子的RMSD作为距离度量 sieve 10: 通常情况下，生成成对距离矩阵（每帧到每隔一帧的距离）是聚类/团簇计算中非常耗时耗力的部分。“筛分”是一种通过使用“总/10”帧进行初始聚类来减化步骤的方法。然后将筛分的帧添加到那些簇中作为附加步骤。请注意，在大多数情况下，您还需要使用random关键字使用随机筛选（而不是有序）;为保证可重复性，本教程中并没有使用这个关键词。 输出选项 out &lt;file&gt;: 将聚类/团簇数量随时间的变化写入file文件。注意，由于DBSCAN算法具有“噪声”概念，因此任何噪声帧都将分配给簇-1（无团簇）。 summary &lt;file&gt;: 将全部聚类/团簇计算摘要写入file info &lt;file&gt;: 将详细的聚类/团簇结果（包括DBI，pSF等）写入file cpopvtime &lt;file&gt; normframe: 将聚类/团簇布居随时间的变化逐帧写入file 坐标输出选项 repout &lt;prefix&gt; repfmt pdb: 将聚类/团簇代表以pdb的格式写入prefix.cX.fmt，其中X为聚类/团簇编号，fmt为默认格式拓展名 singlerepout &lt;file&gt; singlerepfmt netcdf: 以NetCDF格式将所有聚类/团簇代表写入file avgout &lt;prefix&gt; avgfmt restart: 以Amber重启文件格式将每个聚类/团簇中所有帧的平均值写入prefix.cX.fmt 当你的输入文件被程序读入后，输入run命令开始对轨迹进行处理与分析。即便是对最先进的CPU来说这个过程也将持续几分钟，所以请保持耐心。当聚类/团簇分析结束后可以输入quit来退出CPPTRAJ。现在你便得到了所有的输出结果。检查summary.dat文件便可发现共有16个聚类/团簇。有关输出选项更详细的介绍参见Amber手册。 通常我们最感兴趣的输出是cpopvtime.arg（xmgrace格式）文件中聚类/团簇布居随时间的变化。可以看到，在轨迹的开始阶段聚类/团簇布居随时间快速变化，随这轨迹的变化，聚类/团簇布居逐渐趋于稳定，最终达到约为70000帧。这表明聚类/团簇布居达到了平衡，结果可能适用于热力学等方面的分析。不过，确定这一点的更好方法是将当下结果与独立运行的其他结果进行比较。 使用CPPTRAJ进行组合聚类/团簇分析 “收敛”是分子模拟中的重要概念，这是一种衡量最低势能面是否被有效采样的方法。从单个点（构象）开始的模拟在一段时间后可能会陷于某个局部能量极小点，在单次模拟中，我们很难确定这种情况是否发生。然而，如果存在另一从不同初始条件或构象的模拟。并且两者最终得到了相同的构象。一旦存在这样的情况，我们便认为模拟已经“收敛”。当两个或多个模拟已经收敛且结构布居不再发生显著变化时，我们便可以从中计算具有一定确定性的热力学量。 聚类/团簇分析可以被用来比较多个独立运行的模拟结果的结构布居，并作为确定是否收敛的判据。但在不同轨迹之间进行聚类/团簇比较是项较有挑战性的工作。不同的轨迹中可能存在完全不同的布居而且有些特殊构象也可能只存在与某一轨迹中。为了便于比较不同轨迹之间的聚类/团簇，CPPTARJ程序提供了可以在两个（或者更多）组合轨迹上进行，并随后基于原始轨迹对结果进行划分的“组合聚类/团簇分析”功能。 第一步：载入拓扑与轨迹文件 由于我们在聚类/团簇分析之前需要将两个轨迹组合在一起，因此我们需要知道每个轨迹中分别有多少帧以便使cluster命令明确何处去划分聚类/团簇分析的结果。这可以通过一下命令实现： 1 cpptraj -p rGACC.nowat.parm7 -y rGACC.MREMD1.nowat.nc.40 -tl 这里-p选项载入拓扑文件，-y选项载入轨迹文件，-tl选项用以输出帧数。此处的输出显示为： 1 Frames: 83843 所以我们应该在组合后轨迹的第83843帧处将其划分开。 在命令行中再次输入cpptraj启动CPPTRAJ。显示交互信息后，按照之前同样的方式载入拓扑与轨迹文件（并去除离子）： 1 2 3 4 parm rGACC.nowat.parm7 trajin rGACC.MREMD1.nowat.nc.40 trajin rGACC.MREMD2.nowat.nc.40 strip :Na+ outprefix noions 第二步：组合聚类/团簇分析中的Clustering命令 现在开始输入clustering命令选项，大部分与之前的相同，注意这里我们加入了进行组合分析的关键词。 1 2 3 4 5 6 7 cluster C1 \\ dbscan minpoints 25 epsilon 0.9 sievetoframe \\ rms :1@N2,O6,C1&#39;,P,:2@H2,N6,C1&#39;,P,:3@O2,H5,C1&#39;,P,:4@O2,H5,C1&#39;,P \\ sieve 20 \\ out combined.cnumvtime.dat \\ info combined.info.dat \\ summarysplit split.dat splitframe 83843 这里有两个新的关键词： summarysplit &lt;file&gt;:将分割的聚类/团簇信息写入文件file splitframe 83843:将聚类/团簇信息于83843帧处分割（即第一段轨迹结束的地方） 一旦你的文件全部读入完毕，输入run以开始对轨迹的处理与分析。保持耐心，这将比之前的分析花费更多点的时间。分析结束后，输入quit即可退出CPPTRAJ。 组合聚类/团簇分析的主要输出信息在split.dat文件中，文件首两行说明了组合轨迹是如何被分割地以及每部分的总帧数。 1 2 # 1st &lt;= 83843 &lt; 2nd # 1st= 83843 2nd= 108887 接下来几列分别为： #Cluster:聚类/团簇数 Total:聚类/团簇中的总帧数 Frac:聚类/团簇的帧数占总帧数的比例 C#:Grace程序可兼容的聚类/团簇的颜色代码，从1开始，14及以上的聚类/团簇都被指定为颜色15 Color:Grace程序可兼容的颜色名称（使用Grace默认方案） NumIn1st NumIn2nd:分别落入第一轨迹和第二轨迹的聚类/团簇的帧数 Frac1 Frac2:分别落入第一轨迹和第二轨迹的聚类/团簇的比例 First1 First2:最先在第一轨迹或第二轨迹中形成聚类/团簇的帧 第一和第二轨迹之间的聚类/团簇布居非常一致（布居分数的最大绝对差值约为0.015），表明两个轨迹相对较好地收敛。","headline":"CPPTRAJ聚类/团簇分析教程","mainEntityOfPage":{"@type":"WebPage","@id":"https://lewisbase.github.io/posts/CPPTRAJ%E8%81%94%E5%90%88%E5%9B%A2%E7%B0%87%E5%88%86%E6%9E%90%E6%95%99%E7%A8%8B/"},"url":"https://lewisbase.github.io/posts/CPPTRAJ%E8%81%94%E5%90%88%E5%9B%A2%E7%B0%87%E5%88%86%E6%9E%90%E6%95%99%E7%A8%8B/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <title>CPPTRAJ聚类/团簇分析教程 | LewisBase</title>
+
+  <!--
+  The Favicons for Web, Android, Microsoft, and iOS (iPhone and iPad) Apps
+  Generated by: https://realfavicongenerator.net/
+-->
+
+
+
+<link rel="icon" type="image/png" href="/assets/img/favicons/favicon-96x96.png" sizes="96x96">
+<link rel="icon" type="image/svg+xml" href="/assets/img/favicons/favicon.svg">
+<link rel="shortcut icon" href="/assets/img/favicons/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-touch-icon.png">
+
+  <link rel="manifest" href="/assets/img/favicons/site.webmanifest">
+
+
+
+  <!-- Resource Hints -->
+  
+    
+      
+        <link rel="preconnect" href="https://fonts.googleapis.com" >
+      
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" >
+      
+    
+      
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      
+        <link rel="dns-prefetch" href="https://fonts.gstatic.com" >
+      
+    
+      
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" >
+      
+        <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" >
+      
+    
+  
+
+  <!-- Bootstrap -->
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+  
+
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/assets/css/jekyll-theme-chirpy.css">
+
+  <!-- Web Font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Source+Sans+Pro:wght@400;600;700;900&display=swap">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css">
+
+  <!-- 3rd-party Dependencies -->
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.36.4/dist/tocbot.min.css">
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/loading-attribute-polyfill@2.1.1/dist/loading-attribute-polyfill.min.css">
+  
+
+  
+    <!-- Image Popup -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox@3.3.0/dist/css/glightbox.min.css">
+  
+
+  <!-- Scripts -->
+
+  <script src="/assets/js/dist/theme.min.js"></script>
+
+  <!-- JS selector for site. -->
+
+<!-- commons -->
+
+
+
+<!-- layout specified -->
+
+
+  
+
+  
+    <!-- image lazy-loading & popup & clipboard -->
+    
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+
+    
+
+  
+
+  
+    
+
+    
+
+  
+
+  
+    
+
+    
+
+  
+
+  
+    
+
+    
+
+  
+
+  
+    
+
+    
+
+  
+
+  
+    
+
+    
+
+  
+
+  
+    
+
+    
+
+  
+
+  
+    
+
+    
+
+  
+
+  
+    
+
+    
+
+  
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/combine/npm/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js,npm/loading-attribute-polyfill@2.1.1/dist/loading-attribute-polyfill.umd.min.js,npm/glightbox@3.3.0/dist/js/glightbox.min.js,npm/clipboard@2.0.11/dist/clipboard.min.js,npm/dayjs@1.11.18/dayjs.min.js,npm/dayjs@1.11.18/locale/en.js,npm/dayjs@1.11.18/plugin/relativeTime.js,npm/dayjs@1.11.18/plugin/localizedFormat.js,npm/tocbot@4.36.4/dist/tocbot.min.js"></script>
+
+
+
+
+
+
+
+<script defer src="/assets/js/dist/post.min.js"></script>
+
+
+
+<!-- Pageviews -->
+
+  
+
+  
+
+
+
+  
+
+  <!-- A placeholder to allow defining custom metadata -->
+
+</head>
+
+
+  <body>
+    <!-- The Side Bar -->
+
+<aside aria-label="Sidebar" id="sidebar" class="d-flex flex-column align-items-end">
+  <header class="profile-wrapper">
+    <a href="/" id="avatar" class="rounded-circle"><img src="/assets/img/lewisbase.jpg" width="112" height="112" alt="avatar" onerror="this.style.display='none'"></a>
+
+    <a class="site-title d-block" href="/">LewisBase</a>
+    <p class="site-subtitle fst-italic mb-0">君子终日乾乾，夕惕若厉，无咎</p>
+  </header>
+  <!-- .profile-wrapper -->
+
+  <nav class="flex-column flex-grow-1 w-100 ps-0">
+    <ul class="nav">
+      <!-- home -->
+      <li class="nav-item">
+        <a href="/" class="nav-link">
+          <i class="fa-fw fas fa-home"></i>
+          <span>HOME</span>
+        </a>
+      </li>
+      <!-- the real tabs -->
+      
+        <li class="nav-item">
+          <a href="/categories/" class="nav-link">
+            <i class="fa-fw fas fa-stream"></i>
+            
+
+            <span>CATEGORIES</span>
+          </a>
+        </li>
+        <!-- .nav-item -->
+      
+        <li class="nav-item">
+          <a href="/tags/" class="nav-link">
+            <i class="fa-fw fas fa-tags"></i>
+            
+
+            <span>TAGS</span>
+          </a>
+        </li>
+        <!-- .nav-item -->
+      
+        <li class="nav-item">
+          <a href="/archives/" class="nav-link">
+            <i class="fa-fw fas fa-archive"></i>
+            
+
+            <span>ARCHIVES</span>
+          </a>
+        </li>
+        <!-- .nav-item -->
+      
+        <li class="nav-item">
+          <a href="/about/" class="nav-link">
+            <i class="fa-fw fas fa-info-circle"></i>
+            
+
+            <span>ABOUT</span>
+          </a>
+        </li>
+        <!-- .nav-item -->
+      
+    </ul>
+  </nav>
+
+  <div class="sidebar-bottom d-flex flex-wrap  align-items-center w-100">
+    
+      <button type="button" class="btn btn-link nav-link" aria-label="Switch Mode" id="mode-toggle">
+        <i class="fas fa-adjust"></i>
+      </button>
+
+      
+        <span class="icon-border"></span>
+      
+    
+
+    
+
+      
+        <a
+          href="https://github.com/lewisbase"
+          aria-label="github"
+          
+
+          
+            target="_blank"
+            
+          
+
+          
+
+          
+            rel="noopener noreferrer"
+          
+        >
+          <i class="fab fa-github"></i>
+        </a>
+      
+    
+
+      
+        <a
+          href="javascript:location.href = 'mailto:' + ['tarotliu1993','gmail.com'].join('@')"
+          aria-label="email"
+          
+
+          
+
+          
+
+          
+        >
+          <i class="fas fa-envelope"></i>
+        </a>
+      
+    
+          
+        
+
+      
+        <a
+          href="/feed.xml"
+          aria-label="rss"
+          
+
+          
+
+          
+
+          
+        >
+          <i class="fas fa-rss"></i>
+        </a>
+      
+    
+  </div>
+  <!-- .sidebar-bottom -->
+</aside>
+<!-- #sidebar -->
+
+
+    <div id="main-wrapper" class="d-flex justify-content-center">
+      <div class="container d-flex flex-column px-xxl-5">
+        <!-- The Top Bar -->
+
+<header id="topbar-wrapper" class="flex-shrink-0" aria-label="Top Bar">
+  <div
+    id="topbar"
+    class="d-flex align-items-center justify-content-between px-lg-3 h-100"
+  >
+    <nav id="breadcrumb" aria-label="Breadcrumb">
+      
+
+      
+        
+          
+            <span>
+              <a href="/">Home</a>
+            </span>
+
+          
+        
+          
+        
+          
+            
+              <span>CPPTRAJ聚类/团簇分析教程</span>
+            
+
+          
+        
+      
+    </nav>
+    <!-- endof #breadcrumb -->
+
+    <button type="button" id="sidebar-trigger" class="btn btn-link" aria-label="Sidebar">
+      <i class="fas fa-bars fa-fw"></i>
+    </button>
+
+    <div id="topbar-title">
+      Post
+    </div>
+
+    <button type="button" id="search-trigger" class="btn btn-link" aria-label="Search">
+      <i class="fas fa-search fa-fw"></i>
+    </button>
+
+    <search id="search" class="align-items-center ms-3 ms-lg-0">
+      <i class="fas fa-search fa-fw"></i>
+      <input
+        class="form-control"
+        id="search-input"
+        type="search"
+        aria-label="search"
+        autocomplete="off"
+        placeholder="Search..."
+      >
+    </search>
+    <button type="button" class="btn btn-link text-decoration-none" id="search-cancel">Cancel</button>
+  </div>
+</header>
+
+
+        <div class="row flex-grow-1">
+          <main aria-label="Main Content" class="col-12 col-lg-11 col-xl-9 px-md-4">
+            
+              <!-- Refactor the HTML structure -->
+
+
+
+<!--
+  In order to allow a wide table to scroll horizontally,
+  we suround the markdown table with `<div class="table-wrapper">` and `</div>`
+-->
+
+
+
+<!--
+  Fixed kramdown code highlight rendering:
+  https://github.com/penibelst/jekyll-compress-html/issues/101
+  https://github.com/penibelst/jekyll-compress-html/issues/71#issuecomment-188144901
+-->
+
+
+
+<!-- Change the icon of checkbox -->
+
+
+
+<!-- Handle images -->
+
+
+
+
+
+<!-- Add header for code snippets -->
+
+
+
+<!-- Create heading anchors -->
+
+
+
+
+
+  
+  
+
+  
+    
+    
+
+    
+      
+        
+        
+      
+
+      
+      
+
+      
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+      
+      
+
+      
+    
+
+    
+  
+
+  
+  
+
+  
+    
+    
+
+    
+      
+        
+        
+      
+
+      
+      
+
+      
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+      
+      
+
+      
+    
+
+    
+  
+
+  
+  
+
+  
+    
+    
+
+    
+      
+        
+        
+      
+
+      
+      
+
+      
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+      
+      
+
+      
+    
+
+    
+  
+
+  
+  
+
+  
+
+
+
+
+<!-- return -->
+
+
+
+
+
+
+
+
+
+
+<article class="px-1" data-toc="true">
+  <header>
+    <h1 data-toc-skip>CPPTRAJ聚类/团簇分析教程</h1>
+    
+
+    <div class="post-meta text-muted">
+      <!-- published date -->
+      <span>
+        Posted
+        <!--
+  Date format snippet
+  See: ${JS_ROOT}/utils/locale-dateime.js
+-->
+
+
+
+
+<time
+  
+  data-ts="1537200000"
+  data-df="ll"
+  
+    data-bs-toggle="tooltip" data-bs-placement="bottom"
+  
+>
+  Sep 18, 2018
+</time>
+
+      </span>
+
+      <!-- lastmod date -->
+      
+
+      
+
+      <div class="d-flex justify-content-between">
+        <!-- author(s) -->
+        <span>
+          
+
+          By
+
+          <em>
+            
+              
+                
+                
+              
+            
+          </em>
+        </span>
+
+        <div>
+          <!-- pageviews -->
+          
+
+          <!-- read time -->
+          <!-- Calculate the post's reading time, and display the word count in tooltip -->
+
+
+
+<!-- words per minute -->
+
+
+
+
+
+
+
+
+
+
+<!-- return element -->
+<span
+  class="readtime"
+  data-bs-toggle="tooltip"
+  data-bs-placement="bottom"
+  title="2825 words"
+>
+  <em>15 min</em> read</span>
+
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
+    <div id="toc-bar" class="d-flex align-items-center justify-content-between invisible">
+      <span class="label text-truncate">CPPTRAJ聚类/团簇分析教程</span>
+      <button type="button" class="toc-trigger btn me-1">
+        <i class="fa-solid fa-list-ul fa-fw"></i>
+      </button>
+    </div>
+
+    <button id="toc-solo-trigger" type="button" class="toc-trigger btn btn-outline-secondary btn-sm">
+      <span class="label ps-2 pe-1">Contents</span>
+      <i class="fa-solid fa-angle-right fa-fw"></i>
+    </button>
+
+    <dialog id="toc-popup" class="p-0">
+      <div class="header d-flex flex-row align-items-center justify-content-between">
+        <div class="label text-truncate py-2 ms-4">CPPTRAJ聚类/团簇分析教程</div>
+        <button id="toc-popup-close" type="button" class="btn mx-1 my-1 opacity-75">
+          <i class="fas fa-close"></i>
+        </button>
+      </div>
+      <div id="toc-popup-content" class="px-4 py-3 pb-4"></div>
+    </dialog>
+  
+
+  <div class="content">
+    <p>by Daniel R. Rose<br />
+<a href="http://www.amber.utah.edu/AMBER-workshop/London-2015/Cluster/">原文地址</a></p>
+
+<p>从分子动力学模拟中确定结构布居(structure populations)的一种方法是聚类/团簇分析。聚类/团簇是指将部分具有相似性的数据点从其他数据中区分出来的一个集合。在分子模拟的背景下，这意味着将相似的构象分组在一起。其间的相似性由一个距离标准来度量——距离越小，结构越相似。 一种常用的距离度量便是基于坐标的RMSD。</p>
+
+<p>值得注意的是，并没有一种所谓“正确”的方法来进行聚类/团簇分析。有许多不同的算法和距离度量可用，并且不同的组合对于某些系统有更好的适应性。聚类/团簇分析往往需要不断地试错才能获得满意的结果。本教程只是聚类/团簇分析的一个示例。 如需更深入地讨论MD轨迹的聚类/团簇分析，可以阅读Shao等人的论文<a href="http://pubs.acs.org/doi/abs/10.1021/ct700119m?journalCode=jctcce">Shao et al.</a>。</p>
+
+<p>在此示例中，我们将使用<a href="http://pubs.acs.org/doi/abs/10.1021/ct400341p">CPPTRAJ</a>进行聚类/团簇分析和组合聚类/团簇分析（作为查明是否收敛的方法）。<code class="language-plaintext highlighter-rouge">CPPTRAJ</code>支持多种聚类/团簇算法，距离度量，聚类/团簇度量和输出选项。该实施例将使用多维副本交换动力学（MREMD，24×Temperture，8×aMD）产生的四核苷酸rGACC的轨迹。尽管轨迹最初是使用显式的TIP3P水模型生成的，但为了减小轨迹的大小，这里我们将去除溶剂分子。 该数据和分析由Roe等人发表。 <a href="http://pubs.acs.org/doi/abs/10.1021/jp4125099">Roe et al., J. Phys. Chem. B, 2014, 118(13), pp 2543-3552.</a></p>
+
+<h2 id="文件"><span class="me-2">文件</span><a href="#文件" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2>
+
+<ul>
+  <li><a href="http://www.amber.utah.edu/AMBER-workshop/London-2015/Cluster/rGACC.nowat.parm7">rGACC.nowat.parm7</a>: 拓扑文件, rGACC + 3 Na+ ions.</li>
+  <li><a href="http://www.amber.utah.edu/AMBER-workshop/London-2015/Cluster/rGACC.MREMD1.nowat.nc.40">rGACC.MREMD1.nowat.nc.40</a>: rGACC M-REMD 轨迹 @ 300 K, run1.</li>
+  <li><a href="http://www.amber.utah.edu/AMBER-workshop/London-2015/Cluster/rGACC.MREMD2.nowat.nc.40">rGACC.MREMD2.nowat.nc.40</a>: rGACC M-REMD 轨迹 @ 300 K, run2.</li>
+  <li><a href="http://www.amber.utah.edu/AMBER-workshop/London-2015/Cluster/cpptraj.cluster.in">cpptraj.cluster.in</a>: 单轨迹聚类/团簇分析的<code class="language-plaintext highlighter-rouge">CPPTRAJ</code>输入文件</li>
+  <li><a href="http://www.amber.utah.edu/AMBER-workshop/London-2015/Cluster/cpptraj.combined.cluster.in">cpptraj.combined.cluster.in</a>: 组合聚类/团簇分析的<code class="language-plaintext highlighter-rouge">CPPTRAJ</code>输入文件</li>
+</ul>
+
+<p>请注意，虽然提供了输入文件，但仍建议鼓励用户使用命令行输入命令以便更好地熟悉<code class="language-plaintext highlighter-rouge">CPPTRAJ</code>工作流程和命令选项。</p>
+
+<h2 id="使用cpptraj进行聚类团簇分析"><span class="me-2">使用<code class="language-plaintext highlighter-rouge">CPPTRAJ</code>进行聚类/团簇分析</span><a href="#使用cpptraj进行聚类团簇分析" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2>
+
+<h3 id="第一步载入拓扑与轨迹文件"><span class="me-2">第一步：载入拓扑与轨迹文件</span><a href="#第一步载入拓扑与轨迹文件" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3>
+
+<p>我们首先从单轨迹的聚类/团簇分析开始，在终端中输入<code class="language-plaintext highlighter-rouge">cpptraj</code>，并输入以下命令载入拓扑与轨迹文件：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="code-header">
+        <span data-label-text="Plaintext"><i class="fas fa-code fa-fw small"></i></span>
+      <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>Parm rGACC.nowat.parm7
+Trajin rGACC.MREMD1.nowat.nc.40
+</pre></td></tr></tbody></table></code></div></div>
+
+<p>由于这些轨迹中包含离子，而我们只对rGACC本身感兴趣，因此我们可以使用<code class="language-plaintext highlighter-rouge">strip</code>命令删除它们（确保它们不会出现在任何输出结构中）。我们还将使用<code class="language-plaintext highlighter-rouge">outprefix</code>关键字，以便将去除离子后相应的拓扑文件命名为’noions.rGACC.nowat.parm7’。请注意，这是可选步骤，并不是后续聚类/团簇分析中所必需的。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="code-header">
+        <span data-label-text="Plaintext"><i class="fas fa-code fa-fw small"></i></span>
+      <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>strip :Na+ outprefix noions
+</pre></td></tr></tbody></table></code></div></div>
+
+<h3 id="第二步clustering命令选项"><span class="me-2">第二步：<code class="language-plaintext highlighter-rouge">Clustering</code>命令选项</span><a href="#第二步clustering命令选项" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3>
+
+<p>接下来我们来说明一下<code class="language-plaintext highlighter-rouge">Clustering</code>命令，该命令下有许多选项，主要分为四大类：聚类/团簇算法，距离度量，输出以及坐标输出。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="code-header">
+        <span data-label-text="Plaintext"><i class="fas fa-code fa-fw small"></i></span>
+      <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre>cluster C0 \
+    dbscan minpoints 25 epsilon 0.9 sievetoframe \
+    rms :1@N2,O6,C1',P,:2@H2,N6,C1',P,:3@O2,H5,C1',P,:4@O2,H5,C1',P \
+    sieve 10 random \
+    out cnumvtime.dat \
+    sil Sil \
+    summary summary.dat \
+    info info.dat \
+    cpopvtime cpopvtime.agr normframe \
+    repout rep repfmt pdb \
+    singlerepout singlerep.nc singlerepfmt netcdf \
+    avgout Avg avgfmt restart
+</pre></td></tr></tbody></table></code></div></div>
+
+<p>我们来简要说明一下各选项的一些细节：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">C0</code>: 聚类/团簇输出数据集合的名称。</li>
+</ul>
+
+<h4 id="聚类团簇选项"><span class="me-2">聚类/团簇选项</span><a href="#聚类团簇选项" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h4>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">dbscan</code>: 使用DBSCAN（基于密度）的团簇算法</li>
+  <li><code class="language-plaintext highlighter-rouge">minpoints</code>: 形成聚类/团簇的最小点数</li>
+  <li><code class="language-plaintext highlighter-rouge">epsilon</code>: 形成聚类/团簇的截断距离</li>
+  <li><code class="language-plaintext highlighter-rouge">sievetoframe</code>: 通过与所有聚类/团簇帧（不仅仅是质心）进行比较来恢复筛选的帧。</li>
+</ul>
+
+<h4 id="距离度量选项"><span class="me-2">距离度量选项</span><a href="#距离度量选项" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h4>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">rms</code>: 使用原子的RMSD作为距离度量</li>
+  <li><code class="language-plaintext highlighter-rouge">sieve 10</code>: 通常情况下，生成成对距离矩阵（每帧到每隔一帧的距离）是聚类/团簇计算中非常耗时耗力的部分。“筛分”是一种通过使用“总/10”帧进行初始聚类来减化步骤的方法。然后将筛分的帧添加到那些簇中作为附加步骤。请注意，在大多数情况下，您还需要使用<code class="language-plaintext highlighter-rouge">random</code>关键字使用随机筛选（而不是有序）;为保证可重复性，本教程中并没有使用这个关键词。</li>
+</ul>
+
+<h4 id="输出选项"><span class="me-2">输出选项</span><a href="#输出选项" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h4>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">out &lt;file&gt;</code>: 将聚类/团簇数量随时间的变化写入<code class="language-plaintext highlighter-rouge">file</code>文件。注意，由于DBSCAN算法具有“噪声”概念，因此任何噪声帧都将分配给簇-1（无团簇）。</li>
+  <li><code class="language-plaintext highlighter-rouge">summary &lt;file&gt;</code>: 将全部聚类/团簇计算摘要写入<code class="language-plaintext highlighter-rouge">file</code></li>
+  <li><code class="language-plaintext highlighter-rouge">info &lt;file&gt;</code>: 将详细的聚类/团簇结果（包括DBI，pSF等）写入<code class="language-plaintext highlighter-rouge">file</code></li>
+  <li><code class="language-plaintext highlighter-rouge">cpopvtime &lt;file&gt; normframe</code>: 将聚类/团簇布居随时间的变化逐帧写入<code class="language-plaintext highlighter-rouge">file</code></li>
+</ul>
+
+<h4 id="坐标输出选项"><span class="me-2">坐标输出选项</span><a href="#坐标输出选项" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h4>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">repout &lt;prefix&gt; repfmt pdb</code>: 将聚类/团簇代表以pdb的格式写入<code class="language-plaintext highlighter-rouge">prefix.cX.fmt</code>，其中X为聚类/团簇编号，<code class="language-plaintext highlighter-rouge">fmt</code>为默认格式拓展名</li>
+  <li><code class="language-plaintext highlighter-rouge">singlerepout &lt;file&gt; singlerepfmt netcdf</code>: 以NetCDF格式将所有聚类/团簇代表写入<code class="language-plaintext highlighter-rouge">file</code></li>
+  <li><code class="language-plaintext highlighter-rouge">avgout &lt;prefix&gt; avgfmt restart</code>: 以Amber重启文件格式将每个聚类/团簇中所有帧的平均值写入<code class="language-plaintext highlighter-rouge">prefix.cX.fmt</code></li>
+</ul>
+
+<p>当你的输入文件被程序读入后，输入<code class="language-plaintext highlighter-rouge">run</code>命令开始对轨迹进行处理与分析。即便是对最先进的CPU来说这个过程也将持续几分钟，所以请保持耐心。当聚类/团簇分析结束后可以输入<code class="language-plaintext highlighter-rouge">quit</code>来退出<code class="language-plaintext highlighter-rouge">CPPTRAJ</code>。现在你便得到了所有的输出结果。检查<code class="language-plaintext highlighter-rouge">summary.dat</code>文件便可发现共有16个聚类/团簇。有关输出选项更详细的介绍参见Amber手册。</p>
+
+<p>通常我们最感兴趣的输出是<code class="language-plaintext highlighter-rouge">cpopvtime.arg</code>（xmgrace格式）文件中聚类/团簇布居随时间的变化。可以看到，在轨迹的开始阶段聚类/团簇布居随时间快速变化，随这轨迹的变化，聚类/团簇布居逐渐趋于稳定，最终达到约为70000帧。这表明聚类/团簇布居达到了平衡，结果可能适用于热力学等方面的分析。不过，确定这一点的更好方法是将当下结果与独立运行的其他结果进行比较。</p>
+
+<h2 id="使用cpptraj进行组合聚类团簇分析"><span class="me-2">使用<code class="language-plaintext highlighter-rouge">CPPTRAJ</code>进行组合聚类/团簇分析</span><a href="#使用cpptraj进行组合聚类团簇分析" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2>
+
+<p>“收敛”是分子模拟中的重要概念，这是一种衡量最低势能面是否被有效采样的方法。从单个点（构象）开始的模拟在一段时间后可能会陷于某个局部能量极小点，在单次模拟中，我们很难确定这种情况是否发生。然而，如果存在另一从不同初始条件或构象的模拟。并且两者最终得到了相同的构象。一旦存在这样的情况，我们便认为模拟已经“收敛”。当两个或多个模拟已经收敛且结构布居不再发生显著变化时，我们便可以从中计算具有一定确定性的热力学量。</p>
+
+<p>聚类/团簇分析可以被用来比较多个独立运行的模拟结果的结构布居，并作为确定是否收敛的判据。但在不同轨迹之间进行聚类/团簇比较是项较有挑战性的工作。不同的轨迹中可能存在完全不同的布居而且有些特殊构象也可能只存在与某一轨迹中。为了便于比较不同轨迹之间的聚类/团簇，CPPTARJ程序提供了可以在两个（或者更多）组合轨迹上进行，并随后基于原始轨迹对结果进行划分的“组合聚类/团簇分析”功能。</p>
+
+<h3 id="第一步载入拓扑与轨迹文件-1"><span class="me-2">第一步：载入拓扑与轨迹文件</span><a href="#第一步载入拓扑与轨迹文件-1" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3>
+
+<p>由于我们在聚类/团簇分析之前需要将两个轨迹组合在一起，因此我们需要知道每个轨迹中分别有多少帧以便使<code class="language-plaintext highlighter-rouge">cluster</code>命令明确何处去划分聚类/团簇分析的结果。这可以通过一下命令实现：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="code-header">
+        <span data-label-text="Plaintext"><i class="fas fa-code fa-fw small"></i></span>
+      <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>cpptraj -p rGACC.nowat.parm7 -y rGACC.MREMD1.nowat.nc.40 -tl
+</pre></td></tr></tbody></table></code></div></div>
+
+<p>这里<code class="language-plaintext highlighter-rouge">-p</code>选项载入拓扑文件，<code class="language-plaintext highlighter-rouge">-y</code>选项载入轨迹文件，<code class="language-plaintext highlighter-rouge">-tl</code>选项用以输出帧数。此处的输出显示为：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="code-header">
+        <span data-label-text="Plaintext"><i class="fas fa-code fa-fw small"></i></span>
+      <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Frames: 83843
+</pre></td></tr></tbody></table></code></div></div>
+
+<p>所以我们应该在组合后轨迹的第83843帧处将其划分开。</p>
+
+<p>在命令行中再次输入<code class="language-plaintext highlighter-rouge">cpptraj</code>启动<code class="language-plaintext highlighter-rouge">CPPTRAJ</code>。显示交互信息后，按照之前同样的方式载入拓扑与轨迹文件（并去除离子）：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="code-header">
+        <span data-label-text="Plaintext"><i class="fas fa-code fa-fw small"></i></span>
+      <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre>parm rGACC.nowat.parm7
+trajin rGACC.MREMD1.nowat.nc.40
+trajin rGACC.MREMD2.nowat.nc.40
+strip :Na+ outprefix noions
+</pre></td></tr></tbody></table></code></div></div>
+
+<h3 id="第二步组合聚类团簇分析中的clustering命令"><span class="me-2">第二步：组合聚类/团簇分析中的<code class="language-plaintext highlighter-rouge">Clustering</code>命令</span><a href="#第二步组合聚类团簇分析中的clustering命令" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3>
+
+<p>现在开始输入<code class="language-plaintext highlighter-rouge">clustering</code>命令选项，大部分与之前的相同，注意这里我们加入了进行组合分析的关键词。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="code-header">
+        <span data-label-text="Plaintext"><i class="fas fa-code fa-fw small"></i></span>
+      <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre>cluster C1 \
+    dbscan minpoints 25 epsilon 0.9 sievetoframe \
+    rms :1@N2,O6,C1',P,:2@H2,N6,C1',P,:3@O2,H5,C1',P,:4@O2,H5,C1',P \
+    sieve 20 \
+    out combined.cnumvtime.dat \
+    info combined.info.dat \
+    summarysplit split.dat splitframe 83843
+</pre></td></tr></tbody></table></code></div></div>
+
+<p>这里有两个新的关键词：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">summarysplit &lt;file&gt;</code>:将分割的聚类/团簇信息写入文件<code class="language-plaintext highlighter-rouge">file</code></li>
+  <li><code class="language-plaintext highlighter-rouge">splitframe 83843</code>:将聚类/团簇信息于83843帧处分割（即第一段轨迹结束的地方）</li>
+</ul>
+
+<p>一旦你的文件全部读入完毕，输入<code class="language-plaintext highlighter-rouge">run</code>以开始对轨迹的处理与分析。保持耐心，这将比之前的分析花费更多点的时间。分析结束后，输入<code class="language-plaintext highlighter-rouge">quit</code>即可退出<code class="language-plaintext highlighter-rouge">CPPTRAJ</code>。</p>
+
+<p>组合聚类/团簇分析的主要输出信息在<code class="language-plaintext highlighter-rouge">split.dat</code>文件中，文件首两行说明了组合轨迹是如何被分割地以及每部分的总帧数。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="code-header">
+        <span data-label-text="Plaintext"><i class="fas fa-code fa-fw small"></i></span>
+      <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre># 1st &lt;= 83843 &lt; 2nd
+# 1st= 83843  2nd= 108887
+</pre></td></tr></tbody></table></code></div></div>
+
+<p>接下来几列分别为：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">#Cluster</code>:聚类/团簇数</li>
+  <li><code class="language-plaintext highlighter-rouge">Total</code>:聚类/团簇中的总帧数</li>
+  <li><code class="language-plaintext highlighter-rouge">Frac</code>:聚类/团簇的帧数占总帧数的比例</li>
+  <li><code class="language-plaintext highlighter-rouge">C#</code>:<code class="language-plaintext highlighter-rouge">Grace</code>程序可兼容的聚类/团簇的颜色代码，从1开始，14及以上的聚类/团簇都被指定为颜色15</li>
+  <li><code class="language-plaintext highlighter-rouge">Color</code>:<code class="language-plaintext highlighter-rouge">Grace</code>程序可兼容的颜色名称（使用<code class="language-plaintext highlighter-rouge">Grace</code>默认方案）</li>
+  <li><code class="language-plaintext highlighter-rouge">NumIn1st NumIn2nd</code>:分别落入第一轨迹和第二轨迹的聚类/团簇的帧数</li>
+  <li><code class="language-plaintext highlighter-rouge">Frac1 Frac2</code>:分别落入第一轨迹和第二轨迹的聚类/团簇的比例</li>
+  <li><code class="language-plaintext highlighter-rouge">First1 First2</code>:最先在第一轨迹或第二轨迹中形成聚类/团簇的帧</li>
+</ul>
+
+<p>第一和第二轨迹之间的聚类/团簇布居非常一致（布居分数的最大绝对差值约为0.015），表明两个轨迹相对较好地收敛。</p>
+
+  </div>
+
+  <div class="post-tail-wrapper text-muted">
+    <!-- categories -->
+    
+      <div class="post-meta mb-3">
+        <i class="far fa-folder-open fa-fw me-1"></i>
+        
+          <a href="/categories/translation/">Translation</a>,
+          <a href="/categories/molecular-simulation/">Molecular Simulation</a>
+      </div>
+    
+
+    <!-- tags -->
+    
+
+    <div
+      class="
+        post-tail-bottom
+        d-flex justify-content-between align-items-center mt-5 pb-2
+      "
+    >
+      <div class="license-wrapper">
+        
+          
+
+          This post is licensed under 
+        <a href="https://creativecommons.org/licenses/by/4.0/">
+          CC BY 4.0
+        </a>
+         by the author.
+        
+      </div>
+
+      <!-- Post sharing snippet -->
+
+<div class="share-wrapper d-flex align-items-center">
+  <span class="share-label text-muted">Share</span>
+  <span class="share-icons">
+    
+    
+    
+
+    
+
+      
+
+      <a href="https://twitter.com/intent/tweet?text=CPPTRAJ%E8%81%9A%E7%B1%BB/%E5%9B%A2%E7%B0%87%E5%88%86%E6%9E%90%E6%95%99%E7%A8%8B%20-%20LewisBase&url=https%3A%2F%2Flewisbase.github.io%2Fposts%2FCPPTRAJ%25E8%2581%2594%25E5%2590%2588%25E5%259B%25A2%25E7%25B0%2587%25E5%2588%2586%25E6%259E%2590%25E6%2595%2599%25E7%25A8%258B%2F" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Twitter" aria-label="Twitter">
+        <i class="fa-fw fa-brands fa-square-x-twitter"></i>
+      </a>
+    
+
+      
+
+      <a href="https://www.facebook.com/sharer/sharer.php?title=CPPTRAJ%E8%81%9A%E7%B1%BB/%E5%9B%A2%E7%B0%87%E5%88%86%E6%9E%90%E6%95%99%E7%A8%8B%20-%20LewisBase&u=https%3A%2F%2Flewisbase.github.io%2Fposts%2FCPPTRAJ%25E8%2581%2594%25E5%2590%2588%25E5%259B%25A2%25E7%25B0%2587%25E5%2588%2586%25E6%259E%2590%25E6%2595%2599%25E7%25A8%258B%2F" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Facebook" aria-label="Facebook">
+        <i class="fa-fw fab fa-facebook-square"></i>
+      </a>
+    
+
+      
+
+      <a href="https://t.me/share/url?url=https%3A%2F%2Flewisbase.github.io%2Fposts%2FCPPTRAJ%25E8%2581%2594%25E5%2590%2588%25E5%259B%25A2%25E7%25B0%2587%25E5%2588%2586%25E6%259E%2590%25E6%2595%2599%25E7%25A8%258B%2F&text=CPPTRAJ%E8%81%9A%E7%B1%BB/%E5%9B%A2%E7%B0%87%E5%88%86%E6%9E%90%E6%95%99%E7%A8%8B%20-%20LewisBase" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Telegram" aria-label="Telegram">
+        <i class="fa-fw fab fa-telegram"></i>
+      </a>
+    
+
+    <button
+      id="copy-link"
+      aria-label="Copy link"
+      class="btn small"
+      data-bs-toggle="tooltip"
+      data-bs-placement="top"
+      title="Copy link"
+      data-title-succeed="Link copied successfully!"
+    >
+      <i class="fa-fw fas fa-link pe-none fs-6"></i>
+    </button>
+  </span>
+</div>
+
+    </div>
+    <!-- .post-tail-bottom -->
+  </div>
+  <!-- div.post-tail-wrapper -->
+</article>
+
+
+            
+          </main>
+
+          <!-- panel -->
+          <aside aria-label="Panel" id="panel-wrapper" class="col-xl-3 ps-2 text-muted">
+            <div class="access">
+              <!-- Get 5 last posted/updated posts -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <section id="access-lastmod">
+    <h2 class="panel-heading">Recently Updated</h2>
+    <ul class="content list-unstyled ps-0 pb-1 ms-1 mt-2">
+      
+        
+        
+        
+        <li class="text-truncate lh-lg">
+          <a href="/posts/2025%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/">2025年度总结</a>
+        </li>
+      
+        
+        
+        
+        <li class="text-truncate lh-lg">
+          <a href="/posts/2024%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/">2024年度总结</a>
+        </li>
+      
+        
+        
+        
+        <li class="text-truncate lh-lg">
+          <a href="/posts/Matplotlib%E7%BB%98%E5%9B%BE%E4%B8%AD%E8%AE%BE%E7%BD%AE%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9B%BE%E4%BE%8B/">Matplotlib绘图中设置自定义图例</a>
+        </li>
+      
+        
+        
+        
+        <li class="text-truncate lh-lg">
+          <a href="/posts/%E4%BD%BF%E7%94%A8Python%E8%BF%9E%E6%8E%A5%E6%95%B0%E6%8D%AE%E5%BA%93/">使用Python连接数据库</a>
+        </li>
+      
+        
+        
+        
+        <li class="text-truncate lh-lg">
+          <a href="/posts/2023%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/">2023年度总结</a>
+        </li>
+      
+    </ul>
+  </section>
+  <!-- #access-lastmod -->
+
+
+              <!-- The trending tags list -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+    
+    
+      
+        
+        
+
+
+
+  <section>
+    <h2 class="panel-heading">Trending Tags</h2>
+    <div class="d-flex flex-wrap mt-3 mb-1 me-3">
+      
+        
+        <a class="post-tag btn btn-outline-primary" href="/tags/reading/">Reading</a>
+      
+    </div>
+  </section>
+
+
+            </div>
+
+            
+              
+              
+
+
+
+
+
+
+  <div class="toc-border-cover z-3"></div>
+  <section id="toc-wrapper" class="invisible position-sticky ps-0 pe-4 pb-4">
+    <h2 class="panel-heading ps-3 pb-2 mb-0">Contents</h2>
+    <nav id="toc"></nav>
+  </section>
+
+
+            
+          </aside>
+        </div>
+
+        <div class="row">
+          <!-- tail -->
+          <div id="tail-wrapper" class="col-12 col-lg-11 col-xl-9 px-md-4">
+            
+              
+              <!-- Recommend the other 3 posts according to the tags and categories of the current post. -->
+
+<!-- The total size of related posts -->
+
+
+<!-- An random integer that bigger than 0 -->
+
+
+<!-- Equals to TAG_SCORE / {max_categories_hierarchy} -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  <aside id="related-posts" aria-labelledby="related-label">
+    <h3 class="mb-4" id="related-label">Further Reading</h3>
+    <nav class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4 mb-4">
+      
+        <article class="col">
+          <a href="/posts/GMX%E4%B8%AD%E7%9A%84cluster%E4%B8%8Eclustersize/" class="post-preview card h-100">
+            <div class="card-body">
+              <!--
+  Date format snippet
+  See: ${JS_ROOT}/utils/locale-dateime.js
+-->
+
+
+
+
+<time
+  
+  data-ts="1537372800"
+  data-df="ll"
+  
+>
+  Sep 20, 2018
+</time>
+
+              <h4 class="pt-0 my-2">分子模拟中的Cluster Analysis浅析</h4>
+              <div class="text-muted">
+                <p>Cluster Analysis在分子动力学模拟中是一个很常见的概念，但是Cluster这个词的意义很模糊。最开始接触到这个概念的时候以为这是一种分析体系中形成的聚集体数目的方法，后来逐渐发现Cluster Analysis最本初的意思是对动力学模拟产生的构象轨迹进行归类和统计。当然，在配合其他工具的前提下，也能够用来统计聚集体数目。  Shao等人在一篇介绍Cluster Analysis...</p>
+              </div>
+            </div>
+          </a>
+        </article>
+      
+        <article class="col">
+          <a href="/posts/GMX%E4%B8%AD%E7%9A%84%E5%A2%99%E4%B8%8E%E5%86%BB%E7%BB%93%E7%BB%84%E8%AE%BE%E7%BD%AE/" class="post-preview card h-100">
+            <div class="card-body">
+              <!--
+  Date format snippet
+  See: ${JS_ROOT}/utils/locale-dateime.js
+-->
+
+
+
+
+<time
+  
+  data-ts="1524412800"
+  data-df="ll"
+  
+>
+  Apr 23, 2018
+</time>
+
+              <h4 class="pt-0 my-2">GMX中的墙与冻结组设置</h4>
+              <div class="text-muted">
+                <p>GROMACS分子动力学模拟计算过程中，常需设置二维的周期化条件与冻结组，下面简要介绍一下这两种设置的实现与注意事项：  二维周期化条件通常是配合wall的设置来实现的，Gromacs5.0之前的版本中在处理这部分时有些许问题，推荐使用5.0之后的版本。需要注意的是使用两面wall时还需要配合ewald_geometry=3dc的条件。wall的设置在mdp文件中实现，主要的几个选项设置与意...</p>
+              </div>
+            </div>
+          </a>
+        </article>
+      
+        <article class="col">
+          <a href="/posts/%E5%88%86%E5%AD%90%E6%A8%A1%E6%8B%9F%E4%B8%AD%E7%9A%84LINCS-SHAKE%E8%AD%A6%E5%91%8A%E5%8F%8A%E5%BA%94%E5%AF%B9/" class="post-preview card h-100">
+            <div class="card-body">
+              <!--
+  Date format snippet
+  See: ${JS_ROOT}/utils/locale-dateime.js
+-->
+
+
+
+
+<time
+  
+  data-ts="1474992000"
+  data-df="ll"
+  
+>
+  Sep 28, 2016
+</time>
+
+              <h4 class="pt-0 my-2">分子模拟中的LINCS/SHAKE警告及应对</h4>
+              <div class="text-muted">
+                <p>我们使用GROMACS进行分子动力学模拟时常常会遇到LINCS warning这样的警告，过多的警告会导致体系崩溃，程序运行异常。出现LINCS warning往往以为着初始体系构型不够合理，体系在模拟过程中出现了异常键。对于这种情况的应对方法，GROMACS官网上其实已有了详细的介绍，在这里翻译一下，供大家参考。  原文地址     “Blowing Up” 是一个用于表述模拟失败的相当专...</p>
+              </div>
+            </div>
+          </a>
+        </article>
+      
+    </nav>
+  </aside>
+  <!-- #related-posts -->
+
+
+            
+              
+              <!-- Navigation buttons at the bottom of the post. -->
+
+<nav class="post-navigation d-flex justify-content-between" aria-label="Post Navigation">
+  
+  
+
+  
+    <a
+      href="/posts/%E5%9C%A8win10%E4%B8%8EUbuntu%E5%8F%8C%E7%B3%BB%E7%BB%9F%E4%B8%AD%E5%88%A0%E9%99%A4Ubuntu/"
+      class="btn btn-outline-primary"
+      aria-label="Older"
+    >
+      <p>在Win10与Ubuntu双系统中删除Ubuntu</p>
+    </a>
+  
+
+  
+    <a
+      href="/posts/GMX%E4%B8%AD%E7%9A%84cluster%E4%B8%8Eclustersize/"
+      class="btn btn-outline-primary"
+      aria-label="Newer"
+    >
+      <p>分子模拟中的Cluster Analysis浅析</p>
+    </a>
+  
+</nav>
+
+            
+
+            <!-- The Footer -->
+
+<footer
+  aria-label="Site Info"
+  class="
+    d-flex flex-column justify-content-center text-muted
+    flex-lg-row justify-content-lg-between align-items-lg-center pb-lg-3
+  "
+>
+  <p>©
+    <time>2026</time>
+
+    
+      <a href="https://github.com/lewisbase">LewisBase</a>.
+    
+
+    
+      <span
+        data-bs-toggle="tooltip"
+        data-bs-placement="top"
+        title="Except where otherwise noted, the blog posts on this site are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) License by the author."
+      >Some rights reserved.</span>
+    
+  </p>
+
+  <p>Using the <a
+        data-bs-toggle="tooltip"
+        data-bs-placement="top"
+        title="v7.4.1"
+        href="https://github.com/cotes2020/jekyll-theme-chirpy"
+        target="_blank"
+        rel="noopener"
+      >Chirpy</a> theme for <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a>.
+  </p>
+</footer>
+
+          </div>
+        </div>
+
+        <!-- The Search results -->
+
+<div id="search-result-wrapper" class="d-flex justify-content-center d-none">
+  <div class="col-11 content">
+    <div id="search-hints">
+      <!-- The trending tags list -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+    
+    
+      
+        
+        
+
+
+
+  <section>
+    <h2 class="panel-heading">Trending Tags</h2>
+    <div class="d-flex flex-wrap mt-3 mb-1 me-3">
+      
+        
+        <a class="post-tag btn btn-outline-primary" href="/tags/reading/">Reading</a>
+      
+    </div>
+  </section>
+
+
+    </div>
+    <div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div>
+  </div>
+</div>
+
+      </div>
+
+      <aside aria-label="Scroll to Top">
+        <button id="back-to-top" type="button" class="btn btn-lg btn-box-shadow">
+          <i class="fas fa-angle-up"></i>
+        </button>
+      </aside>
+    </div>
+
+    <div id="mask" class="d-none position-fixed w-100 h-100 z-1"></div>
+
+    
+      <aside
+  id="notification"
+  class="toast"
+  role="alert"
+  aria-live="assertive"
+  aria-atomic="true"
+  data-bs-animation="true"
+  data-bs-autohide="false"
+>
+  <div class="toast-header">
+    <button
+      type="button"
+      class="btn-close ms-auto"
+      data-bs-dismiss="toast"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="toast-body text-center pt-0">
+    <p class="px-2 mb-3">A new version of content is available.</p>
+    <button type="button" class="btn btn-primary" aria-label="Update">
+      Update
+    </button>
+  </div>
+</aside>
+
+    
+
+    <!-- Embedded scripts -->
+
+    
+      
+      <!-- The comments switcher -->
+
+
+    
+
+    <!--
+  Jekyll Simple Search loader
+  See: <https://github.com/christian-fei/Simple-Jekyll-Search>
+-->
+
+
+
+
+
+<script>
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    SimpleJekyllSearch({
+      searchInput: document.getElementById('search-input'),
+      resultsContainer: document.getElementById('search-results'),
+      json: '/assets/js/data/search.json',
+      searchResultTemplate: '  <article class="px-1 px-sm-2 px-lg-4 px-xl-0">    <header>      <h2><a href="{url}">{title}</a></h2>      <div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1">        {categories}        {tags}      </div>    </header>    <p>{content}</p>  </article>',
+      noResultsText: '<p class="mt-5">Oops! No results found.</p>',
+      templateMiddleware: function(prop, value, template) {
+        if (prop === 'categories') {
+          if (value === '') {
+            return `${value}`;
+          } else {
+            return `<div class="me-sm-4"><i class="far fa-folder fa-fw"></i>${value}</div>`;
+          }
+        }
+
+        if (prop === 'tags') {
+          if (value === '') {
+            return `${value}`;
+          } else {
+            return `<div><i class="fa fa-tag fa-fw"></i>${value}</div>`;
+          }
+        }
+      }
+    });
+  });
+</script>
+
+  </body>
+</html>
+

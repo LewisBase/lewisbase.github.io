@@ -1,0 +1,157 @@
+
+
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>https://lewisbase.github.io/</id>
+  <title>LewisBase</title>
+  <subtitle>A postdoctoral fellow in Zhejiang lab. My research interests include the application of data analysis and machine learning in occupational health.</subtitle>
+  <updated>2026-03-09T11:25:57+08:00</updated>
+  <author>
+    <name>LewisBase</name>
+    <uri>https://lewisbase.github.io/</uri>
+  </author>
+  <link rel="self" type="application/atom+xml" href="https://lewisbase.github.io/feed.xml"/>
+  <link rel="alternate" type="text/html" hreflang="en"
+    href="https://lewisbase.github.io/"/>
+  <generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator>
+  <rights> © 2026 LewisBase </rights>
+  <icon>/assets/img/favicons/favicon.ico</icon>
+  <logo>/assets/img/favicons/favicon-96x96.png</logo>
+
+
+  
+  <entry>
+    <title>2025年度总结</title>
+    <link href="https://lewisbase.github.io/posts/2025%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/" rel="alternate" type="text/html" title="2025年度总结" />
+    <published>2026-01-20T00:00:00+08:00</published>
+  
+    <updated>2026-01-20T00:00:00+08:00</updated>
+  
+    <id>https://lewisbase.github.io/posts/2025%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/</id>
+    <content type="text/html" src="https://lewisbase.github.io/posts/2025%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/" />
+    <author>
+      <name>lewisbase</name>
+    </author>
+
+  
+    
+    <category term="Essays" />
+    
+    <category term="Reading" />
+    
+  
+
+  <summary>2026年就这么悄无声息的来了，过去的一年发生了太多的事情，让人觉得格外漫长，伴随着太多的欢乐和悲伤，但往往还是悲伤的事情更能影响人的情绪。  这一年，我们终于住进了自己的家，也算是告别了租房的生活。只是新家在装修结束后仅仅空置了一个夏季，住进新家后总感觉小女感冒变的更加频繁了些，这成了一根刺隐隐地扎在了我的心中。  这一年，我的奶奶永远离开了我们。毕竟时88岁高龄地老人了，之前每次分别时我都会暗自地抹眼泪，但当这一天真的来临的时候还是不由的感慨太快了。那天正好带着母亲和女儿去了径山寺，回家的路上看到父亲的电话就隐隐有了感觉，所幸老人家没有遭受什么痛苦。自己在五月去参加表弟婚礼时见了奶奶一面，不成想就是最后一面了。我算不上是个孝顺的孙子，更心疼的还是自己的父亲，这个山一般的男人从此就孤零零地留在家乡了。我多么希望能够在他身边多陪陪他，可能做到的只有每周一次并不漫长的视频通话。奶奶的葬...</summary>
+
+  </entry>
+
+  
+  <entry>
+    <title>2024年度总结</title>
+    <link href="https://lewisbase.github.io/posts/2024%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/" rel="alternate" type="text/html" title="2024年度总结" />
+    <published>2025-01-10T00:00:00+08:00</published>
+  
+    <updated>2025-01-10T00:00:00+08:00</updated>
+  
+    <id>https://lewisbase.github.io/posts/2024%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/</id>
+    <content type="text/html" src="https://lewisbase.github.io/posts/2024%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/" />
+    <author>
+      <name>lewisbase</name>
+    </author>
+
+  
+    
+    <category term="Essays" />
+    
+    <category term="Reading" />
+    
+  
+
+  <summary>真快，又是一年过去了，十分打脸的是从上次说要重整博客以来就只更新了三篇博客。目前这个博客的模板我也并不十分喜欢，一直想要再重新找一个模板的却一拖再拖。不过这一年开始逐渐使用Obsidian作为知识管理工具了，打算以后的年终总结都统一管理在Obsidian中，至于博客的更新，就随缘吧！目前对于书籍、影视的记录还在Notion中，希望新的一年能够把所有的内容都实现在Obsidian中同步备份。  2024年，这个大家普遍认为外部环境很糟糕的一年，我经历了一些不顺心的事情。先是单位的研究主线和组织架构大调整，之前的方向被完全摈弃，合作导师在四月份直接离职了。自己做出了继续入站课题的选择，更是导致直接从入职不久的新人变成了学术孤儿。磕磕绊绊到年底，课题研究也算在合作导师的远程支持下进行了下来。八月份后被分配进入了主线任务中，有了一些一同合作的同事，这是最可贵的。只是明年年中出站后的方向还是很...</summary>
+
+  </entry>
+
+  
+  <entry>
+    <title>Matplotlib绘图中设置自定义图例</title>
+    <link href="https://lewisbase.github.io/posts/Matplotlib%E7%BB%98%E5%9B%BE%E4%B8%AD%E8%AE%BE%E7%BD%AE%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9B%BE%E4%BE%8B/" rel="alternate" type="text/html" title="Matplotlib绘图中设置自定义图例" />
+    <published>2024-05-21T00:00:00+08:00</published>
+  
+    <updated>2024-05-21T00:00:00+08:00</updated>
+  
+    <id>https://lewisbase.github.io/posts/Matplotlib%E7%BB%98%E5%9B%BE%E4%B8%AD%E8%AE%BE%E7%BD%AE%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9B%BE%E4%BE%8B/</id>
+    <content type="text/html" src="https://lewisbase.github.io/posts/Matplotlib%E7%BB%98%E5%9B%BE%E4%B8%AD%E8%AE%BE%E7%BD%AE%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9B%BE%E4%BE%8B/" />
+    <author>
+      <name>lewisbase</name>
+    </author>
+
+  
+    
+    <category term="Python" />
+    
+    <category term="Matplotlib" />
+    
+  
+
+  <summary>数据分析绘图过程中，往往会出现四组数据两两对比的情况。一直苦恼于不知道该如何在Matplotlib自定义图例的样式和内容，现记录一下条形图中进行图例自定义的方法：  userdefine_label={    "$\\text{NIHL}_{1-4}$": plt.Rectangle((0, 0), 1, 1, fc="#1f77b4", ec="black", alpha=0.4),    "$\\text{NIHL}_{346}$": plt.Rectangle((0, 0), 1, 1, fc="#ff7f0e", ec="black", alpha=0.4),    "experiment group": plt.Rectangle((0, 0), 1, 1, fc="white", ec="black"),    "control group": plt.Rectangle...</summary>
+
+  </entry>
+
+  
+  <entry>
+    <title>使用Python连接数据库</title>
+    <link href="https://lewisbase.github.io/posts/%E4%BD%BF%E7%94%A8Python%E8%BF%9E%E6%8E%A5%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="alternate" type="text/html" title="使用Python连接数据库" />
+    <published>2024-05-19T00:00:00+08:00</published>
+  
+    <updated>2024-05-19T00:00:00+08:00</updated>
+  
+    <id>https://lewisbase.github.io/posts/%E4%BD%BF%E7%94%A8Python%E8%BF%9E%E6%8E%A5%E6%95%B0%E6%8D%AE%E5%BA%93/</id>
+    <content type="text/html" src="https://lewisbase.github.io/posts/%E4%BD%BF%E7%94%A8Python%E8%BF%9E%E6%8E%A5%E6%95%B0%E6%8D%AE%E5%BA%93/" />
+    <author>
+      <name>lewisbase</name>
+    </author>
+
+  
+    
+    <category term="Python" />
+    
+    <category term="Pandas" />
+    
+    <category term="SQLite" />
+    
+    <category term="MySQL" />
+    
+  
+
+  <summary>SQLite  sqlite3为python3自带，无需另行安装。  连接SQLite数据库时需指定对应的.db文件。  拉取数据     使用sl.connect()建立与数据库的连接，其中的database参数为SQLite数据库db文件的路径；   使用conn.cursor()创建游标；   pandas中的pd.read_sql_query(sql_text, conn)命令可以直接执行sql命令并将结果保存为DataFrame；   依次使用cur.close(), conn.close()关闭游标，关闭连接。   import pandas as pd import sqlite3 as sl  def load_data_from_table(database_path: str,                          table_name: str,  ...</summary>
+
+  </entry>
+
+  
+  <entry>
+    <title>2023年度总结</title>
+    <link href="https://lewisbase.github.io/posts/2023%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/" rel="alternate" type="text/html" title="2023年度总结" />
+    <published>2024-01-07T00:00:00+08:00</published>
+  
+    <updated>2024-01-07T00:00:00+08:00</updated>
+  
+    <id>https://lewisbase.github.io/posts/2023%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/</id>
+    <content type="text/html" src="https://lewisbase.github.io/posts/2023%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/" />
+    <author>
+      <name>lewisbase</name>
+    </author>
+
+  
+    
+    <category term="Essays" />
+    
+    <category term="Reading" />
+    
+  
+
+  <summary>上一次在这里更新博客内容已经过去三年了，其实自己在这三年经历了很多的大事：从二人世界变为三口之家、买了一间不大不小的房子、第一次换工作、开始学驾照等等。可惜都没能一一将其记录下来。当再次回想的时候已经有许多记忆逐渐模糊掉了，所以决定继续把博客翻出来修整修整，也算是新的一年里一个新的开端吧。  2023年经历的事情以及当时的感情已经忘却的差不多了，所幸还是读了一些书、看了些影视作品，也养成了随手记录的习惯。年度的阅读观影清单都放在Notion中收录了，这里就取一些印象最深的做一个简单的回顾总结吧！  2023年印象最深的书籍  今年读完的书只有十四本，还是以小说为主。其中印象最深刻的无疑就是英国科幻作家奥拉夫·斯特普尔顿的《人类向何处去》（又译《最初与最后的人类》），是机核电台《文明的出路》第一集推荐读物。作为一本比较少见的第一人称小说，最初进行阅读的时候还是较难读进去的，阅读中途也曾...</summary>
+
+  </entry>
+
+</feed>
+
+
