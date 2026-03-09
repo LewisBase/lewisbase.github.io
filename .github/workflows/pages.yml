@@ -18,12 +18,11 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
-          bundler-cache: true
 
-      - name: Install gems
+      - name: Install dependencies
         run: |
           gem install jekyll
-          gem install jekyll-theme-chirpy -v 7.4.1
+          gem install jekyll-remote-theme
 
       - name: Build
         run: jekyll build
