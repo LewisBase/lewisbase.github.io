@@ -1,6 +1,10 @@
 ---
-layout: home
-title: LewisBase
+title: Hello World!
+feature_text: |
+  ## LewisBase|学习与思考
+  君子终日乾乾，夕惕若厉，无咎
+feature_image: "/assets/background_1.png"
+excerpt: ""
 ---
 
 A postdoctoral fellow in Zhejiang lab. My research interests include the application of data analysis and machine learning in occupational health, especially the effect of occupational noise and chemical solvent exposure on hearing loss.
