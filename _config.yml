@@ -1,6 +1,7 @@
 # The Site Configuration
 
 # Import the theme
+# Theme - use GitHub Pages supported theme
 remote_theme: cotes2020/jekyll-theme-chirpy
 
 # The language of the webpage › http://www.lingoes.net/en/translator/langcode.htm

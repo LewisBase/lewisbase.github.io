@@ -1,5 +1,5 @@
 # Deploy to GitHub Pages
-name: Deploy to GitHub Pages
+name: Deploy
 
 on:
   push:
@@ -7,10 +7,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  jekyll:
+  deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@v4
 
@@ -19,14 +17,15 @@ jobs:
         with:
           ruby-version: '3.2'
 
-      - name: Install Jekyll and remote theme plugin
-        run: gem install jekyll jekyll-remote-theme
+      - name: Install gems
+        run: |
+          gem install jekyll jekyll-remote-theme
 
       - name: Build
         run: jekyll build
 
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./_site
+          token: ${{ secrets.GITHUB_TOKEN }}
+          folder: ./_site
