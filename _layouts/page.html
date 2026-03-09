@@ -2,20 +2,19 @@
 layout: default
 ---
 
-{% include site-header.html %}
+{% include lang.html %}
 
-<main class="main  container">
-
-  <article class="article  article--page  content  typeset">
-
-    <h1>{{ page.title }}</h1>
-
+<article class="px-1">
+  {% if page.layout == 'page' or page.collection == 'tabs' %}
+    {% assign tab_key = page.title | downcase %}
+    {% assign title = site.data.locales[lang].tabs[tab_key] | default: page.title %}
+    <h1 class="dynamic-title">
+      {{ title }}
+    </h1>
+    <div class="content">
+      {{ content }}
+    </div>
+  {% else %}
     {{ content }}
-
-  </article>
-
-  {% if page.aside == true %}{% include site-aside.html %}{% endif %}
-
-</main>
-
-{% include site-footer.html %}
+  {% endif %}
+</article>
