@@ -19,10 +19,8 @@ jobs:
         with:
           ruby-version: '3.2'
 
-      - name: Install dependencies
-        run: |
-          gem install jekyll
-          gem install jekyll-remote-theme
+      - name: Install Jekyll and remote theme plugin
+        run: gem install jekyll jekyll-remote-theme
 
       - name: Build
         run: jekyll build
